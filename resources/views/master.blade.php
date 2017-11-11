@@ -29,7 +29,7 @@
 
     <div class="blog-header">
       <div class="container">
-        <h1 class="blog-title">Welcome to Henry's official website!</h1>
+        <h1 class="blog-title">Welcome!</h1>
         <p class="lead blog-description">It is with great plesure that I present my website for everybody that wants learn a litte bit of everything!</p>
       </div>
     </div>

@@ -181,6 +181,7 @@ return [
         SalesProgram\Providers\RouteServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         SalesProgram\Providers\ViewComposerServiceProvider::class,
+        Appzcoder\CrudGenerator\CrudGeneratorServiceProvider::class,
 
     ],
 

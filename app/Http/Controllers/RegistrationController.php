@@ -27,7 +27,7 @@ class RegistrationController extends Controller
 
 
 
-    public function store(){
+    public function store(Request $request){
 
         //validate the form
 
@@ -42,10 +42,14 @@ class RegistrationController extends Controller
 
 
         //create and save the user
+//        $pass = encrypt($request->input('password'));
 
-
-
-       $user = User::create(request(['name', 'email', 'password']));
+//       $user = User::create(request(['name', 'email', $pass]));
+       $user = User::create([
+           'name'       => $request->input('name'),
+           'email'      => $request->input('email'),
+           'password'   => bcrypt($request->input('password'))
+       ]);
 
 
 

@@ -4,6 +4,9 @@ namespace SalesProgram\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Crypt;
+
+
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -34,6 +37,27 @@ class RouteServiceProvider extends ServiceProvider
          return \SalesProgram\Article::published()->findOrFail($id);
 
         });
+
+
+        Route::bind('empleado', function($value, $route)
+        {
+            return \SalesProgram\Empleado::where('id', '=', Crypt::decrypt($value))->first();
+        });
+
+        Route::bind('empleado/{empleado}/edit', function($value, $route)
+        {
+            return \SalesProgram\Empleado::where('id', '=', Crypt::decrypt($value))->first();
+        });
+
+        Route::bind('empleado/{empleado}', function($value, $route)
+        {
+            return \SalesProgram\Empleado::where('id', '=', Crypt::decrypt($value))->first();
+        });
+
+//        Route::bind('empleado/{code}', function($value, $route)
+//        {
+//            return \SalesProgram\Empleado::where('id', '=', Crypt::decrypt($value))->first();
+//        });
 
        
     }

@@ -65,9 +65,9 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/home', 'ArticlesController@index')->name('home');
 
-Route::get('/activate/token/{token}', 'Auth\ActivationController@activate')->name('auth.activate');
+//Route::get('/activate/token/{token}', 'Auth\ActivationController@activate')->name('auth.activate');
 
-Route::get('/activate/resend', 'Auth\ActivationController@resend')->name('auth.activate.resend');
+//Route::get('/activate/resend', 'Auth\ActivationController@resend')->name('auth.activate.resend');
 
 //Route::get('/home', 'HomeController@index')->name('home');
 
@@ -85,3 +85,22 @@ Route::get('bar', function(BarInterface $bar){
 
 	dd($bar);
 });
+
+Route::resource('test', 'TestController');
+Route::resource('client', 'ClientController');
+Route::resource('usuario', 'UsuarioController');
+Route::resource('empleado', 'EmpleadoController');
+
+//Route::get('empleado/{empleado}', function(SalesProgram\Empleado $empleado){
+//
+//
+//    return $empleado;
+//});
+//
+//
+//Route::post('empleado/{code}', [
+//    'as' => 'empleado.destroy',
+//    'uses' => 'EmpleadoController@destroy'
+//]);
+Route::resource('designer', 'DesignerController');
+Route::resource('bonchero', 'BoncheroController');
