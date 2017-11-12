@@ -105,3 +105,4 @@ Route::resource('empleado', 'EmpleadoController');
 Route::resource('designer', 'DesignerController');
 Route::resource('bonchero', 'BoncheroController');
 Route::resource('customer-type', 'customerTypeController');
+Route::resource('category-product', 'categoryProductController');

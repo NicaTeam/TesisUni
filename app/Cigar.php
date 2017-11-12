@@ -8,11 +8,14 @@ class Cigar extends Model
 {
 
     protected $fillable=[
+        'category_products_id',
         'brand_groups_id',
         'unit_of_measurements_id',
         'cigar_sizes_id',
+        'barcode',
         'name',
         'netWeight',
+        'unitsInPresentation',
         'active',
 
         ];

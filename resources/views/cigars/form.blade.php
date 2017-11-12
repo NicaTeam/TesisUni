@@ -1,7 +1,23 @@
 
-
 <div class="form-group">
-    {!! Form::label('brandGroup', 'Brand Group:') !!}
+    {!! Form::label('categoryProduct', 'Categoria de Producto:') !!}
+    <select name = 'category_products_id' class ="form-control">
+        @foreach($categoryProduct as $categoryProduct)
+
+
+            <option value="{{ $categoryProduct->id }}">
+
+                {{ $categoryProduct->categoria }}
+
+            </option>
+
+        @endforeach
+
+    </select>
+
+</div>
+<div class="form-group">
+    {!! Form::label('brandGroup', 'Linea de Puros:') !!}
     <select name = 'brand_groups_id' class ="form-control">
          @foreach($brandGroups as $brandGroup)
 
@@ -39,7 +55,7 @@
 
 
 <div class="form-group">
-    {!! Form::label('cigarSize', 'Cigar Size:') !!}
+    {!! Form::label('cigarSize', 'Vitola/Tamano:') !!}
     <select name = 'cigar_sizes_id' class ="form-control">
         @foreach($cigarSizes as $cigarSize)
 
@@ -57,10 +73,21 @@
 </div>
 
 
+
 <div class="form-group">
 
 
-    {!! Form::label('name', 'Name:') !!}
+    {!! Form::label('barcode', 'Codigo de Barras:') !!}
+
+    {!! Form::text('barcode', null, ['class' => 'form-control']) !!}
+
+
+</div>
+
+<div class="form-group">
+
+
+    {!! Form::label('name', 'Nombre:') !!}
 
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
 
@@ -73,8 +100,16 @@
 
 <div class="form-group">
 
-    {!! Form::label('netWeight', 'Net Weight:') !!}
+    {!! Form::label('netWeight', 'Peso Neto gr.:') !!}
     {!! Form::text('netWeight', null, ['class' => 'form-control']) !!}
+
+
+</div>
+
+<div class="form-group">
+
+    {!! Form::label('unitsInPresentation', 'Unidades de presentacion:') !!}
+    {!! Form::text('unitsInPresentation', null, ['class' => 'form-control']) !!}
 
 
 </div>

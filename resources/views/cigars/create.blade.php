@@ -1,46 +1,37 @@
-@extends('Master')
+@extends('layouts.app')
 
 
 @section('content')
 
-    <div class="col-sm-8 blog-main">
+        <div class="container">
 
-        <h1>Register a new cigar!</h1>
+            <div class="row">
 
-        <hr/>
+                @include('admin.sidebar')
 
-        <div class="row">
+                <div class="col-md-9">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Crear nuevo producto</div>
+                        <div class="panel-body">
+                            <a href="{{ url('/cigars') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Atras</button></a>
+                            <br />
+                            <br />
 
-
-            <div class ="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-
-                @if ($errors->any())
-
-                    <ul class="alert alert-danger">
-
-                        @foreach ($errors->all() as $error)
-
-                            <li> {{ $error }} </li>
-
-                        @endforeach
-
-                    </ul>
-
-                @endif
-
+                                @if ($errors->any())
+                                    <ul class="alert alert-danger">
+                                        @foreach ($errors->all() as $error)
+                                            <li> {{ $error }} </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                                {!! Form::model($cigar = new \SalesProgram\Cigar, ['url' => 'cigars']) !!}
+                                    @include('cigars.form', ['submitButtonText' => 'Save'] )
+                                {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </div>
-
-
-        {!! Form::model($cigar = new \SalesProgram\Cigar, ['url' => 'cigars']) !!}
-
-        @include('cigars.form', ['submitButtonText' => 'Save'] )
-
-
-        {!! Form::close() !!}
-
-    </div>
 
 
 

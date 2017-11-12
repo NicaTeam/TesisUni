@@ -28,15 +28,21 @@ class CigarFormRequest extends FormRequest
 
         return [
 
+            'category_products_id' => 'required',
+
             'brand_groups_id' => 'required',
 
             'unit_of_measurements_id' => 'required',
 
             'cigar_sizes_id' => 'required',
 
+            'barcode' =>'required',
+
             'name' => 'required|min:3|max:200',
 
             'netWeight' => 'required',
+
+            'unitsInPresentation' => 'required',
         ];
 
 

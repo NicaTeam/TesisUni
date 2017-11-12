@@ -10,6 +10,7 @@ use SalesProgram\UnitOfMeasurement;
 use SalesProgram\CigarSize;
 use SalesProgram\Http\Requests\CigarFormRequest;
 use DB;
+use SalesProgram\categoryProduct;
 
 class CigarController extends Controller
 {
@@ -54,7 +55,8 @@ class CigarController extends Controller
         $brandGroups = BrandGroup::all();
         $unitOfMeasurements = UnitOfMeasurement::all();
         $cigarSizes = CigarSize::all();
-        return view('cigars.create',['brandGroups'=>$brandGroups, 'unitOfMeasurements'=> $unitOfMeasurements, 'cigarSizes' => $cigarSizes]);
+        $categoryProduct = categoryProduct::all();
+        return view('cigars.create',['brandGroups'=>$brandGroups, 'unitOfMeasurements'=> $unitOfMeasurements, 'cigarSizes' => $cigarSizes, 'categoryProduct' => $categoryProduct]);
     }
 
 
