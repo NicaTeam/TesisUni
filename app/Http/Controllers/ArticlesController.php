@@ -53,13 +53,11 @@ class ArticlesController extends Controller
         $articles = Article::latest()->filter(request(['month', 'year']))->get();
 
 
-
-
         //$archives = Article::archives();
 
 
-    	//return view('Articles.index')->with('articles', $articles);
-        return view('Articles.index', compact('articles', 'latest', 'archives'));
+    	//return view('articles.index')->with('articles', $articles);
+        return view('articles.index', compact('articles', 'latest', 'archives'));
 
     }
 
@@ -76,9 +74,8 @@ class ArticlesController extends Controller
             ->get()
             ->toArray();
 
-
         //dd($article->published_at->diffForHumans());
-    	return view('Articles.show', compact('article', 'archives'));
+    	return view('articles.show', compact('article', 'archives'));
 
     }
 
@@ -89,7 +86,7 @@ class ArticlesController extends Controller
     public function create(){
 
         $tags = Tag::pluck('name', 'id');
-    	return view('Articles.create', compact('tags'));
+    	return view('articles.create', compact('tags'));
     }
 
 
@@ -111,7 +108,7 @@ class ArticlesController extends Controller
 
         $article = Article::findOrFail($id);
          $tags = Tag::pluck('name', 'id');
-        return view('Articles.edit', compact('article', 'tags'));
+        return view('articles.edit', compact('article', 'tags'));
     }
 
 
@@ -177,6 +174,6 @@ class ArticlesController extends Controller
 
 
     public function junior(){
-        return view('Articles.junior');
+        return view('articles.junior');
     }
 }

@@ -30,14 +30,14 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>Title</th><th>Body</th><th>Actions</th>
+                                        <th>#</th><th>Name</th><th>LastName</th><th>Email</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($test as $item)
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
-                                        <td>{{ $item->title }}</td><td>{{ $item->body }}</td>
+                                        <td>{{ $item->name }}</td><td>{{ $item->lastName }}</td><td>{{ $item->email }}</td>
                                         <td>
                                             <a href="{{ url('/test/' . $item->id) }}" title="View Test"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/test/' . $item->id . '/edit') }}" title="Edit Test"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>

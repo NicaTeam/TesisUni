@@ -36,13 +36,15 @@ class CigarFormRequest extends FormRequest
 
             'cigar_sizes_id' => 'required',
 
-            'barcode' =>'required',
+            'barcode' =>'required| max:20',
 
             'name' => 'required|min:3|max:200',
 
-            'netWeight' => 'required',
+            'netWeight' => 'required|numeric',
 
-            'unitsInPresentation' => 'required',
+            'unitsInPresentation' => 'required|numeric'
+
+//            'image' => 'mimes:jpeg,bmp,png'
         ];
 
 

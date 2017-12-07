@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
     <div class="container">
         <div class="row">
-            @include('admin.sidebar')
+            {{--@include('admin2.dashboard')--}}
 
             <div class="col-md-9">
                 <div class="panel panel-default">

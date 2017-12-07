@@ -1,14 +1,42 @@
-@extends('Master')
+@extends('layouts.admin')
 
 @section('content')
 
-<div class="col-sm-8 blog-main">
+    <div class="container">
+        <div class="row">
+            {{--@include('admin.sidebar')--}}
 
-    <h1> {{ $cigar->name }}</h1>
+            <div class="col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Info sobre #{{ $cigar['name'] }}</div>
+                    <div class="panel-body">
+                        <a href="{{ url('/cigars') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Atras</button></a>
+                        <br />
+                        <br />
 
-    <article> Net Weight: {{ $cigar->netWeight }} Created:{{ $cigar->created_at->diffForHumans() }}</article>
+                        @if ($errors->any())
+                            <ul class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+
+                        <h1> {{ $cigar->name }}</h1>
+
+                        <article> Net Weight: {{ $cigar->netWeight }} Created:{{ $cigar->created_at->diffForHumans() }}</article>
 
 
-</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{{--<div class="col-sm-8 blog-main">--}}
+
+
+{{--</div>--}}
 
 @endsection

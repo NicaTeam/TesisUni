@@ -14,7 +14,9 @@
 
 
     {{--<!-- Styles -->--}}
-    <link href="/css/test.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+
+    {{--<link href="{{ asset('css/test.css') }}" rel="stylesheet">--}}
 
 
 </head>

@@ -31,17 +31,17 @@ Route::get('about', 'PagesController@about');
 
 // Route::get('Contact', 'PagesController@Contact');
 
-// Route::get('Articles', 'ArticlesController@index');
+// Route::get('articles', 'ArticlesController@index');
 
-// Route::get('Articles/create', 'ArticlesController@create');
+// Route::get('articles/create', 'ArticlesController@create');
 
-// Route::get('Articles/{id}', 'ArticlesController@show');
+// Route::get('articles/{id}', 'ArticlesController@show');
 
-// Route::post('Articles', 'ArticlesController@store');
+// Route::post('articles', 'ArticlesController@store');
 
 Route::get('paginaJunior', 'ArticlesController@junior');
 
-// Route::get('Articles/{id}/edit', 'ArticlesController@edit');
+// Route::get('articles/{id}/edit', 'ArticlesController@edit');
 
 Route::resource('articles', 'ArticlesController');
 
@@ -61,9 +61,9 @@ Route::get('/logout', 'SessionsController@destroy');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/home', 'ArticlesController@index')->name('home');
+//Route::get('/home', 'ArticlesController@index');
 
 //Route::get('/activate/token/{token}', 'Auth\ActivationController@activate')->name('auth.activate');
 
@@ -106,3 +106,9 @@ Route::resource('designer', 'DesignerController');
 Route::resource('bonchero', 'BoncheroController');
 Route::resource('customer-type', 'customerTypeController');
 Route::resource('category-product', 'categoryProductController');
+Route::resource('employee', 'EmployeeController');
+Route::resource('test', 'TestController');
+Route::resource('pilon', 'PilonController');
+Route::resource('cigar_size', 'cigar_sizeController');
+//Route::resource('brand-group', 'BrandGroupController');
+Route::resource('brand-group', 'BrandGroupController');

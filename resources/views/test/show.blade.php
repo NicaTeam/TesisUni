@@ -27,7 +27,7 @@
                                     <tr>
                                         <th>ID</th><td>{{ $test->id }}</td>
                                     </tr>
-                                    <tr><th> Title </th><td> {{ $test->title }} </td></tr><tr><th> Body </th><td> {{ $test->body }} </td></tr>
+                                    <tr><th> Name </th><td> {{ $test->name }} </td></tr><tr><th> LastName </th><td> {{ $test->lastName }} </td></tr><tr><th> Email </th><td> {{ $test->email }} </td></tr>
                                 </tbody>
                             </table>
                         </div>

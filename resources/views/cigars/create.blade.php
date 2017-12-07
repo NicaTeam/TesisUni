@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 
 @section('content')
@@ -7,7 +7,7 @@
 
             <div class="row">
 
-                @include('admin.sidebar')
+                {{--@include('admin.sidebar')--}}
 
                 <div class="col-md-9">
                     <div class="panel panel-default">
@@ -24,9 +24,16 @@
                                         @endforeach
                                     </ul>
                                 @endif
-                                {!! Form::model($cigar = new \SalesProgram\Cigar, ['url' => 'cigars']) !!}
-                                    @include('cigars.form', ['submitButtonText' => 'Save'] )
-                                {!! Form::close() !!}
+                            <form method="POST" action="{{ url('/cigars') }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+
+                                    {{ csrf_field() }}
+                                        {!! Form::model($cigar = new \SalesProgram\Cigar, ['url' => 'cigars']) !!}
+                                            @include('cigars.form2' )
+
+                                    {{--, ['submitButtonText' => 'Save']--}}
+                                        {!! Form::close() !!}
+
+                            </form>
                         </div>
                     </div>
                 </div>

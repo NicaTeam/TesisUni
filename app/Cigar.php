@@ -43,19 +43,20 @@ class Cigar extends Model
     }
 
 
-
-
-
     public function unitOfMeasurement(){
 
 
         return $this->belongsTo('SalesProgram\UnitOfMeasurement');
     }
 
+
+
     public function cigarSize(){
 
-        return $this->belongsTo('SalesProgram\CigarSize');
+        return $this->belongsTo('SalesProgram\cigarsize');
     }
+
+
 
     public function getBranGroupListAttribute(){
 
