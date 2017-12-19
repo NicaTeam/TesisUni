@@ -36,31 +36,54 @@ class CigarController extends Controller
 
         //$cigar = Cigar::latest()->get();
 
-        $keyword = $request->get('search');
-        $perPage = 5;
+//       $keyword = $request->get('search');
+//        $perPage = 25;
+//
+//        if (!empty($keyword)) {
+////            $cigar = Cigar::where('name', 'LIKE', "%$keyword%")
+////                ->orWhere('barcode', 'LIKE', "%$keyword%")
+////                ->orWhere('netWeight', 'LIKE', "%$keyword%")
+////                ->orWhere('unitsInPresentation', 'LIKE', "%$keyword%")
+////                ->paginate($perPage);
+//
+//
+//        } else {
+//            //$cigar = Cigar::paginate($perPage);
+//            $cigar = Cigar::selectRaw('cigars.id id, cigars.barcode barcode, cigars.name name, cigar_sizes.name Vitola, cigars.netWeight netWeight, cigars.unitsInPresentation unitsInPresentation, brand_groups.id Brand_Groups_ID, brand_groups.name  Linea, unit_of_measurements.name Unidad, cigars.image Imagen ')
+//                ->join('brand_groups','cigars.brand_groups_id', '=','brand_groups.id')
+//                ->join('unit_of_measurements', 'cigars.unit_of_measurements_id','=', 'unit_of_measurements.id')
+//                ->join('cigar_sizes', 'cigars.cigar_sizes_id', '=', 'cigar_sizes.id')
+//                ->where('cigars.active', '=', '1')
+//                ->get()
+//                ->toArray();
+//
+//        }
 
-        if (!empty($keyword)) {
-            $cigar = Cigar::where('name', 'LIKE', "%$keyword%")
-                ->orWhere('barcode', 'LIKE', "%$keyword%")
-                ->orWhere('netWeight', 'LIKE', "%$keyword%")
-                ->orWhere('unitsInPresentation', 'LIKE', "%$keyword%")
+        if ($request){
+
+            $keyword = $request->get('search');
+            $perPage = 4;
+
+            $cigar = DB::table('cigars as c')
+                ->join('brand_groups as bg','c.brand_groups_id', '=','bg.id')
+                ->join('unit_of_measurements as um', 'c.unit_of_measurements_id','=', 'um.id')
+                ->join('cigar_sizes as cz', 'c.cigar_sizes_id', '=', 'cz.id')
+                ->select('c.id as cigar_id', 'c.barcode', 'c.name', 'cz.name as Vitola', 'c.netWeight', 'c.unitsInPresentation', 'bg.id', 'bg.name as Linea', 'um.name as Unidad', 'c.image as Imagen')
+                ->where('c.name', 'LIKE', "%$keyword%")
+                ->orWhere('c.barcode', 'LIKE', "%$keyword%")
+                ->orderBy('c.id', 'desc')
                 ->paginate($perPage);
-        } else {
-            //$cigar = Cigar::paginate($perPage);
-            $cigar = Cigar::selectRaw('cigars.id id, cigars.barcode barcode, cigars.name name, cigar_sizes.name Vitola, cigars.netWeight netWeight, cigars.unitsInPresentation unitsInPresentation, brand_groups.id Brand_Groups_ID, brand_groups.name  Linea, unit_of_measurements.name Unidad ')
-                ->join('brand_groups','cigars.brand_groups_id', '=','brand_groups.id')
-                ->join('unit_of_measurements', 'cigars.unit_of_measurements_id','=', 'unit_of_measurements.id')
-                ->join('cigar_sizes', 'cigars.cigar_sizes_id', '=', 'cigar_sizes.id')
-                ->where('cigars.active', '=', '1')
-                ->get()
-                ->toArray();
+//
+
+            return view('cigars.index', compact('cigar'));
+
 
         }
 
         //dd($cigar);
 
         //$cigars = Cigar::latest()->active()->get();
-        return view('cigars.index', compact('cigar'));
+        //return view('cigars.index', compact('cigar'));
     }
 
 
@@ -97,13 +120,27 @@ class CigarController extends Controller
 
     public function store(CigarFormRequest $request, BrandGroup $brandGroup){
 
-
-
 //        $cigar = new Cigar($request->all());
 //        $cigar->save();
+        $cigar = new Cigar;
+        $cigar->brand_groups_id=$request->get('brand_groups_id');
+        $cigar->unit_of_measurements_id=$request->get('unit_of_measurements_id');
+        $cigar->cigar_sizes_id=$request->get('cigar_sizes_id');
+        $cigar->category_products_id=$request->get('category_products_id');
+        $cigar->barcode=$request->get('barcode');
+        $cigar->name=$request->get('name');
+        $cigar->netWeight=$request->get('netWeight');
+        $cigar->unitsInPresentation=$request->get('unitsInPresentation');
 
-        Cigar::create($request->all());
+        if (Input::hasFile('image')){
 
+            $file =Input::file('image');
+            $file->move(public_path().'/imagenes/cigars/', $file->getClientOriginalName());
+            $cigar->image=$file->getClientOriginalName();
+
+        }
+        //Cigar::create($request->all());
+        $cigar->save();
 
         flash()->overlay('Your cigar has been created!', 'Good Job');
         return Redirect::to('cigars');
@@ -122,13 +159,8 @@ class CigarController extends Controller
         $cigarSizes = cigar_size::pluck('name', 'id');
         $selectedSize = $cigar->cigar_sizes_id;
 
-
-
-        //$categoryProduct = CategoryProduct::pluck('categoria', 'id');
         $categoryProduct = CategoryProduct::where('id', '=', 1)->pluck('categoria', 'id');
         $selectedCategory = $cigar->category_products_id;
-
-
 
         //dd($categoryProduct);
 

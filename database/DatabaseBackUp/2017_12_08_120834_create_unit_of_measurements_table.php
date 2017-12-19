@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTestsTable extends Migration
+class CreateUnitOfMeasurementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,9 @@ class CreateTestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tests', function(Blueprint $table) {
+        Schema::create('unit_of_measurements', function(Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('lastName');
-            $table->string('email');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ class CreateTestsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('tests');
+        Schema::drop('unit_of_measurements');
     }
 }

@@ -25,6 +25,19 @@
                         </form>
 
                         <br/>
+                        <hr>
+                        <div class = "comments">
+                            <div class = "list-group">
+                                {{--@foreach ($company->persons as $person)--}}
+                                {{--<div class = "list-group-item">--}}
+                                {{--<strong> {{ $person->name }}  {{$person->lastName}} | {{$person->email }} | {{ $person->telephone }} &nbsp; </strong>--}}
+                                {{--{{ $comment->body }} {{ $comment->created_at->diffForHumans() }}--}}
+                                {{--</div>--}}
+                                {{--@endforeach--}}
+
+                                <strong>Ejemplos de Categorias de Distribuidores: Master | General | Duty Free </strong>
+                            </div>
+                        </div>
                         <br/>
                         <div class="table-responsive">
                             <table class="table table-borderless">

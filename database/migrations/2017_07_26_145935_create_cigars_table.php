@@ -23,6 +23,7 @@ class CreateCigarsTable extends Migration
             $table->string('name');
             $table->double('netWeight',15,2);
             $table->integer('unitsInPresentation');
+            $table->string('image');
             $table->boolean('active')->default(true);
             $table->timestamps();
 

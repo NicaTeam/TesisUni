@@ -123,6 +123,7 @@
                         <li><a href="cigars"><i class="fa fa-circle-o"></i> Puros</a></li>
                         <li><a href="category-product"><i class="fa fa-circle-o"></i>Categoria Productos</a></li>
                         <li><a href="cigar_size"><i class="fa fa-circle-o"></i>Vitolas</a></li>
+                        <li><a href="unit-of-measurement"><i class="fa fa-circle-o"></i>Presentacion</a></li>
                         <li><a href="brand-group"><i class="fa fa-circle-o"></i>Linea de puros</a></li>
                         <li><a href="articles"><i class="fa fa-circle-o"></i>Articulos/Articles</a></li>
                     </ul>
@@ -135,8 +136,11 @@
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-circle-o"></i> Clientes</a></li>
-                        <li><a href="customer-type"><i class="fa fa-circle-o"></i>Categoria de Clientes</a></li>
+                        <li><a href="company"><i class="fa fa-circle-o"></i> Clientes</a></li>
+                        <li><a href="customer-type"><i class="fa fa-circle-o"></i>Categoria de Distribuidores</a></li>
+                        <li><a href="company-type"><i class="fa fa-circle-o"></i>Tipos de companias</a></li>
+                        <li><a href="country"><i class="fa fa-circle-o"></i>Paises</a></li>
+                        <li><a href="title"><i class="fa fa-circle-o"></i>Titulos de Personas</a></li>
 
                     </ul>
                 </li>
@@ -239,7 +243,7 @@
     <div class="pull-right hidden-xs">
         <b>Version</b> 2.3.0
     </div>
-    <strong>Copyright &copy; 2015-2020 <a href="www.incanatoit.com">IncanatoIT</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2015-2020 <a href="https://www.drewestate.com">Drew Estate Swisher International</a>.</strong> All rights reserved.
 </footer>
 
 

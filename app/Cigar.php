@@ -7,6 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Cigar extends Model
 {
 
+    protected $table = 'cigars';
+
+    /**
+     * The database primary key value.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * Attributes that should be mass-assignable.
+     *
+     * @var array
+     */
     protected $fillable=[
         'category_products_id',
         'brand_groups_id',
@@ -16,6 +30,7 @@ class Cigar extends Model
         'name',
         'netWeight',
         'unitsInPresentation',
+        'image',
         'active',
 
         ];

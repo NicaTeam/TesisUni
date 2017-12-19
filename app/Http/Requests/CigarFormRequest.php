@@ -28,23 +28,23 @@ class CigarFormRequest extends FormRequest
 
         return [
 
-            'category_products_id' => 'required',
+            'category_products_id' => 'required|numeric',
 
-            'brand_groups_id' => 'required',
+            'brand_groups_id' => 'required|numeric',
 
-            'unit_of_measurements_id' => 'required',
+            'unit_of_measurements_id' => 'required|numeric',
 
-            'cigar_sizes_id' => 'required',
+            'cigar_sizes_id' => 'required|numeric',
 
-            'barcode' =>'required| max:20',
+            'barcode' =>'required|max:20',
 
             'name' => 'required|min:3|max:200',
 
             'netWeight' => 'required|numeric',
 
-            'unitsInPresentation' => 'required|numeric'
+            'unitsInPresentation' => 'required|numeric',
 
-//            'image' => 'mimes:jpeg,bmp,png'
+            'image' => 'mimes:jpeg,bmp,png'
         ];
 
 

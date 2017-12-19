@@ -27,7 +27,7 @@
                             <form method="POST" action="{{ url('/cigars') }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
 
                                     {{ csrf_field() }}
-                                        {!! Form::model($cigar = new \SalesProgram\Cigar, ['url' => 'cigars']) !!}
+                                        {!! Form::model($cigar = new \SalesProgram\Cigar, ['url' => 'cigars', 'file' => true]) !!}
                                             @include('cigars.form2' )
 
                                     {{--, ['submitButtonText' => 'Save']--}}

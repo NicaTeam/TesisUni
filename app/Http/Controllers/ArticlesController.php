@@ -74,6 +74,7 @@ class ArticlesController extends Controller
             ->get()
             ->toArray();
 
+
         //dd($article->published_at->diffForHumans());
     	return view('articles.show', compact('article', 'archives'));
 

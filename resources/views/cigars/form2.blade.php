@@ -92,7 +92,7 @@
     <label for="barcode" class="col-md-4 control-label">{{ 'Codigo de Barra' }}</label>
     <div class="col-md-6">
         {{--{!! Form::label('barcode', 'Codigo de Barra:') !!}--}}
-        <input class="form-control" name="barcode" type="text" id="barcode" value="{{ $cigar->barcode or ''}}" >
+        <input class="form-control" name="barcode" type="text" id="barcode" required value="{{ $cigar->barcode or ''}}" >
         {!! $errors->first('barcode', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -101,7 +101,7 @@
     <label for="name" class="col-md-4 control-label">{{ 'Nombre' }}</label>
     <div class="col-md-6">
         {{--{!! Form::label('name', 'Nombre:') !!}--}}
-        <input class="form-control" name="name" type="text" id="name" value="{{ $cigar->name or ''}}" >
+        <input class="form-control" name="name" type="text" id="name" required value="{{ $cigar->name or ''}}" >
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -110,7 +110,7 @@
     <label for="netWeight" class="col-md-4 control-label">{{ 'Peso Neto' }}</label>
     <div class="col-md-6">
         {{--{!! Form::label('netWeight', 'Peso Neto:') !!}--}}
-        <input class="form-control" name="netWeight" type="text" id="netWeight" value="{{ $cigar->netWeight or ''}}" >
+        <input class="form-control" name="netWeight" type="text" id="netWeight" required value="{{ $cigar->netWeight or ''}}" >
         {!! $errors->first('netWeight', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -119,10 +119,22 @@
     <label for="unitsInPresentation" class="col-md-4 control-label">{{ 'Presentacion' }}</label>
     <div class="col-md-6">
         {{--{!! Form::label('unitsInPresentation', 'Presentacion:') !!}--}}
-        <input class="form-control" name="unitsInPresentation" type="text" id="unitsInPresentation" value="{{ $cigar->unitsInPresentation or ''}}" >
+        <input class="form-control" name="unitsInPresentation" type="text" id="unitsInPresentation" required value="{{ $cigar->unitsInPresentation or ''}}" >
         {!! $errors->first('unitsInPresentation', '<p class="help-block">:message</p>') !!}
     </div>
-</div><div class="form-group">
+</div>
+
+<div class="form-group {{ $errors->has('image') ? 'has-error' : ''}}">
+    <label for="image" class="col-md-4 control-label">{{ 'Imagen' }}</label>
+    <div class="col-md-6">
+        {{--{!! Form::label('unitsInPresentation', 'Presentacion:') !!}--}}
+        <input class="form-control" name="image" type="file" id="image"  >
+        {!! $errors->first('image', '<p class="help-block">:message</p>') !!}
+
+    </div>
+</div>
+
+<div class="form-group">
     <div class="col-md-offset-4 col-md-4">
         <input class="btn btn-primary" type="submit" value="{{ $submitButtonText or 'Guardar' }}">
     </div>

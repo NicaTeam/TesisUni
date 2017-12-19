@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateCigarSizesTable extends Migration
+class CreateTitlesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateCigarSizesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cigar_sizes', function(Blueprint $table) {
+        Schema::create('titles', function(Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
@@ -26,6 +26,6 @@ class CreateCigarSizesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('cigar_sizes');
+        Schema::drop('titles');
     }
 }

@@ -13,6 +13,8 @@
                             <i class="fa fa-plus" aria-hidden="true"></i> Agregrar nuevo
                         </a>
 
+                        {{--@include('cigars.search')--}}
+
                         <form method="GET" action="{{ url('/cigars') }}" accept-charset="UTF-8" class="navbar-form navbar-right" role="search">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="search" placeholder="Search...">
@@ -32,7 +34,7 @@
                             <table class="table table-borderless">
                                 <thead>
                                 <tr>
-                                    <th>#</th><th>Cogido de Barra</th><th>Nombre</th><th>Vitola</th><th>Peso Neto</th><th>Presentacion</th><th>Linea</th><th>Unidad</th><th>Opciones</th>
+                                    <th>#</th><th>Cogido de Barra</th><th>Nombre</th><th>Vitola</th><th>Peso Neto</th><th>Presentacion</th><th>Linea</th><th>Unidad</th><th>Imagen</th><th>Opciones</th>
                                 </tr>
                                 </thead>
 
@@ -57,13 +59,17 @@
 
 
                                                 <tr>
-                                                    <td>{{ $loop->iteration or $item['id'] }}</td>
-                                                    <td>{{ $item['barcode'] }}</td><td>{{ $item['name'] }}</td><td>{{ $item['Vitola'] }}</td><td>{{ $item['netWeight'] }}</td><td>{{ $item['unitsInPresentation'] }}</td><td>{{ $item['Linea'] }}</td><td>{{ $item['Unidad'] }}</td>
+                                                    <td>{{ $loop->iteration or $item->id}}</td>
+                                                    <td>{{ $item->barcode }}</td><td>{{ $item->name }}</td><td>{{ $item->Vitola }}</td><td>{{ $item->netWeight }}</td><td>{{ $item->unitsInPresentation }}</td><td>{{ $item->Linea }}</td><td>{{ $item->Unidad }}</td>
                                                     <td>
-                                                        <a href="{{ url('/cigars/' . $item['id']) }}" title="View customerType"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> Ver</button></a>
-                                                        <a href="{{ url('/cigars/' . $item['id'] . '/edit') }}" title="Edit customerType"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button></a>
+                                                        <img src="{{ asset('imagenes/cigars/'.$item->Imagen) }}" alt="{{ $item->name }}" height="100px" width="100px" class="img-thumbnail">
 
-                                                        <form method="POST" action="{{ url('/cigars' . '/' . $item['id']) }}" accept-charset="UTF-8" style="display:inline">
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ url('/cigars/' . $item->cigar_id) }}" title="View customerType"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> Ver</button></a>
+                                                        <a href="{{ url('/cigars/' . $item->cigar_id . '/edit') }}" title="Edit customerType"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button></a>
+
+                                                        <form method="POST" action="{{ url('/cigars' . '/' . $item->cigar_id) }}" accept-charset="UTF-8" style="display:inline">
                                                             {{ method_field('DELETE') }}
                                                             {{ csrf_field() }}
                                                             <button type="submit" class="btn btn-danger btn-xs" title="Delete customerType" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
@@ -71,12 +77,18 @@
                                                     </td>
                                                 </tr>
 
+
+
                                     @endforeach
 
                                 </body>
                                         {{--<article>--}}{{--<h2>--}}{{--<a href="{{ url('/cigars', $cigar->id )}}">{{ $cigar->name }} </a>--}}{{--</h2>--}}{{--<div class="body"> Net Weight: {{ $cigar->netWeight }} Created:{{ $cigar->created_at->diffForHumans() }}</div>--}}{{--</article>--}}
                             </table>
                         </div>{{--div table-reponsive--}}
+
+                        {{ $cigar->links() }}
+
+
                     </div>{{--panel-body--}}
                 </div>{{--div-col-md-9--}}
             </div>{{--row--}}
