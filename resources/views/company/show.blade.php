@@ -13,11 +13,11 @@
                         <a href="{{ url('/company') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Atras</button></a>
                         <a href="{{ url('/company/' . $company->id . '/edit') }}" title="Edit Company"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button></a>
 
-                        <form method="POST" action="{{ url('company' . '/' . $company->id) }}" accept-charset="UTF-8" style="display:inline">
-                            {{ method_field('DELETE') }}
-                            {{ csrf_field() }}
-                            <button type="submit" class="btn btn-danger btn-xs" title="Delete Company" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
-                        </form>
+                        {{--<form method="POST" action="{{ url('company' . '/' . $company->id) }}" accept-charset="UTF-8" style="display:inline">--}}
+                            {{--{{ method_field('DELETE') }}--}}
+                            {{--{{ csrf_field() }}--}}
+                            {{--<button type="submit" class="btn btn-danger btn-xs" title="Delete Company" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>--}}
+                        {{--</form>--}}
                         <br/>
                         <br/>
 
@@ -37,11 +37,41 @@
                                     <tr><th> Company Type </th><td> {{ $company->companyTypes->name }} </td>
                                     </tr>
 
+
+                                    {{--@foreach($company->customerType->get() as $customerType)--}}
+
+
+
+                                    {{--<tr><th> Tipo de Distribuidor </th><td> {{ $company->customerType->clienteTipo->get() }} </td>--}}
+                                    {{--</tr>--}}
+
+                                    {{--@endforeach--}}
+
+                                    @unless ($company->customerTypes->isEmpty())
+
+                                        {{--<ul>--}}
+                                        @foreach ($company->customerTypes as $c)
+                                            {{--<li>--}}
+                                            {{--{{ $c->clienteTipo }}--}}
+                                            {{--</li>--}}
+
+                                            <tr>
+                                                <th>Tipo de Distribuidor</th><td>{{ $c->clienteTipo }}</td>
+                                            </tr>
+                                        @endforeach
+                                        {{--</ul>--}}
+                                    @endunless
+
+
                                     <tr><th> Telefono </th><td> {{ $company->telephone }} </td>
+                                    </tr>
+                                    <tr><th> Direccion de Envio </th><td> {{ $company->shippingAddress }} </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
+
+
 
                         <hr>
                         <div class = "comments">
@@ -89,6 +119,52 @@
                         </div>
 
                         {{--{{ $company->persons->links() }}--}}
+
+                        <hr>
+                        <div class = "comments">
+                            <div class = "list-group">
+                                {{--@foreach ($company->persons as $person)--}}
+                                {{--<div class = "list-group-item">--}}
+                                {{--<strong> {{ $person->name }}  {{$person->lastName}} | {{$person->email }} | {{ $person->telephone }} &nbsp; </strong>--}}
+                                {{--{{ $comment->body }} {{ $comment->created_at->diffForHumans() }}--}}
+                                {{--</div>--}}
+                                {{--@endforeach--}}
+
+                                <strong>Agente de aduanas:</strong>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <thead>
+                                <tr>
+                                    <th>#</th><th>Nombre</th><th>Telefono</th><th>Direccion de Envios</th><th>Opciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                @unless ($company->customsAgent->isEmpty())
+
+                                        @foreach ($company->customsAgent as $item)
+
+                                            <tr>
+                                                <td>{{ $loop->iteration or $item->company->id }}</td>
+                                                <td>{{ $item->company->name }}</td><td>{{ $item->company->telephone }}</td><td>{{ $item->company->shippingAddress }}</td>
+
+                                                <td><a href="{{ url('/customs-agency2/' . $item->company_id) }}" title="View Person"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> Ver</button></a></td>
+                                            {{--<li>--}}
+                                                {{--{{ $c->company->name }}--}}
+                                            {{--</li>--}}
+
+                                            </tr>
+                                        @endforeach
+                                @endunless
+
+                                </tbody>
+                            </table>
+
+                        </div>
 
 
                         <hr>

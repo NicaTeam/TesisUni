@@ -30,14 +30,34 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>Nombre</th><th>Pais</th><th>Tipo Compania</th><th>Telefono</th><th>Opciones</th>
+                                        <th>#</th><th>Nombre</th><th>Pais</th><th>Tipo Compania</th><th>Telefono</th><th>Direccion de Envio</th><th>Tipo de Distribuidor</th><th>Opciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($company as $item)
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
-                                        <td>{{ $item->name }}</td><td>{{ $item->country->name }}</td><td>{{ $item->companyTypes->name }}</td><td>{{ $item->telephone }}</td>
+                                        <td>{{ $item->name }}</td><td>{{ $item->country->name }}</td><td>{{ $item->companyTypes->name }}</td><td>{{ $item->telephone }}</td><td>{{ $item->shippingAddress }}</td>
+
+
+                                        @if ($item->customerTypes->count() > 0)
+
+                                            @foreach ($item->customerTypes as $c)
+
+                                                <td>{{ $c->clienteTipo }}</td>
+
+                                            @endforeach
+
+
+                                            @else
+
+                                            <td>{{ 'To be determined!' }}</td>
+
+
+
+                                        @endif
+
+
                                         <td>
                                             <a href="{{ url('/company/' . $item->id) }}" title="View Company"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> Ver</button></a>
                                             <a href="{{ url('/company/' . $item->id . '/edit') }}" title="Edit Company"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button></a>

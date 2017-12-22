@@ -5,6 +5,8 @@ namespace SalesProgram\Http\Controllers;
 use SalesProgram\CompanyType;
 use SalesProgram\Country;
 use SalesProgram\Title;
+use SalesProgram\Customer;
+use SalesProgram\CustomerType;
 use SalesProgram\Http\Requests;
 use SalesProgram\Http\Controllers\Controller;
 
@@ -37,7 +39,9 @@ class CompanyController extends Controller
             ->paginate($perPage);
         }
 
-        return view('company.index', compact('company'));
+
+
+        return view('company.index', compact('company', 'customerTypes'));
     }
 
     /**
@@ -50,7 +54,9 @@ class CompanyController extends Controller
 
         $countries = Country::all();
         $company_types = CompanyType::where('name', '=', 'Cliente')->pluck('name', 'id');
-        return view('company.create', compact('countries', 'company_types'));
+        $customer_types = CustomerType::pluck('clienteTipo', 'id');
+
+        return view('company.create', compact('countries', 'company_types', 'customer_types'));
     }
 
     /**
@@ -65,11 +71,25 @@ class CompanyController extends Controller
         
         $requestData = $request->all();
         
-        Company::create($requestData);
+        $company = Company::create($requestData);
+
+
+        $customer = new Customer;
+        $customer->companies_id = $company->id;
+        $customer->save();
+
+        $this->syncCustomerType($company, $request->input('customer_type_list'));
 
         Session::flash('flash_message', 'Company added!');
 
         return redirect('company');
+    }
+
+    private function syncCustomerType(Company $company, array $customer_types){
+
+
+        $company->customerTypes()->sync($customer_types);
+
     }
 
     /**
@@ -85,6 +105,9 @@ class CompanyController extends Controller
         $title = Title::all();
         $company_person = Company::where('id', '=', $id)->pluck('name', 'id');
 
+        $customerType =$company->customerTypes->pluck('clienteTipo', 'id');
+
+
 
 //        $country = $company->country()->name;
 
@@ -97,7 +120,7 @@ class CompanyController extends Controller
 //                ->toArray();
 
 
-        return view('company.show', compact('company', 'title', 'company_person'  ));
+        return view('company.show', compact('company', 'title', 'company_person', 'customerType'  ));
     }
 
     /**
@@ -116,7 +139,12 @@ class CompanyController extends Controller
         $company_type = CompanyType::where('name', '=', 'Cliente')->pluck('name', 'id');
         $selectedCompanyType = $company->company_types_id;
 
-        return view('company.edit', compact('company', 'countries', 'selectedCountry', 'company_type', 'selectedCompanyType'));
+        $customer_type = CustomerType::pluck('clienteTipo', 'id');
+        $selectedCustomerType =$company->customerTypes;
+
+        //dd($selectedCustomerType);
+
+        return view('company.edit', compact('company', 'countries', 'selectedCountry', 'company_type', 'selectedCompanyType', 'customer_type', 'selectedCustomerType'));
     }
 
     /**
@@ -134,6 +162,8 @@ class CompanyController extends Controller
         
         $company = Company::findOrFail($id);
         $company->update($requestData);
+
+        $this->syncCustomerType($company, $request->input('customer_types_list'));
 
         Session::flash('flash_message', 'Company updated!');
 

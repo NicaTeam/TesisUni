@@ -119,3 +119,13 @@ Route::resource('company-type', 'CompanyTypeController');
 Route::resource('company', 'CompanyController');
 Route::post('/company/{company}/persons', 'PersonController@store2');
 Route::resource('unit-of-measurement', 'UnitOfMeasurementController');
+Route::resource('customs-agency', 'CustomsAgencyController');
+Route::get('customs-agency2/{customs_agency}', 'CustomsAgencyController@show2');
+Route::resource('person2', 'Person2Controller');
+Route::resource('customsAgency2', 'CustomsAgency2Controller');
+Route::resource('customsAgency3', 'CustomsAgency3Controller');
+Route::post('/customs-agency/{customs_agency}/persons', 'PersonController@store2');
+Route::post('/customs-agency2/{customs_agency}/persons', 'PersonController@store3');
+//Route::get()
+//Route::get('person2/{person}', 'PersonController@edit2');
+//Route::post('person2/{person}', 'PersonController@update2');

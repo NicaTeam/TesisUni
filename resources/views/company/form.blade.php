@@ -24,6 +24,16 @@
     </div>
 </div>
 
+<div class="form-group {{ $errors->has('customer_types_list') ? 'has-error' : ''}}">
+    <label for="customer_types_list" class="col-md-4 control-label">{{ 'Tipo de distribuidor' }}</label>
+    <div class="col-md-6">
+        {{--<input class="form-control" name="company_types_id" type="number" id="company_types_id" value="{{ $company->company_types_id or ''}}" >--}}
+        {{--{!! $errors->first('company_types_id', '<p class="help-block">:message</p>') !!}--}}
+        {{----}}
+        {!! Form::select('customer_types_list[]', $customer_type, $selectedCustomerType, [ 'id' => 'customer_types_list', 'class' => 'form-control', 'multiple']) !!}
+    </div>
+</div>
+
 <div class="form-group {{ $errors->has('shippingAddress') ? 'has-error' : ''}}">
     <label for="shippingAddress" class="col-md-4 control-label">{{ 'Direccion de Envio' }}</label>
     <div class="col-md-6">

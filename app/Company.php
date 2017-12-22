@@ -42,13 +42,37 @@ class Company extends Model
     }
 
 
-    public function persons()
-    {
+    public function persons(){
+
         return $this->hasMany('SalesProgram\Person');
 
     }
 
+    public function customerTypes()
+    {
+        return $this->belongsToMany(CustomerType::class)->withTimestamps();//'company_customer_type', 'company_id','customer_type_id')->withPivot('active')
+
+    }
+
+    public function customers(){
+
+        return $this->hasMany(Customer::class, 'companies_id');
+    }
+
+    public function customsAgency(){
+
+        return $this->hasMany(CustomsAgency::class);
+    }
 
 
-    
+    public function customsAgent()
+    {
+        return $this->hasManyThrough(CustomsAgency::class, Customer::class, 'companies_id', 'customer_id', 'id', 'id');
+    }
+
+
+
+
+
+
 }

@@ -137,6 +137,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="company"><i class="fa fa-circle-o"></i> Clientes</a></li>
+                        <li><a href="customs-agency"><i class="fa fa-circle-o"></i>Agentes de aduanas</a></li>
                         <li><a href="customer-type"><i class="fa fa-circle-o"></i>Categoria de Distribuidores</a></li>
                         <li><a href="company-type"><i class="fa fa-circle-o"></i>Tipos de companias</a></li>
                         <li><a href="country"><i class="fa fa-circle-o"></i>Paises</a></li>

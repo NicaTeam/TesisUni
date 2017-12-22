@@ -1,3 +1,17 @@
+<div class="form-group {{ $errors->has('company_id') ? 'has-error' : ''}}">
+
+    <label for="company_id" class="col-md-4 control-label">{{ 'Cliente' }}</label>
+    <div class="col-md-6">
+
+        {!! Form::select('company_id', $companyCliente, null, [ 'class' => 'form-control', 'readonly' =>'true']) !!}
+
+
+    </div>
+
+</div>
+
+
+
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="col-md-4 control-label">{{ 'Nombre' }}</label>
     <div class="col-md-6">
@@ -46,20 +60,10 @@
 </div>
 
 
-<div class="form-group {{ $errors->has('customer_type_list') ? 'has-error' : ''}}">
-    {{--{!! Form::label('tag_list', 'Tags:') !!}--}}
-    <label for="customer_type_list" class="col-md-4 control-label">{{ 'Tipo de Distribuidor' }}</label>
-    <div class="col-md-6">
-
-        {!! Form::select('customer_type_list[]', $customer_types, null, [ 'id' => 'customer_type_list', 'class' => 'form-control', 'multiple']) !!}
-    </div>
-</div>
-
-
 <div class="form-group {{ $errors->has('shippingAddress') ? 'has-error' : ''}}">
     <label for="shippingAddress" class="col-md-4 control-label">{{ 'Direccion de Envio' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="shippingAddress" type="text" id="shippingAddress" value="{{ $company->shippingAddress or ''}}" >
+        <input class="form-control" name="shippingAddress" type="text" id="shippingAddress" value="{{ ''}}" >
         {!! $errors->first('shippingAddress', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -67,7 +71,7 @@
 <div class="form-group {{ $errors->has('telephone') ? 'has-error' : ''}}">
     <label for="telephone" class="col-md-4 control-label">{{ 'Telefono' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="telephone" type="text" id="telephone" value="{{ $company->telephone or ''}}" >
+        <input class="form-control" name="telephone" type="text" id="telephone" value="{{ ''}}" >
         {!! $errors->first('telephone', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -77,4 +81,3 @@
         <input class="btn btn-primary" type="submit" value="{{ $submitButtonText or 'Guardar' }}">
     </div>
 </div>
-

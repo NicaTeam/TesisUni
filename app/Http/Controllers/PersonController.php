@@ -78,6 +78,24 @@ class PersonController extends Controller
 
     }
 
+
+    public function store3(PersonFormRequest $request){
+
+
+        $agency_id = $request->input('company_id');
+        $requestData = $request->all();
+        Person::create($requestData);
+
+
+
+        //return back();
+
+        return redirect('customs-agency2/'.$agency_id);
+
+
+    }
+
+
     /**
      * Display the specified resource.
      *
@@ -110,6 +128,8 @@ class PersonController extends Controller
         return view('person.edit', compact('person', 'titles', 'selectedTitle'));
     }
 
+
+
     /**
      * Update the specified resource in storage.
      *
@@ -128,8 +148,13 @@ class PersonController extends Controller
 
         Session::flash('flash_message', 'Person updated!');
 
-        return redirect('person');
+        $company_id = $person->company_id;
+
+
+       return redirect('company/'.$company_id);
     }
+
+
 
     /**
      * Remove the specified resource from storage.

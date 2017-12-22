@@ -4,14 +4,14 @@ namespace SalesProgram;
 
 use Illuminate\Database\Eloquent\Model;
 
-class customerType extends Model
+class CustomsAgency extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'customer_types';
+    protected $table = 'customs_agencies';
 
     /**
     * The database primary key value.
@@ -25,16 +25,22 @@ class customerType extends Model
      *
      * @var array
      */
-    protected $fillable = ['clienteTipo', 'descripcion'];
+    protected $fillable = ['company_id', 'customer_id'];
 
 
-    public function companies(){
+
+    public function company(){
 
 
-        return $this->belongsToMany(Company::class);//, 'company_customer_type', 'company_id','customer_type_id'
+        return $this->belongsTo(Company::class);
+    }
 
+    public function customer(){
+
+        return $this->belongsTo(Customer::class);
 
     }
+
 
     
 }
