@@ -9,6 +9,7 @@ use SalesProgram\Person;
 use SalesProgram\Company;
 use Illuminate\Http\Request;
 use SalesProgram\Title;
+use SalesProgram\Rules\uniqueFirstAndLastName;
 use Session;
 
 class PersonController extends Controller
@@ -56,7 +57,11 @@ class PersonController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $request->validate([
+//            'title' => 'bail|required|unique:posts|max:255',
+//            'body' => 'required',
+            'name' => "uniqueFirstAndLastName:{$request->lastName}"
+        ]);
         $requestData = $request->all();
         
         Person::create($requestData);
@@ -70,6 +75,29 @@ class PersonController extends Controller
 
     public function store2(PersonFormRequest $request){
 
+//        $this->validate($request,[
+//
+//            'name'=> 'required|max:255',
+//
+//            'name' => "uniqueFirstAndLastName:{$request->lastName}",
+//
+//
+//
+//            'titles_id' => 'required|numeric',
+//
+//            'lastName' => 'required|max:255',
+//
+//            'email' => 'required|email|unique:people',
+//
+//            'telephone' =>'required',
+//
+//            'company_id' => 'required|numeric',
+//
+//
+////            'name' => "uniqueFirstAndLastName:{$request->lastName}"
+//        ]);
+
+
         $requestData = $request->all();
         Person::create($requestData);
 
@@ -80,6 +108,8 @@ class PersonController extends Controller
 
 
     public function store3(PersonFormRequest $request){
+
+
 
 
         $agency_id = $request->input('company_id');

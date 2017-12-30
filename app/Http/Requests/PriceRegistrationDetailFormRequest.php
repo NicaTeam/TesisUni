@@ -3,9 +3,8 @@
 namespace SalesProgram\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use SalesProgram\Rules\uniqueFirstAndLastName;
 
-class PersonFormRequest extends FormRequest
+class PriceRegistrationDetailFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,20 +24,10 @@ class PersonFormRequest extends FormRequest
     public function rules()
     {
         return [
-
-            'name' => 'required|max:255|uniqueFirstAndLastName',
-
-            'titles_id' => 'required|numeric',
-
-            'lastName' => 'required|max:255',
-
-            'email' => 'required|email|unique:people',
-
-            'telephone' =>'required',
-
-            'company_id' => 'required|numeric',
-
-
+//            'price_registration_id' => 'required|numeric',
+            'cigar_id' => 'required',
+            'customer_type_id' => 'required',
+            'price' => 'required'
         ];
     }
 }

@@ -30,7 +30,7 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>Nombre</th><th>Pais</th><th>Tipo Compania</th><th>Telefono</th><th>Direccion de Envio</th><th>Tipo de Distribuidor</th><th>Opciones</th>
+                                        <th>#</th><th>Nombre</th><th>Pais</th><th>Tipo Compania</th><th>Telefono</th><th>Direccion de Envio</th><th>Tipo de Distribuidor</th><th>Termino de Pago</th><th><th>Opciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -56,6 +56,8 @@
 
 
                                         @endif
+
+                                        <td>{{ $item->paymentTerm['name'] }}</td>
 
 
                                         <td>

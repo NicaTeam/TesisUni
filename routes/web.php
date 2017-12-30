@@ -129,3 +129,6 @@ Route::post('/customs-agency2/{customs_agency}/persons', 'PersonController@store
 //Route::get()
 //Route::get('person2/{person}', 'PersonController@edit2');
 //Route::post('person2/{person}', 'PersonController@update2');
+Route::resource('payment-term', 'PaymentTermController');
+Route::resource('price-registration', 'PriceRegistrationController');
+Route::resource('price-registration-datail', 'PriceRegistrationDatailController');

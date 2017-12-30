@@ -3,9 +3,9 @@
 namespace SalesProgram\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use SalesProgram\Rules\uniqueFirstAndLastName;
 
-class PersonFormRequest extends FormRequest
+
+class CompanyFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,18 +26,17 @@ class PersonFormRequest extends FormRequest
     {
         return [
 
-            'name' => 'required|max:255|uniqueFirstAndLastName',
+            'countries_id' => 'required|numeric',
 
-            'titles_id' => 'required|numeric',
+            'company_types_id' => 'required|numeric',
 
-            'lastName' => 'required|max:255',
+            'payment_term_id' => 'required|numeric',
 
-            'email' => 'required|email|unique:people',
+            'name' => 'required|max:255|unique:companies',
 
-            'telephone' =>'required',
+            'shippingAddress' => 'required|max:255',
 
-            'company_id' => 'required|numeric',
-
+            'telephone' => 'required',
 
         ];
     }

@@ -62,7 +62,7 @@ class CigarController extends Controller
         if ($request){
 
             $keyword = $request->get('search');
-            $perPage = 4;
+            $perPage = 10;
 
             $cigar = DB::table('cigars as c')
                 ->join('brand_groups as bg','c.brand_groups_id', '=','bg.id')

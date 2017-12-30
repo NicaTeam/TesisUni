@@ -34,6 +34,12 @@ class User extends Authenticatable
         return $this->hasMany('SalesProgram\Article');
     }
 
+    public function registration(){
+
+
+        return $this->hasMany(PriceRegistration::class);
+    }
+
     public function isATeamManager(){
 
         return true;
@@ -45,5 +51,43 @@ class User extends Authenticatable
 
         return $article;
 
+    }
+
+
+    public function addRegister(PriceRegistration $priceRegistration){
+
+        $this->registration()->save($priceRegistration);
+
+        return $priceRegistration;
+
+    }
+
+
+    public function roles()
+    {
+
+        return $this->belongsToMany(Role::class);
+
+    }
+
+
+    public function hasRole($role)
+    {
+
+        if (is_string($role)){
+
+            return $this->roles->contains('name', $role);
+        }
+
+        return !! $role->intersect($this->roles)->count();
+
+//        foreach($role as $r)
+//        {
+//            if ($this-> hasRole ($r->name)) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
     }
 }

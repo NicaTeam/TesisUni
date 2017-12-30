@@ -10,6 +10,8 @@
 
     {{--<link rel="stylesheet" href="/css/app.css">--}}
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
+    {{--Bootstrap select--}}
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-select.min.css')}}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('css/font-awesome.css')}}">
     <!-- Theme style -->
@@ -121,6 +123,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="cigars"><i class="fa fa-circle-o"></i> Puros</a></li>
+                        <li><a href="price-registration"><i class="fa fa-circle-o"></i> Registro de precios</a></li>
                         <li><a href="category-product"><i class="fa fa-circle-o"></i>Categoria Productos</a></li>
                         <li><a href="cigar_size"><i class="fa fa-circle-o"></i>Vitolas</a></li>
                         <li><a href="unit-of-measurement"><i class="fa fa-circle-o"></i>Presentacion</a></li>
@@ -140,6 +143,7 @@
                         <li><a href="customs-agency"><i class="fa fa-circle-o"></i>Agentes de aduanas</a></li>
                         <li><a href="customer-type"><i class="fa fa-circle-o"></i>Categoria de Distribuidores</a></li>
                         <li><a href="company-type"><i class="fa fa-circle-o"></i>Tipos de companias</a></li>
+                        <li><a href="payment-term"><i class="fa fa-circle-o"></i>Terminos de pago</a></li>
                         <li><a href="country"><i class="fa fa-circle-o"></i>Paises</a></li>
                         <li><a href="title"><i class="fa fa-circle-o"></i>Titulos de Personas</a></li>
 
@@ -250,8 +254,12 @@
 
 <!-- jQuery 2.1.4 -->
 <script src="{{ asset('js/jQuery-2.1.4.min.js')}}"></script>
+
+@stack('scripts')
 <!-- Bootstrap 3.3.5 -->
 <script src="{{ asset('js/bootstrap.min.js')}}"></script>
+{{--Bootstrap select--}}
+<script src="{{ asset('js/bootstrap-select.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('js/app.min.js')}}"></script>
 

@@ -28,7 +28,7 @@ class Company extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'countries_id', 'company_types_id', 'shippingAddress', 'telephone'];
+    protected $fillable = ['name', 'countries_id', 'company_types_id', 'shippingAddress', 'telephone', 'payment_term_id'];
 
 
     public function country(){
@@ -68,6 +68,12 @@ class Company extends Model
     public function customsAgent()
     {
         return $this->hasManyThrough(CustomsAgency::class, Customer::class, 'companies_id', 'customer_id', 'id', 'id');
+    }
+
+
+    public function paymentTerm(){
+
+        return $this->belongsTo(PaymentTerm::class);
     }
 
 

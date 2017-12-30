@@ -36,5 +36,11 @@ class customerType extends Model
 
     }
 
+    public function priceRegistrationDetail(){
+
+        return $this->belongsToMany(PriceRegistrationDetail::class);
+
+    }
+
     
 }

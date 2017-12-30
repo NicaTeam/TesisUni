@@ -61,7 +61,7 @@ class Cigar extends Model
     public function unitOfMeasurement(){
 
 
-        return $this->belongsTo('SalesProgram\UnitOfMeasurement');
+        return $this->belongsTo(UnitOfMeasurement::class, 'unit_of_measurements_id');
     }
 
 
@@ -76,6 +76,12 @@ class Cigar extends Model
     public function getBranGroupListAttribute(){
 
         return $this->brandGroup->pluck('id');
+
+    }
+
+    public function priceRegistrationDetail(){
+
+        return $this->belongsToMany(PriceRegistrationDetail::class);
 
     }
 

@@ -62,6 +62,9 @@
                                         {{--</ul>--}}
                                     @endunless
 
+                                    <tr><th> Termino de Pago </th><td> {{ $company->paymentTerm['name'] }} </td>
+                                    </tr>
+
 
                                     <tr><th> Telefono </th><td> {{ $company->telephone }} </td>
                                     </tr>

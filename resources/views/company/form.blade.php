@@ -34,6 +34,18 @@
     </div>
 </div>
 
+<div class="form-group {{ $errors->has('payment_term_id') ? 'has-error' : ''}}">
+    <label for="payment_term_id" class="col-md-4 control-label">{{ 'Termino de pago' }}</label>
+    <div class="col-md-6">
+        {{--<input class="form-control" name="company_types_id" type="number" id="company_types_id" value="{{ $company->company_types_id or ''}}" >--}}
+        {{--{!! $errors->first('company_types_id', '<p class="help-block">:message</p>') !!}--}}
+        {{----}}
+        {!! Form::select('payment_term_id', $payment_term, $selectedPaymentTerm, ['class' => 'form-control']) !!}
+    </div>
+</div>
+
+
+
 <div class="form-group {{ $errors->has('shippingAddress') ? 'has-error' : ''}}">
     <label for="shippingAddress" class="col-md-4 control-label">{{ 'Direccion de Envio' }}</label>
     <div class="col-md-6">

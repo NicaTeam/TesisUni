@@ -4,20 +4,20 @@ namespace SalesProgram;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Model
+class PaymentTerm extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'customers';
+    protected $table = 'payment_terms';
 
     /**
-     * The database primary key value.
-     *
-     * @var string
-     */
+    * The database primary key value.
+    *
+    * @var string
+    */
     protected $primaryKey = 'id';
 
     /**
@@ -25,20 +25,15 @@ class Customer extends Model
      *
      * @var array
      */
-    protected $fillable = [ 'companies_id'];
+    protected $fillable = ['name', 'description', 'numberDays'];
 
 
 
     public function companies(){
 
+        return $this->hasMany(Company::class);
 
-        return $this->belongsTo(Company::class);
     }
 
-    public function customsAgencies(){
-
-        return $this->hasMany(CustomsAgency::class);
-    }
-
-
+    
 }

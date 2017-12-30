@@ -4,12 +4,13 @@ namespace SalesProgram\Http\Controllers;
 
 use SalesProgram\CompanyType;
 use SalesProgram\Country;
+use SalesProgram\PaymentTerm;
 use SalesProgram\Title;
 use SalesProgram\Customer;
 use SalesProgram\CustomerType;
 use SalesProgram\Http\Requests;
 use SalesProgram\Http\Controllers\Controller;
-
+use SalesProgram\Http\Requests\CompanyFormRequest;
 use SalesProgram\Company;
 use Illuminate\Http\Request;
 use Session;
@@ -55,8 +56,9 @@ class CompanyController extends Controller
         $countries = Country::all();
         $company_types = CompanyType::where('name', '=', 'Cliente')->pluck('name', 'id');
         $customer_types = CustomerType::pluck('clienteTipo', 'id');
+        $paymentTerm = PaymentTerm::all();
 
-        return view('company.create', compact('countries', 'company_types', 'customer_types'));
+        return view('company.create', compact('countries', 'company_types', 'customer_types', 'paymentTerm'));
     }
 
     /**
@@ -66,7 +68,7 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(CompanyFormRequest $request)
     {
         
         $requestData = $request->all();
@@ -142,9 +144,12 @@ class CompanyController extends Controller
         $customer_type = CustomerType::pluck('clienteTipo', 'id');
         $selectedCustomerType =$company->customerTypes;
 
+        $payment_term = PaymentTerm::pluck('name', 'id');
+        $selectedPaymentTerm = $company->payment_term_id;
+
         //dd($selectedCustomerType);
 
-        return view('company.edit', compact('company', 'countries', 'selectedCountry', 'company_type', 'selectedCompanyType', 'customer_type', 'selectedCustomerType'));
+        return view('company.edit', compact('company', 'countries', 'selectedCountry', 'company_type', 'selectedCompanyType', 'customer_type', 'selectedCustomerType', 'payment_term', 'selectedPaymentTerm'));
     }
 
     /**
@@ -157,10 +162,25 @@ class CompanyController extends Controller
      */
     public function update($id, Request $request)
     {
-        
+        $company = Company::findOrFail($id);
+        $this->validate($request,[
+
+            'countries_id' => 'required|numeric',
+
+            'company_types_id' => 'required|numeric',
+
+            'payment_term_id' => 'required|numeric',
+
+            'name' => 'required|max:255|unique:companies,name,'.$company->id,
+
+            'shippingAddress' => 'required|max:255',
+
+            'telephone' => 'required',
+
+        ]);
         $requestData = $request->all();
         
-        $company = Company::findOrFail($id);
+//        $company = Company::findOrFail($id);
         $company->update($requestData);
 
         $this->syncCustomerType($company, $request->input('customer_types_list'));
