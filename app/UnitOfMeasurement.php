@@ -31,4 +31,9 @@ class UnitOfMeasurement extends Model
 
         return $this->hasMany(Cigar::class);
     }
+
+    // public function cigars(){
+
+    //     return $this->hasMany(Cigar::class);
+    // }
 }

@@ -1,15 +1,15 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
     <div class="container">
         <div class="row">
-            @include('admin.sidebar')
+            <!-- @include('admin.sidebar') -->
 
             <div class="col-md-9">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Create New PriceRegistrationDatail</div>
+                    <div class="panel-heading">Crear nuevo detalle de precio</div>
                     <div class="panel-body">
-                        <a href="{{ url('/price-registration-datail') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <a href="{{ url('/price-registration-datail') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Atrás</button></a>
                         <br />
                         <br />
 

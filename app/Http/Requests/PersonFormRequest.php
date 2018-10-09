@@ -26,11 +26,12 @@ class PersonFormRequest extends FormRequest
     {
         return [
 
-            'name' => 'required|max:255|uniqueFirstAndLastName',
+            // 'name' => 'required|max:255|uniqueFirstAndLastName',
+            'name' => 'required|min:3|max:255',
 
             'titles_id' => 'required|numeric',
 
-            'lastName' => 'required|max:255',
+            'lastName' => 'required|min:3|max:255',
 
             'email' => 'required|email|unique:people',
 

@@ -1,1 +1,0 @@
-Testing Git Sep']t 2017!

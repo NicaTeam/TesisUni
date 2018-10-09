@@ -28,8 +28,14 @@ class BrandGroup extends Model
     protected $fillable = ['name'];
 
 
-    public function cigars(){
+    // public function cigars(){
 
-        return $this->hasMany('SalesProgram\Cigar');
+    //     return $this->hasMany('SalesProgram\Cigar');
+    // }
+
+
+    public function cigar(){
+
+        return $this->hasMany(Cigar::class, 'brand_groups_id');
     }
 }

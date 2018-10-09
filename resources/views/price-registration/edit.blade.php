@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
     <div class="container">
         <div class="row">
-            @include('admin.sidebar')
+            <!-- @include('admin.sidebar') -->
 
             <div class="col-md-9">
                 <div class="panel panel-default">
@@ -25,7 +25,7 @@
                             {{ method_field('PATCH') }}
                             {{ csrf_field() }}
 
-                            @include ('price-registration.form', ['submitButtonText' => 'Update'])
+                            @include ('price-registration.editForm', ['submitButtonText' => 'Update'])
 
                         </form>
 

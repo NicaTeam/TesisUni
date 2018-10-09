@@ -32,6 +32,8 @@ class CompanyFormRequest extends FormRequest
 
             'payment_term_id' => 'required|numeric',
 
+            'incoterm_id' => 'required|numeric',
+
             'name' => 'required|max:255|unique:companies',
 
             'shippingAddress' => 'required|max:255',

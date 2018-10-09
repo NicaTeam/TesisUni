@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use SalesProgram\Article;
 use DB;
 use SalesProgram\Rules\uniqueFirstAndLastName;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,10 +18,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
        
-       view()->composer('layouts.sidebar', function ($view){
+       // view()->composer('layouts.sidebar', function ($view){
 
-          $view->with('archives', \SalesProgram\Article::archives());
-       });
+       //    $view->with('archives', \SalesProgram\Article::archives());
+       // });
 
 //        \Validator::extend('uniqueFirstAndLastName', function ($attribute, $value, $parameters, $validator) {
 //            $count = DB::table('people')->where('name', $value)
@@ -31,7 +32,10 @@ class AppServiceProvider extends ServiceProvider
 //            return $count === 0;
 //        });
 
-                \Validator::extend('uniqueFirstAndLastName', 'SalesProgram\Rules\uniqueFirstAndLastName@passes');
+                // \Validator::extend('uniqueFirstAndLastName', 'SalesProgram\Rules\uniqueFirstAndLastName@passes');
+
+
+        // Schema::defaultStringLength(120);
 
 
 

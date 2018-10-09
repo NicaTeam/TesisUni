@@ -27,10 +27,13 @@ class CreateCigarsTable extends Migration
             $table->boolean('active')->default(true);
             $table->timestamps();
 
-            $table->foreign('brand_groups_id')->references('id')->on('brand_groups')->onDelete('set null');
-            $table->foreign('unit_of_measurements_id')->references('id')->on('unit_of_measurements')->onDelete('set null');
-            $table->foreign('cigar_sizes_id')->references('id')->on('cigar_sizes')->onDelete('set null');
-            $table->foreign('category_products_id')->references('id')->on('category_products')->onDelete('set null');
+            // $table->foreign('brand_groups_id')->references('id')->on('brand_groups')->onDelete('set null');
+            // $table->foreign('unit_of_measurements_id')->references('id')->on('unit_of_measurements')->onDelete('set null');
+            // $table->foreign('cigar_sizes_id')->references('id')->on('cigar_sizes')->onDelete('set null');
+            // $table->foreign('category_products_id')->references('id')->on('category_products')->onDelete('set null');
+
+
+            $table->unique(['brand_groups_id', 'unit_of_measurements_id', 'cigar_sizes_id', 'category_products_id', 'barcode', 'unitsInPresentation'], 'unique_cigar');
 
 
         });

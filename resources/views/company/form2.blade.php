@@ -1,7 +1,7 @@
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="col-md-4 control-label">{{ 'Nombre' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="name" type="text" id="name" value="{{ old('name')}}" >
+        <input class="form-control" name="name" type="text" id="name" value="{{ old('name')}}" required>
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -15,9 +15,10 @@
 
         {{--{!! Form::label('brand_groups_id', 'Linea de Puros:') !!}--}}
 
-        <select name = 'countries_id' class ="form-control">
-            @foreach($countries as $country)
+        <select name = 'countries_id' class ="form-control" required>
 
+            <option value="">Selecciona un país</option>
+            @foreach($countries as $country)
 
                 <option value="{{ $country->id }}">
 
@@ -43,13 +44,42 @@
 
         {{--{!! Form::label('brand_groups_id', 'Linea de Puros:') !!}--}}
 
-        <select name = 'payment_term_id' class ="form-control">
+        <select name = 'payment_term_id' class ="form-control" required>
+
+            <option value="">Seleccione termino de pago</option>
             @foreach($paymentTerm as $Term)
 
 
                 <option value="{{ $Term->id }}">
 
                     {{ $Term->name }}
+
+                </option>
+
+            @endforeach
+
+        </select>
+
+    </div>
+
+</div>
+
+<div class="form-group {{ $errors->has('incoterm_id') ? 'has-error' : ''}}">
+
+    <label for="incoterm_id" class="col-md-4 control-label">{{ 'Acuerdo Comercial' }}</label>
+    <div class="col-md-6">
+
+        
+
+        <select name = 'incoterm_id' class ="form-control" required>
+
+            <option value="">Seleccione acuerdo comercial</option>
+            @foreach($incoterm as $acuerdo)
+
+
+                <option value="{{ $acuerdo->id }}">
+
+                    {{ $acuerdo->name }}
 
                 </option>
 
@@ -76,11 +106,11 @@
 
 
 <div class="form-group {{ $errors->has('customer_type_list') ? 'has-error' : ''}}">
-    {{--{!! Form::label('tag_list', 'Tags:') !!}--}}
+   
     <label for="customer_type_list" class="col-md-4 control-label">{{ 'Tipo de Distribuidor' }}</label>
     <div class="col-md-6">
 
-        {!! Form::select('customer_type_list[]', $customer_types, null, [ 'id' => 'customer_type_list', 'class' => 'form-control', 'multiple']) !!}
+        {!! Form::select('customer_type_list[]', $customer_types, null, [ 'id' => 'customer_type_list', 'class' => 'form-control', 'required']) !!}
     </div>
 </div>
 
@@ -88,7 +118,7 @@
 <div class="form-group {{ $errors->has('shippingAddress') ? 'has-error' : ''}}">
     <label for="shippingAddress" class="col-md-4 control-label">{{ 'Direccion de Envio' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="shippingAddress" type="text" id="shippingAddress" value="{{ old('shippingAddress') or ''}}" >
+        <input class="form-control" name="shippingAddress" type="text" id="shippingAddress" value="{{ old('shippingAddress') or ''}}" required>
         {!! $errors->first('shippingAddress', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -96,7 +126,7 @@
 <div class="form-group {{ $errors->has('telephone') ? 'has-error' : ''}}">
     <label for="telephone" class="col-md-4 control-label">{{ 'Telefono' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="telephone" type="text" id="telephone" value="{{ old('telephone') or ''}}" >
+        <input class="form-control" name="telephone" type="text" id="telephone" value="{{ old('telephone') or ''}}" required>
         {!! $errors->first('telephone', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

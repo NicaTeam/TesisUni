@@ -28,7 +28,7 @@ class Company extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'countries_id', 'company_types_id', 'shippingAddress', 'telephone', 'payment_term_id'];
+    protected $fillable = ['name', 'countries_id', 'company_types_id', 'shippingAddress', 'telephone', 'payment_term_id', 'incoterm_id'];
 
 
     public function country(){
@@ -76,9 +76,24 @@ class Company extends Model
         return $this->belongsTo(PaymentTerm::class);
     }
 
+    public function users(){
 
+        return $this->hasMany(User::class);
+    }
 
+    public function scopeFilter($query, $filters)
+   {
 
+        // dd($query->toSql());
+
+        return $filters->apply($query);
+
+   }
+
+    public function incoterm(){
+
+        return $this->belongsTo(Incoterm::class);
+    }
 
 
 }

@@ -73,37 +73,12 @@ class PersonController extends Controller
 
 
 
-    public function store2(PersonFormRequest $request){
-
-//        $this->validate($request,[
-//
-//            'name'=> 'required|max:255',
-//
-//            'name' => "uniqueFirstAndLastName:{$request->lastName}",
-//
-//
-//
-//            'titles_id' => 'required|numeric',
-//
-//            'lastName' => 'required|max:255',
-//
-//            'email' => 'required|email|unique:people',
-//
-//            'telephone' =>'required',
-//
-//            'company_id' => 'required|numeric',
-//
-//
-////            'name' => "uniqueFirstAndLastName:{$request->lastName}"
-//        ]);
-
-
+    public function store2(PersonFormRequest $request)
+    {
         $requestData = $request->all();
         Person::create($requestData);
 
-        return back();
-
-
+        return back()->with('flash', 'Contacto agregado exitosamente!');
     }
 
 

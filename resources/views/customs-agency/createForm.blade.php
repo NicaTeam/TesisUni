@@ -3,7 +3,24 @@
     <label for="company_id" class="col-md-4 control-label">{{ 'Cliente' }}</label>
     <div class="col-md-6">
 
-        {!! Form::select('company_id', $companyCliente, null, [ 'class' => 'form-control', 'readonly' =>'true']) !!}
+        {{--{!! Form::select('company_id', array_merge([''=>'Seleccione un cliente'],$companyCliente->toArray()), null, array('class' => 'form-control',  'required')) !!}--}}
+
+
+        <select id="company_id" class="form-control" name="company_id" required>
+            
+            <option value="">Seleccione un cliente.</option>
+
+            @foreach($companyCliente as $cliente)
+
+                <option value="{{ $cliente->id }}">{{ $cliente->name}}</option>
+
+
+
+            @endforeach
+        </select>
+
+
+        <!-- 'readonly' =>'true', -->
 
 
     </div>
@@ -15,7 +32,7 @@
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="col-md-4 control-label">{{ 'Nombre' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="name" type="text" id="name" value="{{''}}" >
+        <input class="form-control" name="name" type="text" id="name" value="{{''}}" required>
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -27,9 +44,9 @@
     <label for="countries_id" class="col-md-4 control-label">{{ 'Pais' }}</label>
     <div class="col-md-6">
 
-        {{--{!! Form::label('brand_groups_id', 'Linea de Puros:') !!}--}}
+        <select name = 'countries_id' class ="form-control" required>
 
-        <select name = 'countries_id' class ="form-control">
+            <option value="">Seleccione un pais.</option>
             @foreach($countries as $country)
 
 
@@ -42,6 +59,7 @@
             @endforeach
 
         </select>
+        {!! $errors->first('countries_id', '<p class="help-block">:message</p>') !!}
 
     </div>
 
@@ -54,7 +72,6 @@
 
         {!! Form::select('company_types_id', $company_types, null, [ 'class' => 'form-control', 'readonly' =>'true']) !!}
 
-
     </div>
 
 </div>
@@ -63,7 +80,7 @@
 <div class="form-group {{ $errors->has('shippingAddress') ? 'has-error' : ''}}">
     <label for="shippingAddress" class="col-md-4 control-label">{{ 'Direccion de Envio' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="shippingAddress" type="text" id="shippingAddress" value="{{ ''}}" >
+        <input class="form-control" name="shippingAddress" type="text" id="shippingAddress" value="{{ ''}}" required>
         {!! $errors->first('shippingAddress', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -71,7 +88,7 @@
 <div class="form-group {{ $errors->has('telephone') ? 'has-error' : ''}}">
     <label for="telephone" class="col-md-4 control-label">{{ 'Telefono' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="telephone" type="text" id="telephone" value="{{ ''}}" >
+        <input class="form-control" name="telephone" type="text" id="telephone" value="{{ ''}}" required>
         {!! $errors->first('telephone', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

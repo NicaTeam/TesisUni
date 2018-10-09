@@ -38,14 +38,17 @@ class PriceRegistrationController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->get('search');
-        $perPage = 5;
+        $perPage = 2;
 
         if (!empty($keyword)) {
             $priceregistration = PriceRegistration::where('validPeriod', 'LIKE', "%$keyword%")
 				->orWhere('active', '=', 1)
 				->paginate($perPage);
         } else {
-            $priceregistration = PriceRegistration::paginate($perPage);
+             $priceregistration = PriceRegistration::where('active', '=', 1)
+             ->paginate($perPage);
+
+            // $priceregistration = PriceRegistration::where('active', '=', 1);
         }
 
         return view('price-registration.index', compact('priceregistration'));
@@ -80,6 +83,8 @@ class PriceRegistrationController extends Controller
     public function store(PriceRegistrationFormRequest $request, PriceRegistrationDetailFormRequest $request2)
     {
 
+          // dd($request);
+
 
         try{
 
@@ -99,9 +104,9 @@ class PriceRegistrationController extends Controller
 
 
 
-                $cigar_id = $request2->get('cigar_id');
-                $customer_type_id= $request2->get('customer_type_id');
-                $price= $request2->get('price');
+                $cigar_id = $request->get('cigar_id');
+                $customer_type_id= $request->get('customer_type_id');
+                $price= $request->get('price');
                 $active= 1;
 
 
@@ -139,7 +144,9 @@ class PriceRegistrationController extends Controller
         }
 
 
-        Session::flash('flash_message', 'PriceRegistration added!');
+        // Session::flash('flash_message', 'PriceRegistration added!');
+
+        Session()->flash('flash_message', 'Lista de precios guardada correctamente!');
 
         return redirect('price-registration');
     }
@@ -208,9 +215,34 @@ class PriceRegistrationController extends Controller
      */
     public function destroy($id)
     {
-        PriceRegistration::destroy($id);
+        try{
 
-        Session::flash('flash_message', 'PriceRegistration deleted!');
+            DB::beginTransaction();
+
+                $priceregistration = PriceRegistration::findOrFail($id);
+
+                $priceregistrationDetails = PriceRegistrationDetail::where('price_registration_id', '=', $id)->get();
+
+                foreach ($priceregistrationDetails as $detail) {
+
+                    $detail->active = 0;
+
+                    $detail->update();
+                    
+                }
+
+                $priceregistration->active = 0;
+
+                $priceregistration->update();
+
+            DB::commit();
+
+
+        }catch (\Exception $e)
+        {
+
+            DB::rollback();
+        }
 
         return redirect('price-registration');
     }

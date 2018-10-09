@@ -29,9 +29,20 @@ class cigar_size extends Model
     protected $fillable = ['name'];
 
 
-    public function cigar(){
+    // public function cigar(){
 
 
-        return $this->hasMany('SalesProgram\Cigar');
+    //     return $this->hasMany('SalesProgram\Cigar');
+    // }
+
+     public function cigar(){
+
+
+        return $this->hasMany(Cigar::class);
     }
+
+    //  public function cigars(){
+
+    //     return $this->hasMany(Cigar::class);
+    // }
 }

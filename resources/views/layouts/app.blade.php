@@ -13,80 +13,102 @@
 
 
 
-    {{--<!-- Styles -->--}}
-    <link href="/css/app.css" rel="stylesheet">
+   
 
-    {{--<link href="{{ asset('css/test.css') }}" rel="stylesheet">--}}
+       <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+      <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
+    {{--Bootstrap select--}}
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-select.min.css')}}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ asset('css/font-awesome.css')}}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('css/AdminLTE.min.css')}}">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="{{ asset('css/_all-skins.min.css')}}">
+
+
 
 
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
+<body class="hold-transition skin-blue sidebar-mini">
+    <!-- <div id="app"> -->
+        <!-- <nav class="navbar navbar-default navbar-static-top" style="background-color: #924710"> -->
 
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+       <header class="main-header">
 
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
+        <!-- Logo -->
+        <a href="#" class="logo" style="background-color: #924710">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>DE</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>Drew Estate</b></span>
+        </a>
 
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" style="background-color: #924710" role="navigation">
+            <!-- Sidebar toggle button-->
+            <!-- <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Navegación</span>
+            </a> -->
+            <!-- Navbar Right Menu -->
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
+
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- Messages: style can be found in dropdown.less-->
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+
                         @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
+                            <li><a href="{{ route('login') }}">Entrar</a></li>
+                            <!-- <li><a href="{{ route('register') }}">Register</a></li> -->
                         @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
 
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                                {{ Auth::user()->name }} <span class="caret"></span>
+
+                            </a>
+                            <ul class="dropdown-menu">
+                                
+
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+
                                         <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
+                                           onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                                            Salir
                                         </a>
+
+                                        <a href="http://accesosecreto.atwebpages.com">Sitio del desarrollador</a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
-                                    </li>
-                                </ul>
-                            </li>
+                                   
+
+                                </li>
+
+                            </ul>
                         @endif
-                    </ul>
-                </div>
+                        </li>
+
+                </ul>
             </div>
         </nav>
 
+    </header>
+
         @yield('content')
-    </div>
+    <!-- </div> -->
 
     <!-- Scripts -->
-    {{--<script src="{{ asset('js/app.js') }}"></script>--}}
-    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    {{--<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>--}}
-    {{--<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>--}}
+    <script src="{{ asset('js/app3.js') }}"></script>
+
 
 </body>
 </html>

@@ -53,7 +53,7 @@ class UnitOfMeasurementController extends Controller
 
         //Session::flash('flash_message', 'Company added!');
 
-        return redirect('company');
+        return redirect('unit-of-measurement.index')->with('flash', 'Presentacion creada exitosamente!');
     }
 
     /**

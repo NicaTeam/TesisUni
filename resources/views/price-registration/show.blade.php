@@ -13,10 +13,10 @@
                         <a href="{{ url('/price-registration') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Atras</button></a>
                         <a href="{{ url('/price-registration/' . $priceregistration->id . '/edit') }}" title="Edit PriceRegistration"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button></a>
 
-                        <form method="POST" action="{{ url('priceregistration' . '/' . $priceregistration->id) }}" accept-charset="UTF-8" style="display:inline">
+                        <form method="POST"  action="{{ url('price-registration' . '/' . $priceregistration->id) }}" accept-charset="UTF-8" style="display:inline">
                             {{ method_field('DELETE') }}
                             {{ csrf_field() }}
-                            <button type="submit" class="btn btn-danger btn-xs" title="Delete PriceRegistration" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
+                            <button type="submit" class="btn btn-danger btn-xs" title="Delete PriceRegistration" onclick="return confirm('Esta seguro de deshabilitar esta lista de precios?')"><i class="fa fa-trash-o" aria-hidden="true"></i> Deshabilitar</button>
                         </form>
                         <br/>
                         <br/>
@@ -27,7 +27,23 @@
                                     <tr>
                                         <th>ID</th><td>{{ $priceregistration->id }}</td>
                                     </tr>
-                                    <tr><th> User Id </th><td> {{ $priceregistration->user_id }} </td></tr><tr><th> Nombre Usuario </th><td> {{ $priceregistration->user->name }} </td></tr><tr><th> Valido para el periodo: </th><td> {{ $priceregistration->validPeriod }} </td></tr><tr><th> Active </th><td> {{ $priceregistration->active }} </td></tr>
+
+                                    <tr>
+                                        <th> User Id </th><td> {{ $priceregistration->user_id }} </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th> Nombre Usuario </th><td> {{ $priceregistration->user->name }} </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th> Valido para el periodo: </th><td> {{ $priceregistration->validPeriod }} </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th> Active </th><td> {{ $priceregistration->active }} </td>
+
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -113,7 +129,8 @@
 
                                                 <tr>
                                                     <td>{{$loop->iteration or  $item->id }}</td>
-                                                    <td>{{ $ct->clienteTipo}}</td><td>{{ $item->cigar_id}}</td><td>{{ $cigar->name}}</td><td>{{ $cigar->unitOfMeasurement->name}}</td><td>{{ $cigar->unitsInPresentation}}</td><td>{{ $item->price}}</td><td>{{ $item->active}}</td>
+                                                    <td>{{ $ct->clienteTipo}}</td><td>{{ $item->cigar_id}}</td><td>{{ $cigar->name}}</td><td>{{ $cigar->unitOfMeasurement->name}}</td><td>{{ $cigar->unitsInPresentation}}</td><td>{{ $item->price}}</td>
+                                                    <td>{{ $item->active}}</td>
                                                     <td>
                                                         <a href="{{ url('/cigars/' . $cigar->id) }}" title="View Person"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> Ver</button></a>
                                                         <a href="{{ url('/person/' . $item->id . '/edit') }}" title="Edit Person"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button></a>

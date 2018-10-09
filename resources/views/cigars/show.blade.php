@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="container">
+    <div id="app3CigarCreated" class="container">
         <div class="row">
             {{--@include('admin.sidebar')--}}
 
@@ -36,11 +36,9 @@
                 </div>
             </div>
         </div>
+
+  
     </div>
 
-{{--<div class="col-sm-8 blog-main">--}}
-
-
-{{--</div>--}}
 
 @endsection

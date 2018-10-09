@@ -9,9 +9,13 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Registro de precios</div>
                     <div class="panel-body">
+
+                        @can('price-registration.create')
                         <a href="{{ url('/price-registration/create') }}" class="btn btn-success btn-sm" title="Add New PriceRegistration">
                             <i class="fa fa-plus" aria-hidden="true"></i> Agregar un nuevo registro
                         </a>
+
+                        @endcan
 
                         <form method="GET" action="{{ url('/price-registration') }}" accept-charset="UTF-8" class="navbar-form navbar-right" role="search">
                             <div class="input-group">
@@ -45,19 +49,28 @@
                                             <form method="POST" action="{{ url('/price-registration' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}
-                                                <button type="submit" class="btn btn-danger btn-xs" title="Delete PriceRegistration" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
+                                              <!--   <button type="submit" class="btn btn-danger btn-xs" title="Delete PriceRegistration" onclick="return confirm( Esta seguro desea deshabilitar esta lista de precios&quot; delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Deshabilitar</button> -->
+
+
+                                              <button type="submit" class="btn btn-danger btn-xs" title="Delete PriceRegistration" onclick="return confirm('Esta seguro desea deshabilitar esta lista de precios?')"><i class="fa fa-trash-o" aria-hidden="true"></i> Deshabilitar</button>
                                             </form>
                                         </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
-                            <div class="pagination-wrapper"> {!! $priceregistration->appends(['search' => Request::get('search')])->render() !!} </div>
+                           
                         </div>
+
+                        <div class="pagination-wrapper"> {!! $priceregistration->appends(['search' => Request::get('search')])->render() !!} </div>
 
                     </div>
                 </div>
             </div>
         </div>
+
+        
     </div>
+
+
 @endsection

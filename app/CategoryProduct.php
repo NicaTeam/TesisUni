@@ -27,5 +27,11 @@ class categoryProduct extends Model
      */
     protected $fillable = ['categoria', 'descripcion'];
 
+
+    public function cigars(){
+
+        return $this->hasMany(Cigar::class);
+    }
+
     
 }

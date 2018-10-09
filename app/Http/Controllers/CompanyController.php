@@ -14,6 +14,8 @@ use SalesProgram\Http\Requests\CompanyFormRequest;
 use SalesProgram\Company;
 use Illuminate\Http\Request;
 use Session;
+use SalesProgram\Filters\CompanyFilters;
+use SalesProgram\Incoterm;
 
 class CompanyController extends Controller
 {
@@ -22,27 +24,42 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index(Request $request, CompanyFilters $filters)
     {
-        $keyword = $request->get('search');
-        $perPage = 25;
 
-        if (!empty($keyword)) {
-            $company = Company::where('company_types_id', '=', 1)// company_type 1 is el Cliente, 2 Fabrica 3 Agente aduanero.
-                ->orWhere('name', 'LIKE', "%$keyword%")
-				->orWhere('countries_id', 'LIKE', "%$keyword%")
-				->orWhere('company_types_id', 'LIKE', "%$keyword%")
-				->orWhere('shippingAddress', 'LIKE', "%$keyword%")
-				->orWhere('telephone', 'LIKE', "%$keyword%")
-				->paginate($perPage);
-        } else {
-            $company = Company::where('company_types_id', '=', 1)
-            ->paginate($perPage);
-        }
+        $company = $this->getCompany($filters);
+        $countries = Country::all();
 
 
+    //     $keyword = $request->get('search');
+    //     $perPage = 25;
 
-        return view('company.index', compact('company', 'customerTypes'));
+    //     if (!empty($keyword)) {
+    //         $company = Company::where('company_types_id', '=', 1)// company_type 1 is el Cliente, 2 Fabrica 3 Agente aduanero.
+    //             ->orWhere('name', 'LIKE', "%$keyword%")
+				// ->orWhere('countries_id', 'LIKE', "%$keyword%")
+				// ->orWhere('company_types_id', 'LIKE', "%$keyword%")
+				// ->orWhere('shippingAddress', 'LIKE', "%$keyword%")
+				// ->orWhere('telephone', 'LIKE', "%$keyword%")
+				// ->paginate($perPage);
+    //     } else {
+    //         $company = Company::where('company_types_id', '=', 1)
+    //         ->paginate($perPage);
+    //     }
+
+
+
+        return view('company.index', compact('company', 'countries'));
+    }
+
+    protected function getCompany($filters)
+    {
+
+        $company = Company::where('company_types_id', 1)->filter($filters);
+
+        $company = $company->paginate(2);
+
+        return $company;
     }
 
     /**
@@ -57,8 +74,9 @@ class CompanyController extends Controller
         $company_types = CompanyType::where('name', '=', 'Cliente')->pluck('name', 'id');
         $customer_types = CustomerType::pluck('clienteTipo', 'id');
         $paymentTerm = PaymentTerm::all();
+        $incoterm = incoterm::all();
 
-        return view('company.create', compact('countries', 'company_types', 'customer_types', 'paymentTerm'));
+        return view('company.create', compact('countries', 'company_types', 'customer_types', 'paymentTerm', 'incoterm'));
     }
 
     /**
@@ -82,9 +100,9 @@ class CompanyController extends Controller
 
         $this->syncCustomerType($company, $request->input('customer_type_list'));
 
-        Session::flash('flash_message', 'Company added!');
+        // Session::flash('flash_message', 'Company added!');
 
-        return redirect('company');
+        return redirect('company')->with('flash', 'Compañia cliente creada correactamente!');
     }
 
     private function syncCustomerType(Company $company, array $customer_types){
@@ -136,7 +154,7 @@ class CompanyController extends Controller
     {
         $countries = Country::pluck('name', 'id');
         $company = Company::findOrFail($id);
-        $selectedCountry = $company->country_id;
+        $selectedCountry = $company->countries_id;
 
         $company_type = CompanyType::where('name', '=', 'Cliente')->pluck('name', 'id');
         $selectedCompanyType = $company->company_types_id;
@@ -147,9 +165,12 @@ class CompanyController extends Controller
         $payment_term = PaymentTerm::pluck('name', 'id');
         $selectedPaymentTerm = $company->payment_term_id;
 
+        $incoterm = Incoterm::pluck('name', 'id');
+        $selectedIncoterm = $company->incoterm_id;
+
         //dd($selectedCustomerType);
 
-        return view('company.edit', compact('company', 'countries', 'selectedCountry', 'company_type', 'selectedCompanyType', 'customer_type', 'selectedCustomerType', 'payment_term', 'selectedPaymentTerm'));
+        return view('company.edit', compact('company', 'countries', 'selectedCountry', 'company_type', 'selectedCompanyType', 'customer_type', 'selectedCustomerType', 'payment_term', 'selectedPaymentTerm', 'incoterm', 'selectedIncoterm'));
     }
 
     /**
@@ -162,6 +183,8 @@ class CompanyController extends Controller
      */
     public function update($id, Request $request)
     {
+
+        // dd($request);
         $company = Company::findOrFail($id);
         $this->validate($request,[
 
@@ -171,6 +194,8 @@ class CompanyController extends Controller
 
             'payment_term_id' => 'required|numeric',
 
+            'incoterm_id' => 'required|numeric',
+
             'name' => 'required|max:255|unique:companies,name,'.$company->id,
 
             'shippingAddress' => 'required|max:255',
@@ -179,15 +204,17 @@ class CompanyController extends Controller
 
         ]);
         $requestData = $request->all();
+
+        // dd($requestData);
         
 //        $company = Company::findOrFail($id);
         $company->update($requestData);
 
         $this->syncCustomerType($company, $request->input('customer_types_list'));
 
-        Session::flash('flash_message', 'Company updated!');
+        // Session::flash('flash_message', 'Company updated!');
 
-        return redirect('company');
+        return redirect('company')->with('flash', 'Compañía actualizada exitosamente!');
     }
 
     /**
@@ -197,12 +224,16 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy($id)
-    {
-        Company::destroy($id);
+    // public function destroy(Company $company)
+    // {
+    //     // Company::destroy($id);
 
-        Session::flash('flash_message', 'Company deleted!');
+    //     $company->update([
 
-        return redirect('company');
-    }
+    //     ]);
+
+    //     // Session::flash('flash_message', 'Company deleted!');
+
+    //     return redirect('company')->with('flash', 'Cliente ha sido deshabilidato!');
+    // }
 }

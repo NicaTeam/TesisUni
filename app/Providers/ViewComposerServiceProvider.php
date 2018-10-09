@@ -32,11 +32,11 @@ class ViewComposerServiceProvider extends ServiceProvider
 
     private function composeNavigation(){
 
-         view()->composer('layouts.nav', function($view){
+       //  view()->composer('layouts.nav', function($view){
 
-        $view->with('latest', Article::latest()->first());
+       //  $view->with('latest', Article::latest()->first());
 
-       });
+       // });
 
 
     }

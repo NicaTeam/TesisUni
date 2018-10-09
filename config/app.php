@@ -182,6 +182,8 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         SalesProgram\Providers\ViewComposerServiceProvider::class,
         Appzcoder\CrudGenerator\CrudGeneratorServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Caffeinated\Shinobi\ShinobiServiceProvider::class
 
     ],
 
@@ -235,6 +237,8 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Carbon' => Carbon\Carbon::class,
         'Flash' =>Laracasts\Flash\Flash::class,
+        'Image' => Intervention\Image\Facades\Image::class,
+        'Shinobi' => Caffeinated\Shinobi\Facades\Shinobi::class,
 
     ],
 

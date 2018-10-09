@@ -22,7 +22,7 @@
                         @endif
 
                         <form method="POST" action="{{ url('/company/' . $company->id) }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
-                            {{ method_field('PATCH') }}
+                            {{ method_field('PUT') }}
                             {{ csrf_field() }}
 
                             @include ('company.form', ['submitButtonText' => 'Actualizar'])

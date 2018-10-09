@@ -3,7 +3,7 @@
 
 @section('content')
 
-        <div class="container">
+        <div id="productRegistration" class="container">
 
             <div class="row">
 
@@ -24,20 +24,36 @@
                                         @endforeach
                                     </ul>
                                 @endif
-                            <form method="POST" action="{{ url('/cigars') }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                           
 
-                                    {{ csrf_field() }}
-                                        {!! Form::model($cigar = new \SalesProgram\Cigar, ['url' => 'cigars', 'file' => true]) !!}
-                                            @include('cigars.form2' )
 
-                                    {{--, ['submitButtonText' => 'Save']--}}
-                                        {!! Form::close() !!}
+
+                            <form  v-on:submit="createProduct" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                                {{ csrf_field() }}
+
+                                <!-- action="{{ url('/price-registration') }}" -->
+
+                                @include ('cigars.form2')
+
+                                 <div class="col-sm-7">
+
+                                    <h1>JSON</h1>
+
+                                    <pre>
+                                        
+                                        @{{ $data }}
+                                    </pre>
+                                    
+
+                                </div>
 
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <flash message="{{ session('flash') }}"></flash>
         </div>
 
 

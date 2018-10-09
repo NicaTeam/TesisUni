@@ -55,9 +55,9 @@ class BrandGroupController extends Controller
         
         BrandGroup::create($requestData);
 
-        Session::flash('flash_message', 'BrandGroup added!');
+        // Session::flash('flash_message', 'BrandGroup added!');
 
-        return redirect('brand-group');
+        return redirect('brand-group')->with('flash', 'Linea creada con exito!');
     }
 
     /**

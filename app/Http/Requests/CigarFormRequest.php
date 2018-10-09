@@ -42,9 +42,9 @@ class CigarFormRequest extends FormRequest
 
             'netWeight' => 'required|numeric',
 
-            'unitsInPresentation' => 'required|numeric',
+            'unitsInPresentation' => 'required|numeric'
 
-            'image' => 'mimes:jpeg,bmp,png'
+            // 'image' => 'mimes:jpeg,jpg,bmp,png'
         ];
 
 

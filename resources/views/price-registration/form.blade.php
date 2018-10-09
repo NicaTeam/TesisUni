@@ -1,42 +1,15 @@
-{{--<div class="form-group {{ $errors->has('User_id') ? 'has-error' : ''}}">--}}
-    {{--<label for="user_id" class="col-md-4 control-label">{{ 'User Id' }}</label>--}}
-    {{--<div class="col-md-6">--}}
-        {{--<input class="form-control" name="user_id" type="number" id="user_id" value="{{ $priceregistration->user_id or ''}}" >--}}
-        {{--{!! $errors->first('User_id', '<p class="help-block">:message</p>') !!}--}}
-    {{--</div>--}}
-{{--</div>--}}
-<div class="row">
+
+
+
 
     <div class="form-group {{ $errors->has('validPeriod') ? 'has-error' : ''}}">
-        <label for="validPeriod" class="col-md-4 control-label">{{ 'Periodo Valido' }}</label>
+        <label for="validPeriod" class="col-md-4 control-label">{{ 'Nombre de la lista y su periodo' }}</label>
         <div class="col-md-6">
-            <input class="form-control" name="validPeriod" type="text" id="validPeriod" value="{{ $priceregistration->ValidPeriod or ''}}" >
+            <input class="form-control" v-model="validPeriod" name="validPeriod" type="text" id="validPeriod" value="{{ $priceregistration->ValidPeriod or ''}}" >
             {!! $errors->first('ValidPeriod', '<p class="help-block">:message</p>') !!}
         </div>
     </div>
 
-    {{--<div class="form-group {{ $errors->has('active') ? 'has-error' : ''}}">--}}
-        {{--<label for="active" class="col-md-4 control-label">{{ 'Registro Activo' }}</label>--}}
-        {{--<div class="col-md-6">--}}
-            {{--<input class="form-control" name="active"  id="active"   value="{{ $priceRegistrationActive }}" >--}}
-            {{--{!! $errors->first('Active', '<p class="help-block">:message</p>') !!}--}}
-        {{--</div>--}}
-    {{--</div>--}}
-
-</div>
-
-
-
-
-
-
-{{--<div class="form-group {{ $errors->has('price_registration_id') ? 'has-error' : ''}}">--}}
-    {{--<label for="price_registration_id" class="col-md-4 control-label">{{ 'Price Registration Id' }}</label>--}}
-    {{--<div class="col-md-6">--}}
-        {{--<input class="form-control" name="price_registration_id" type="number" id="price_registration_id" value="{{ ''}}" >--}}
-        {{--{!! $errors->first('price_registration_id', '<p class="help-block">:message</p>') !!}--}}
-    {{--</div>--}}
-{{--</div>--}}
 
 <div class="row">
 
@@ -44,24 +17,25 @@
 
         <div class="panel-body">
 
+
                 <div class="form-group {{ $errors->has('cigar_id') ? 'has-error' : ''}}">
-                    <label for="cigar_id" class="col-md-4 control-label">{{ 'Cigar' }}</label>
+                <label for="cigar_id" class="col-md-4 control-label">{{ 'Marca y presentacion de puro' }}</label>
+
+
+                
                     <div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">
-                        {{--<input class="form-control" name="cigar_id" type="number" id="cigar_id" value="{{ ''}}" >--}}
-                        {{--{!! $errors->first('cigar_id', '<p class="help-block">:message</p>') !!}--}}
+                            
+                            <select v-model="cigar_id"  name="cigar_id" id="cigar_id" class="form-control selectpicker" data-live-search="true">
+
+                                @foreach($cigars as $cigar)
+
+                                    <option value="{{ $cigar->id }}">{{ $cigar->name.' | Unidad: '. $cigar->unitOfMeasurement->name. ' | Presentacion: '. $cigar->unitsInPresentation }}</option>
+
+                                @endforeach
+                            </select>
 
 
-                        <select name="pcigar_id" id="pcigar_id" class="form-control selectpicker" data-live-search="true">
-
-                            @foreach($cigars as $cigar)
-
-                                <option value="{{ $cigar->id }}">{{ $cigar->name.' | Unidad: '. $cigar->unitOfMeasurement->name. ' | Presentacion: '. $cigar->unitsInPresentation }}</option>
-
-                            @endforeach
-
-
-
-                        </select>
+                   
                     </div>
                 </div>
 
@@ -74,7 +48,7 @@
                             {{--<input class="form-control" name="customer_type_id" type="number" id="customer_type_id" value="{{ ''}}" >--}}
                             {{--{!! $errors->first('customer_type_id', '<p class="help-block">:message</p>') !!}--}}
 
-                            <select name="pcustomer_type_id" id="pcustomer_type_id" class="form-control">
+                            <select v-model="customer_type_id" name="customer_type_id" id="customer_type_id" class="form-control">
 
                                 @foreach($customerTypes as $type)
 
@@ -91,28 +65,23 @@
                     </div>
 
                     <div class="form-group {{ $errors->has('price') ? 'has-error' : ''}}">
-                        <label for="price" class="col-md-4 control-label">{{ 'Price' }}</label>
+                        <label for="price" class="col-md-4 control-label">{{ 'Precio' }}</label>
                         <div class="col-md-6">
-                            <input class="form-control" name="pprice" type="number" id="pprice" value="{{ ''}}" >
+                            <input class="form-control" name="price" type="number" id="price" v-model="price" value="{{ ''}}" >
                             {!! $errors->first('price', '<p class="help-block">:message</p>') !!}
                         </div>
 
                     </div>
 
-                    {{--<div class="form-group {{ $errors->has('active') ? 'has-error' : ''}}">--}}
-                    {{--<label for="active" class="col-md-4 control-label">{{ 'Active' }}</label>--}}
-                        {{--<div class="col-md-6">--}}
-                        {{--<input class="form-control" name="pactive"  id="pactive"   value="{{ $detailActive }}" >--}}
-                        {{--{!! $errors->first('active', '<p class="help-block">:message</p>') !!}--}}
-
-                        {{--</div>--}}
-
-                    {{--</div>--}}
+                  
 
                     <div class="form-group">
-                        <div class="col-md-8">
+                        <div class="col-md-8 col-md-offset-4">
 
-                            <button class="btn btn-primary" type="button" id="bt_add">Agregar</button>
+                            <!-- <button class="btn btn-primary" type="button" v-on:click="agregrarProd" id="bt_add" value="Agregar"></button> -->
+
+                            <input class="btn btn-primary" type="button" v-on:click="agregrarProd" id="bt_add" value="Agregar">
+
 
                         </div>
                     </div>
@@ -124,20 +93,28 @@
                             <thead style="background-color:#A9D0F5">
 
                                 <th>Opciones</th>
-                                <th>Cigar</th>
-                                <th>Customer Type ID</th>
+                                <th>Marca de puro</th>
+                                <th>Tipo de distribuidor</th>
                                 <th>Precio</th>
 
 
 
                             </thead>
 
+                             <tr class="selected"  v-for="item in ProdDist">
+                                <td><button type="button" class="btn btn-warning" v-on:click="removeRow(item)">x</button></td>
+                                <td> <input type="hidden"  type="number" name="cigar_id[]" v-bind:value="item[2]"> @{{ item[3][0] }}</td>
+                                <td> <input type="hidden" type="number" name="customer_type_id[]" v-bind:value="item[0]">@{{ item[1][0] }}</td>
+                                <td> <input  name="price[]" v-bind:value="item[4]"></td>
+
+                            </tr>
+
                             {{--<tfoot>--}}
 
                                 {{--<th>Total</th>--}}
-                                {{--<th>Cigar</th>--}}
+                                {{--<th>Marca de puro</th>--}}
                                 {{--<th>Precio</th>--}}
-                                {{--<th>Active</th>--}}
+                                {{--<th>Activo</th>--}}
                                 {{--<th><h4 id = "total">S/. 0.00</h4></th>--}}
                             {{----}}
                             {{----}}
@@ -160,9 +137,8 @@
 
     <div class="form-group">
 
-        {{--<input name=_token" value="{{ csrf_token() }}" type="hidden"></input>--}}
-        {{ csrf_field() }}
-        <div class="col-md-offset-4 col-md-4" id="guardar">
+
+        <div class="col-md-8 col-md-offset-4 " id="guardar">
 
             <input class="btn btn-primary" type="submit" value="{{ $submitButtonText or 'Guardar' }}">
         </div>

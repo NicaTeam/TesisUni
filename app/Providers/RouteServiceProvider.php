@@ -32,27 +32,32 @@ class RouteServiceProvider extends ServiceProvider
 
 //        $router->model('articles', 'SalesProgram\Article');
 
-        Route::bind('articles', function($id){
+        // Route::bind('articles', function($id){
 
-         return \SalesProgram\Article::published()->findOrFail($id);
+        //  return \SalesProgram\Article::published()->findOrFail($id);
 
-        });
+        // });
 
 
-        Route::bind('empleado', function($value, $route)
-        {
-            return \SalesProgram\Empleado::where('id', '=', Crypt::decrypt($value))->first();
-        });
+        // Route::bind('empleado', function($value, $route)
+        // {
+        //     return \SalesProgram\Empleado::where('id', '=', Crypt::decrypt($value))->first();
+        // });
 
-        Route::bind('empleado/{empleado}/edit', function($value, $route)
-        {
-            return \SalesProgram\Empleado::where('id', '=', Crypt::decrypt($value))->first();
-        });
+        // Route::bind('empleado/{empleado}/edit', function($value, $route)
+        // {
+        //     return \SalesProgram\Empleado::where('id', '=', Crypt::decrypt($value))->first();
+        // });
 
-        Route::bind('empleado/{empleado}', function($value, $route)
-        {
-            return \SalesProgram\Empleado::where('id', '=', Crypt::decrypt($value))->first();
-        });
+        // Route::bind('empleado/{empleado}', function($value, $route)
+        // {
+        //     return \SalesProgram\Empleado::where('id', '=', Crypt::decrypt($value))->first();
+        // });
+
+
+
+
+        
 
 //        Route::bind('empleado/{code}', function($value, $route)
 //        {

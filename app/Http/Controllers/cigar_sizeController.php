@@ -55,9 +55,10 @@ class cigar_sizeController extends Controller
         
         cigar_size::create($requestData);
 
-        Session::flash('flash_message', 'cigar_size added!');
+        // Session::flash('flash_message', 'cigar_size added!');
 
-        return redirect('cigar_size');
+        return redirect('cigar_size')->with('flash', 'La vitola ha sido creada exitosamente!');
+;
     }
 
     /**

@@ -41,6 +41,15 @@ class CustomsAgency extends Model
 
     }
 
+      public function scopeFilter($query, $filters)
+   {
+
+        // dd($query->toSql());
+
+        return $filters->apply($query);
+
+   }
+
 
     
 }

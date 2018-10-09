@@ -1,21 +1,4 @@
-
-{{--<div class="form-group">--}}
-    {{--{!! Form::label('categoryProduct', 'Categoria de Producto:') !!}--}}
-    {{--<select name = 'category_products_id' class ="form-control">--}}
-        {{--@foreach($categoryProduct as $categoryProduct)--}}
-
-
-            {{--<option value="{{ $categoryProduct['id'] }}">--}}
-
-                {{--{{ $categoryProduct['categoria'] }}--}}
-
-            {{--</option>--}}
-
-        {{--@endforeach--}}
-
-    {{--</select>--}}
-
-{{--</div>--}}
+<!-- 
 <div class="form-group {{ $errors->has('brand_groups_id') ? 'has-error' : ''}}">
 
     <label for="brand_groups_id" class="col-md-4 control-label">{{ 'Linea de Puros' }}</label>
@@ -98,6 +81,26 @@
     <div class="col-md-6">
         <input class="form-control" name="unitsInPresentation" type="text" id="unitsInPresentation" value="{{ $cigar['unitsInPresentation'] or ''}}" >
         {!! $errors->first('unitsInPresentation', '<p class="help-block">:message</p>') !!}
+    </div>
+</div> -->
+
+
+<div class="form-group {{ $errors->has('unitsInPresentation') ? 'has-error' : ''}}">
+    <label for="imageActual" class="col-md-4 control-label">{{ 'Imagen' }}</label>
+    <div class="col-md-6">
+        <img src="{{ asset('imagenes/cigars/'.$cigar->image) }}" alt="{{ $cigar->name }}" height="300px" width="300px" class="img-thumbnail"><br>
+       <!--  <input class="form-control" name="imageActual" type="text" id="imageActual" value="{{ $cigar['image'] or ''}}" >
+        {!! $errors->first('imageActual', '<p class="help-block">:message</p>') !!} -->
+    </div>
+</div>
+
+<div class="form-group {{ $errors->has('image') ? 'has-error' : ''}}">
+    <label for="image" class="col-md-4 control-label">{{ 'Imagen' }}</label>
+    <div class="col-md-6">
+        
+        <input class="form-control" name="image" type="file" id="image" >
+        {!! $errors->first('image', '<p class="help-block">:message</p>') !!}
+
     </div>
 </div>
 

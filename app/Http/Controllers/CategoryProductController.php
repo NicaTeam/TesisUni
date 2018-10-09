@@ -71,9 +71,10 @@ class categoryProductController extends Controller
         
         categoryProduct::create($requestData);
 
-        Session::flash('flash_message', 'categoryProduct added!');
+        // Session::flash('flash_message', 'categoryProduct added!');
 
-        return redirect('category-product');
+        return redirect('category-product')->with('flash', 'Categoria ha sido guardada con exito!');
+;
     }
 
     /**

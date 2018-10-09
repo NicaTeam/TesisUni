@@ -8,8 +8,9 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
 
-    {{--<link rel="stylesheet" href="/css/app.css">--}}
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
+    <!-- <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}"> -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
     {{--Bootstrap select--}}
     <link rel="stylesheet" href="{{ asset('css/bootstrap-select.min.css')}}">
     <!-- Font Awesome -->
@@ -19,240 +20,96 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset('css/_all-skins.min.css')}}">
-    <link rel="apple-touch-icon" href="{{ asset('img/apple-touch-icon.png')}}">
-    <link rel="shortcut icon" href="{{ asset('img/favicon.ico')}}">
+    <link rel="apple-touch-icon" href="{{ asset('img/DrewEstate_Color_300dpi_1-copy.png')}}">
+    <link rel="shortcut icon" href="{{ asset('img/DrewEstate_Color_300dpi_1-copy.png')}}">
+
+  
+
+     <style>
+        
+        body { padding-botton: 100px;}
+
+        .level{ display:flex; align-items:center;}
+
+        .flex{ flex:1; }
+
+        .alert-flash{
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+
+          }
+
+    </style>
+
+   
 
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
+<body class="hold-transition skin-blue-light sidebar-mini">
 
-    <header class="main-header">
+<!-- <body class="skin-blue-light sidebar-collapse sidebar-mini"> -->
 
-        <!-- Logo -->
-        <a href="index2.html" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>DE</b></span>
-            <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Drew Estate</b></span>
-        </a>
+<div  class="wrapper">
 
-        <!-- Header Navbar: style can be found in header.less -->
-        <nav class="navbar navbar-static-top" role="navigation">
-            <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only">Navegación</span>
-            </a>
-            <!-- Navbar Right Menu -->
-
-
-
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <!-- Messages: style can be found in dropdown.less-->
-                    <!-- User Account: style can be found in dropdown.less -->
-                    <li class="dropdown user user-menu">
-
-                        @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                {{--<small class="bg-red">Online</small>--}}
-                                {{--<span class="hidden-xs">Juan Carlos Arcila Díaz</span>--}}
-
-                                {{ Auth::user()->name }} <span class="caret"></span>
-
-                            </a>
-                            <ul class="dropdown-menu">
-                                {{--<!-- User image -->--}}
-                                {{--<li class="user-header">--}}
-
-                                    {{--<p>--}}
-                                        {{--<a href="http://accesosecreto.atwebpages.com">Sitio del desarrollador</a>--}}
-                                        {{--http://accesosecreto.atwebpages.com - Desarrollando Software--}}
-                                        {{--<small>www.youtube.com/jcarlosad7</small>--}}
-                                    {{--</p>--}}
-                                {{--</li>--}}
-
-                                <!-- Menu Footer-->
-                                <li class="user-footer">
-                                    {{--<div class="pull-right">--}}
-                                        {{--<a href="#" class="btn btn-default btn-flat">Cerrar</a>--}}
-
-                                        <a href="{{ route('logout') }}"
-                                           onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                            Salir
-                                        </a>
-
-                                        <a href="http://accesosecreto.atwebpages.com">Sitio del desarrollador</a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    {{--</div>--}}
-
-                                </li>
-
-                            </ul>
-                        @endif
-                        </li>
-
-                </ul>
-            </div>
-        </nav>
-
-    </header>
+    @include('layouts.header')
     <!-- Left side column. contains the logo and sidebar -->
-
-    <aside class="main-sidebar">
-        <!-- sidebar: style can be found in sidebar.less -->
-        <section class="sidebar">
-            <!-- Sidebar user panel -->
-
-            <!-- sidebar menu: : style can be found in sidebar.less -->
-            <ul class="sidebar-menu">
-                <li class="header"></li>
-
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-laptop"></i>
-                        <span>Productos</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="cigars"><i class="fa fa-circle-o"></i> Puros</a></li>
-                        <li><a href="price-registration"><i class="fa fa-circle-o"></i> Registro de precios</a></li>
-                        <li><a href="category-product"><i class="fa fa-circle-o"></i>Categoria Productos</a></li>
-                        <li><a href="cigar_size"><i class="fa fa-circle-o"></i>Vitolas</a></li>
-                        <li><a href="unit-of-measurement"><i class="fa fa-circle-o"></i>Presentacion</a></li>
-                        <li><a href="brand-group"><i class="fa fa-circle-o"></i>Linea de puros</a></li>
-                        <li><a href="articles"><i class="fa fa-circle-o"></i>Articulos/Articles</a></li>
-                    </ul>
-                </li>
-
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-laptop"></i>
-                        <span>Clientes</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="company"><i class="fa fa-circle-o"></i> Clientes</a></li>
-                        <li><a href="customs-agency"><i class="fa fa-circle-o"></i>Agentes de aduanas</a></li>
-                        <li><a href="customer-type"><i class="fa fa-circle-o"></i>Categoria de Distribuidores</a></li>
-                        <li><a href="company-type"><i class="fa fa-circle-o"></i>Tipos de companias</a></li>
-                        <li><a href="payment-term"><i class="fa fa-circle-o"></i>Terminos de pago</a></li>
-                        <li><a href="country"><i class="fa fa-circle-o"></i>Paises</a></li>
-                        <li><a href="title"><i class="fa fa-circle-o"></i>Titulos de Personas</a></li>
-
-                    </ul>
-                </li>
-
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-th"></i>
-                        <span>Compras</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="compras/ingreso"><i class="fa fa-circle-o"></i> Ingresos</a></li>
-                        <li><a href="compras/proveedor"><i class="fa fa-circle-o"></i> Proveedores</a></li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-shopping-cart"></i>
-                        <span>Ventas</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="ventas/venta"><i class="fa fa-circle-o"></i> Ventas</a></li>
-                        <li><a href="ventas/cliente"><i class="fa fa-circle-o"></i> Clientes</a></li>
-                    </ul>
-                </li>
-
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-folder"></i> <span>Acceso</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="configuracion/usuario"><i class="fa fa-circle-o"></i> Usuarios</a></li>
-
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-plus-square"></i> <span>Ayuda</span>
-                        <small class="label pull-right bg-red">PDF</small>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-info-circle"></i> <span>Acerca De...</span>
-                        <small class="label pull-right bg-yellow">IT</small>
-                    </a>
-                </li>
-
-            </ul>
-        </section>
-        <!-- /.sidebar -->
-    </aside>
+    @include('layouts.mainsidebar')
 
 
-
-
+   <div class="content-wrapper">
+    <!-- Main content -->
     <!--Contenido-->
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-
-        <!-- Main content -->
         <section class="content">
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Sistema de Ventas</h3>
-                            <div class="box-tools pull-right">
-                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Sistema de Ventas</h3>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 
-                                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
                             </div>
-                        </div>
                         <!-- /.box-header -->
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <!--Contenido-->
-                                    {{--<h3>Contenido</h3>--}}
+                            <div  class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!--Contenido-->
+                                        {{--<h3>Contenido</h3>--}}
 
-                                    @yield('content')
-                                    <!--Fin Contenido-->
+                                        @yield('content')
+                                        <!--Fin Contenido-->
+
+                                        <div id="flashComponent">
+
+                                            <flash message="{{session('flash')}}"></flash>
+
+                                        </div>
+                                            
+                                    </div>
                                 </div>
                             </div>
 
                         </div>
                     </div><!-- /.row -->
                 </div><!-- /.box-body -->
-            </div><!-- /.box -->
-    </div><!-- /.col -->
-</div><!-- /.row -->
+            </section>    
+        </div><!-- /.box -->
 
-</section><!-- /.content -->
-</div><!-- /.content-wrapper -->
+
+      @include('layouts.footer')
+
+</div>
 <!--Fin-Contenido-->
-<footer class="main-footer">
-    <div class="pull-right hidden-xs">
-        <b>Version</b> 2.3.0
-    </div>
-    <strong>Copyright &copy; 2015-2020 <a href="https://www.drewestate.com">Drew Estate Swisher International</a>.</strong> All rights reserved.
-</footer>
+
 
 
 <!-- jQuery 2.1.4 -->
+
+
 <script src="{{ asset('js/jQuery-2.1.4.min.js')}}"></script>
 
 @stack('scripts')
@@ -262,6 +119,18 @@
 <script src="{{ asset('js/bootstrap-select.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('js/app.min.js')}}"></script>
+
+<script src="{{ asset('js/appVue.js') }}"></script>
+
+ <script>
+       window.Laravel = <?php echo json_encode([
+           'csrfToken' => csrf_token(),
+        ]); ?>
+    </script>
+
+<script src=" {{ asset('js/app2.js') }}"></script>
+
+
 
 </body>
 </html>

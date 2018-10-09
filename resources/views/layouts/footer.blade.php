@@ -1,6 +1,6 @@
-  <footer class="blog-footer">
-      <p>Blog template built for <a href="https://getbootstrap.com">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-      <p>
-        <a href="#">Back to top</a>
-      </p>
-    </footer>
+   <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 0.1
+            </div>
+            <strong>Copyright &copy; 2015-2020 <a href="https://www.drewestate.com">Drew Estate Swisher International</a>.</strong> All rights reserved.
+        </footer>
