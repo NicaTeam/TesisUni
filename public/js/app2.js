@@ -4610,6 +4610,115 @@ module.exports = {
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4915,7 +5024,7 @@ module.exports = {
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5037,7 +5146,7 @@ module.exports = Element;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5051,7 +5160,7 @@ module.exports.Rectangle = __webpack_require__(190);
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5477,7 +5586,7 @@ module.exports = {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5551,115 +5660,6 @@ module.exports = {
 		}
 	}
 };
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
 
 
 /***/ }),
@@ -6042,7 +6042,7 @@ module.exports = g;
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 var normalizeHeaderName = __webpack_require__(157);
 
 var PROTECTION_PREFIX = /^\)\]\}',?\n/;
@@ -17323,7 +17323,7 @@ module.exports = function bind(fn, thisArg) {
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 var settle = __webpack_require__(158);
 var buildURL = __webpack_require__(160);
 var parseHeaders = __webpack_require__(161);
@@ -30714,7 +30714,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(229)
 }
-var normalizeComponent = __webpack_require__(8)
+var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(232)
 /* template */
@@ -31071,7 +31071,7 @@ function applyToTag (styleElement, obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(151);
-module.exports = __webpack_require__(242);
+module.exports = __webpack_require__(266);
 
 
 /***/ }),
@@ -31081,9 +31081,7 @@ module.exports = __webpack_require__(242);
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap__ = __webpack_require__(152);
-var _data;
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
@@ -31098,6 +31096,28 @@ Vue.component('cigar-crud', __webpack_require__(234));
 Vue.component('flash', __webpack_require__(147));
 
 Vue.component('graph', __webpack_require__(239));
+
+Vue.component('piegraph', __webpack_require__(242));
+
+Vue.component('linegraph', __webpack_require__(245));
+
+Vue.component('order', __webpack_require__(248));
+
+Vue.component('orderpanel', __webpack_require__(250));
+
+Vue.component('addprice', __webpack_require__(252));
+
+Vue.component('editorder', __webpack_require__(254));
+
+Vue.component('priceregistration', __webpack_require__(256));
+
+Vue.component('createpayment', __webpack_require__(258));
+
+Vue.component('editpayment', __webpack_require__(260));
+
+Vue.component('editpricelist', __webpack_require__(262));
+
+Vue.component('customerordercreate', __webpack_require__(264));
 
 new Vue({
 
@@ -31206,211 +31226,245 @@ new Vue({
 
 });
 
-new Vue({
-    el: '#priceRegistration',
+// new Vue({
+//     el: '#priceRegistration',
 
-    created: function created() {
-        this.getDistribType();
 
-        this.getProduct();
-    },
+//     created:function () {
+//     	this.getDistribType();
 
-    data: (_data = {
+//     	this.getProduct();
 
-        DistribTypes: [],
+//     },
 
-        Products: [],
 
-        customer_type_id: '',
+//     data:{
 
-        cigar_id: '',
+//     	DistribTypes: [],
 
-        ProdDist: [],
+//     	Products:[],
 
-        priceExist: false,
+//     	customer_type_id: '',
 
-        cont: 0,
+//     	cigar_id:'',
 
-        price: '',
+//     	ProdDist: [],
 
-        name: '',
+//     	priceExist: false,
 
-        validPeriod: ''
+//     	cont: 0,
 
-    }, _defineProperty(_data, 'cigar_id', ''), _defineProperty(_data, 'customer_type_id', ''), _defineProperty(_data, 'errors', []), _data),
+//     	price:'',
 
-    methods: {
+//     	name:'',
 
-        agregrarProd: function agregrarProd() {
+//     	validPeriod: '',
 
-            // this.ProdDist.push([this.DistribTypeId, this.ProdId]); alert(validateProduct());
+//     	cigar_id: '',
 
-            this.validateProduct();
+//     	customer_type_id: '',
 
-            var ProdName = this.getProdName();
+//     	errors: []
 
-            var DistTypeName = this.getDistType();
+//     },
 
-            // console.log(ProdName); console.log(DistTypeName); console.log(this.Products);  console.log(this.DistribTypes);
+//     methods:{
 
-            if (this.validPeriod == '' || this.cigar_id == '' || this.customer_type_id == '' || this.price == '') {
+//     	agregrarProd: function(){
 
-                toastr.warning('Favor llenar los campos requeridos!');
-            } else {
+//     		// this.ProdDist.push([this.DistribTypeId, this.ProdId]); alert(validateProduct());
 
-                if (!this.priceExist) {
+//     		this.validateProduct();
 
-                    this.ProdDist.push([this.customer_type_id, DistTypeName, this.cigar_id, ProdName, this.price]);
+//     		var ProdName = this.getProdName();
 
-                    this.customer_type_id = '', this.cigar_id = '', this.price = '';
-                } else {
+//     		var DistTypeName = this.getDistType();
 
-                    toastr.error('El precio de producto ya fue agregado!');
-                }
-            }
-        },
+//     		// console.log(ProdName); console.log(DistTypeName); console.log(this.Products);  console.log(this.DistribTypes);
 
-        getDistribType: function getDistribType() {
-            var _this3 = this;
+//             if(this.validPeriod=='' || this.cigar_id =='' || this.customer_type_id=='' || this.price ==''){
 
-            axios.get('/axiosdistribType').then(function (response) {
+//                 toastr.warning('Favor llenar los campos requeridos!');
 
-                _this3.DistribTypes = response.data;
-            });
-        },
+//             }else{
 
-        getProduct: function getProduct() {
-            var _this4 = this;
+//                 if(!this.priceExist){
 
-            axios.get('/axiosproduct').then(function (response) {
+//                     this.ProdDist.push([this.customer_type_id, DistTypeName, this.cigar_id, ProdName, this.price]);
 
-                _this4.Products = response.data;
-            });
-        },
+//                     this.customer_type_id= '',
 
-        validateProduct: function validateProduct() {
+//                     this.cigar_id='',
 
-            var arregloInterno = [this.customer_type_id, this.cigar_id];
+//                     this.price =''
 
-            var match = [];
+//                 }else{
 
-            this.ProdDist.forEach(function (precio) {
+//                     toastr.error('El precio de producto ya fue agregado!');
+//                 }
+//             }
 
-                if (precio[0] == arregloInterno[0] && precio[2] == arregloInterno[1]) {
+//     	},
 
-                    match.push(arregloInterno);
-                }
-            });
 
-            if (match.length > 0) {
+//     	getDistribType: function(){
 
-                return this.priceExist = true;
-            } else {
+//     		axios.get('/axiosdistribType').then(response => {
 
-                return this.priceExist = false;
-            }
+//     			this.DistribTypes = response.data;
 
-            arregloInterno = [];
-        },
 
-        getProdName: function getProdName() {
-            var _this5 = this;
+//     		});
+//     	},
 
-            return this.Products.filter(function (item) {
-                return item.id == _this5.cigar_id;
-            }).map(function (item) {
-                return item.name;
-            });
-        },
+//     	getProduct: function(){
 
-        getDistType: function getDistType() {
-            var _this6 = this;
+//     		axios.get('/axiosproduct').then(response => {
 
-            return this.DistribTypes.filter(function (item) {
-                return item.id == _this6.customer_type_id;
-            }).map(function (item) {
-                return item.clienteTipo;
-            });
-        },
+//     			this.Products = response.data;
 
-        removeRow: function removeRow(item) {
+//     		});
 
-            console.log(item);
+//     	},
 
-            var index = this.ProdDist.indexOf(item);
-            if (index > -1) {
-                this.ProdDist.splice(index, 1);
-            }
-        },
+//     	validateProduct: function() {
 
-        createPrice: function createPrice() {
-            var _this7 = this;
+//     		var arregloInterno = [this.customer_type_id, this.cigar_id];
 
-            var url = 'price-registration';
+//     		var match = [];
 
-            axios.post(url, {
+//     		this.ProdDist.forEach(function(precio){
 
-                validPeriod: this.validPeriod,
+//     			if((precio[0] == arregloInterno[0]) && (precio[2] == arregloInterno[1])){
 
-                cigar_id: this.cigar_id,
+//     				match.push(arregloInterno);
 
-                customer_type_id: this.customer_type_id,
+//     			}
+//     		});
 
-                price: this.price
-            }).then(function (response) {
+//     		if(match.length > 0){
 
-                _this7.validPeriod = '';
-                _this7.cigar_id = '';
-                _this7.customer_type_id = '';
-                _this7.price = '';
+//     			return this.priceExist = true;
+//     		}else{
 
-                toastr.success('Registo de precios creado con exito!');
-            }).catch(function (error) {
+//     			return this.priceExist = false;
+//     		}
 
-                _this7.errors = error.response.data;
-            });
-        }
+//     		arregloInterno = [];
 
-    },
+//     	},
 
-    computed: {
-        searchProduct: function searchProduct() {
-            var _this8 = this;
 
-            return this.Products.filter(function (item) {
-                return item.name.toLowerCase().includes(_this8.name);
-            });
-        }
+//     	getProdName:function() {
 
-    }
 
-});
+//     		return this.Products.filter((item) => item.id == this.cigar_id).map((item) => item.name);
+
+//     	},
+
+//     	getDistType:function() {
+
+
+//     		return this.DistribTypes.filter((item) => item.id == this.customer_type_id).map((item) => item.clienteTipo);
+
+//     	},
+
+//     	removeRow: function(item){
+
+//     		console.log(item);
+
+//     		var index = this.ProdDist.indexOf(item);
+// 			if (index > -1) {
+// 			  this.ProdDist.splice(index, 1);
+// 			}
+
+
+//     	},
+
+
+//     	createPrice: function(){
+
+//     		var url = 'price-registration';
+
+//     		axios.post(url, {
+
+//     			validPeriod: this.validPeriod,
+
+//     			cigar_id: this.cigar_id,
+
+//     			customer_type_id: this.customer_type_id,
+
+//     			price: this.price,
+//     		}).then(response => {
+
+//     			this.validPeriod = '';
+//     			this.cigar_id = '';
+//     			this.customer_type_id ='';
+//     			this.price ='';
+
+//     			toastr.success('Registo de precios creado con exito!');
+//     		}).catch(error => {
+
+//     			this.errors =error.response.data
+//     		});
+//     	}
+
+
+//     },
+
+//     computed:{
+//     	searchProduct: function(){
+//     		return this.Products.filter((item) => item.name.toLowerCase().includes(this.name));
+//     	}
+
+//     }
+
+// });
+
 
 new Vue({
 
     el: '#app2'
-});
-
-new Vue({
-
-    el: '#app3CigarCreated'
-});
-
-new Vue({
-
-    el: '#appcigar_crud'
-});
-
-new Vue({
-
-    el: '#flashComponent'
 
 });
 
-new Vue({
+// new Vue({
 
-    el: '#graphComponent'
-});
+
+//     el:'#app3CigarCreated',
+// });
+
+// new Vue({
+
+//     el:'#appcigar_crud',
+// });
+
+// new Vue({
+
+//  el:'#flashComponent',
+
+
+// });
+
+// new Vue({
+
+//     el:'#graphComponent',
+// });
+
+// new Vue({
+
+//     el:'#orderComponent',
+// });
+
+// new Vue({
+
+//     el:'#orderPanel',
+
+//     data:{
+
+//         compressed:true,
+//     }
+// });
 
 /***/ }),
 /* 152 */
@@ -31774,7 +31828,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 var bind = __webpack_require__(15);
 var Axios = __webpack_require__(156);
 var defaults = __webpack_require__(11);
@@ -31834,7 +31888,7 @@ module.exports.default = axios;
 
 
 var defaults = __webpack_require__(11);
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 var InterceptorManager = __webpack_require__(165);
 var dispatchRequest = __webpack_require__(166);
 var isAbsoluteURL = __webpack_require__(168);
@@ -31925,7 +31979,7 @@ module.exports = Axios;
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 module.exports = function normalizeHeaderName(headers, normalizedName) {
   utils.forEach(headers, function processHeader(value, name) {
@@ -32002,7 +32056,7 @@ module.exports = function enhanceError(error, config, code, response) {
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 function encode(val) {
   return encodeURIComponent(val).
@@ -32077,7 +32131,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 /**
  * Parse headers into an object
@@ -32121,7 +32175,7 @@ module.exports = function parseHeaders(headers) {
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -32239,7 +32293,7 @@ module.exports = btoa;
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -32299,7 +32353,7 @@ module.exports = (
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 function InterceptorManager() {
   this.handlers = [];
@@ -32358,7 +32412,7 @@ module.exports = InterceptorManager;
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 var transformData = __webpack_require__(167);
 var isCancel = __webpack_require__(18);
 var defaults = __webpack_require__(11);
@@ -32444,7 +32498,7 @@ module.exports = function dispatchRequest(config) {
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 /**
  * Transform the data for a request or a response
@@ -43770,13 +43824,13 @@ Chart.helpers = __webpack_require__(1);
 __webpack_require__(182)(Chart);
 
 Chart.defaults = __webpack_require__(2);
-Chart.Element = __webpack_require__(4);
-Chart.elements = __webpack_require__(5);
+Chart.Element = __webpack_require__(5);
+Chart.elements = __webpack_require__(6);
 Chart.Interaction = __webpack_require__(144);
-Chart.layouts = __webpack_require__(6);
+Chart.layouts = __webpack_require__(7);
 Chart.platform = __webpack_require__(145);
 Chart.plugins = __webpack_require__(146);
-Chart.Ticks = __webpack_require__(7);
+Chart.Ticks = __webpack_require__(8);
 
 __webpack_require__(193)(Chart);
 __webpack_require__(194)(Chart);
@@ -46329,7 +46383,7 @@ module.exports = {
 
 
 var defaults = __webpack_require__(2);
-var Element = __webpack_require__(4);
+var Element = __webpack_require__(5);
 var helpers = __webpack_require__(1);
 
 defaults._set('global', {
@@ -46443,7 +46497,7 @@ module.exports = Element.extend({
 
 
 var defaults = __webpack_require__(2);
-var Element = __webpack_require__(4);
+var Element = __webpack_require__(5);
 var helpers = __webpack_require__(1);
 
 var globalDefaults = defaults.global;
@@ -46541,7 +46595,7 @@ module.exports = Element.extend({
 
 
 var defaults = __webpack_require__(2);
-var Element = __webpack_require__(4);
+var Element = __webpack_require__(5);
 var helpers = __webpack_require__(1);
 
 var defaultColor = defaults.global.defaultColor;
@@ -46654,7 +46708,7 @@ module.exports = Element.extend({
 
 
 var defaults = __webpack_require__(2);
-var Element = __webpack_require__(4);
+var Element = __webpack_require__(5);
 
 defaults._set('global', {
 	elements: {
@@ -47364,7 +47418,7 @@ helpers.removeEvent = removeEventListener;
 
 
 var defaults = __webpack_require__(2);
-var Element = __webpack_require__(4);
+var Element = __webpack_require__(5);
 var helpers = __webpack_require__(1);
 
 defaults._set('global', {
@@ -47544,7 +47598,7 @@ module.exports = function(Chart) {
 var defaults = __webpack_require__(2);
 var helpers = __webpack_require__(1);
 var Interaction = __webpack_require__(144);
-var layouts = __webpack_require__(6);
+var layouts = __webpack_require__(7);
 var platform = __webpack_require__(145);
 var plugins = __webpack_require__(146);
 
@@ -48834,7 +48888,7 @@ module.exports = function(Chart) {
 
 var defaults = __webpack_require__(2);
 var helpers = __webpack_require__(1);
-var layouts = __webpack_require__(6);
+var layouts = __webpack_require__(7);
 
 module.exports = function(Chart) {
 
@@ -48886,9 +48940,9 @@ module.exports = function(Chart) {
 
 
 var defaults = __webpack_require__(2);
-var Element = __webpack_require__(4);
+var Element = __webpack_require__(5);
 var helpers = __webpack_require__(1);
-var Ticks = __webpack_require__(7);
+var Ticks = __webpack_require__(8);
 
 defaults._set('scale', {
 	display: true,
@@ -49829,7 +49883,7 @@ module.exports = function(Chart) {
 
 
 var defaults = __webpack_require__(2);
-var Element = __webpack_require__(4);
+var Element = __webpack_require__(5);
 var helpers = __webpack_require__(1);
 
 defaults._set('global', {
@@ -51118,7 +51172,7 @@ module.exports = function(Chart) {
 
 var defaults = __webpack_require__(2);
 var helpers = __webpack_require__(1);
-var Ticks = __webpack_require__(7);
+var Ticks = __webpack_require__(8);
 
 module.exports = function(Chart) {
 
@@ -51315,7 +51369,7 @@ module.exports = function(Chart) {
 
 
 var helpers = __webpack_require__(1);
-var Ticks = __webpack_require__(7);
+var Ticks = __webpack_require__(8);
 
 /**
  * Generate a set of logarithmic ticks
@@ -51670,7 +51724,7 @@ module.exports = function(Chart) {
 
 var defaults = __webpack_require__(2);
 var helpers = __webpack_require__(1);
-var Ticks = __webpack_require__(7);
+var Ticks = __webpack_require__(8);
 
 module.exports = function(Chart) {
 
@@ -52995,7 +53049,7 @@ module.exports = function(Chart) {
 
 
 var defaults = __webpack_require__(2);
-var elements = __webpack_require__(5);
+var elements = __webpack_require__(6);
 var helpers = __webpack_require__(1);
 
 defaults._set('bar', {
@@ -53506,7 +53560,7 @@ module.exports = function(Chart) {
 
 
 var defaults = __webpack_require__(2);
-var elements = __webpack_require__(5);
+var elements = __webpack_require__(6);
 var helpers = __webpack_require__(1);
 
 defaults._set('bubble', {
@@ -53693,7 +53747,7 @@ module.exports = function(Chart) {
 
 
 var defaults = __webpack_require__(2);
-var elements = __webpack_require__(5);
+var elements = __webpack_require__(6);
 var helpers = __webpack_require__(1);
 
 defaults._set('doughnut', {
@@ -53999,7 +54053,7 @@ module.exports = function(Chart) {
 
 
 var defaults = __webpack_require__(2);
-var elements = __webpack_require__(5);
+var elements = __webpack_require__(6);
 var helpers = __webpack_require__(1);
 
 defaults._set('line', {
@@ -54339,7 +54393,7 @@ module.exports = function(Chart) {
 
 
 var defaults = __webpack_require__(2);
-var elements = __webpack_require__(5);
+var elements = __webpack_require__(6);
 var helpers = __webpack_require__(1);
 
 defaults._set('polarArea', {
@@ -54568,7 +54622,7 @@ module.exports = function(Chart) {
 
 
 var defaults = __webpack_require__(2);
-var elements = __webpack_require__(5);
+var elements = __webpack_require__(6);
 var helpers = __webpack_require__(1);
 
 defaults._set('radar', {
@@ -54933,7 +54987,7 @@ module.exports.title = __webpack_require__(222);
 
 
 var defaults = __webpack_require__(2);
-var elements = __webpack_require__(5);
+var elements = __webpack_require__(6);
 var helpers = __webpack_require__(1);
 
 defaults._set('global', {
@@ -55252,9 +55306,9 @@ module.exports = {
 
 
 var defaults = __webpack_require__(2);
-var Element = __webpack_require__(4);
+var Element = __webpack_require__(5);
 var helpers = __webpack_require__(1);
-var layouts = __webpack_require__(6);
+var layouts = __webpack_require__(7);
 
 var noop = helpers.noop;
 
@@ -55835,9 +55889,9 @@ module.exports = {
 
 
 var defaults = __webpack_require__(2);
-var Element = __webpack_require__(4);
+var Element = __webpack_require__(5);
 var helpers = __webpack_require__(1);
-var layouts = __webpack_require__(6);
+var layouts = __webpack_require__(7);
 
 var noop = helpers.noop;
 
@@ -56091,7 +56145,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(8)
+var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(224)
 /* template */
@@ -57045,7 +57099,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(8)
+var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(227)
 /* template */
@@ -58152,7 +58206,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(235)
 }
-var normalizeComponent = __webpack_require__(8)
+var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(237)
 /* template */
@@ -58240,6 +58294,8 @@ exports.push([module.i, "\nbody { padding-botton: 100px;\n}\n.level{ display:-we
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -58952,7 +59008,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 // if(!this.productExist){
 
-                var url = 'cigars/';
+                var url = 'cigars';
+
+                // var url = 'cigars/';
                 axios.post(url, {
 
                     brand_groups_id: this.brand_groups_id,
@@ -59261,7 +59319,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "panel panel-default" }, [
           _c("div", { staticClass: "panel-heading" }, [
-            _vm._v("Lista de Puros")
+            _vm._v("Lista de productos")
           ]),
           _vm._v(" "),
           _c(
@@ -59310,7 +59368,7 @@ var render = function() {
                     }),
                     _c("br"),
                     _vm._v(" "),
-                    _c("label", [_vm._v("Codigo de barra: ")]),
+                    _c("label", [_vm._v("Código de barra: ")]),
                     _vm._v(" " + _vm._s(cigar.barcode) + " "),
                     _c("br"),
                     _vm._v(" "),
@@ -59318,15 +59376,15 @@ var render = function() {
                     _vm._v(" " + _vm._s(cigar.name) + " "),
                     _c("br"),
                     _vm._v(" "),
-                    _c("label", [_vm._v("Vitola: ")]),
+                    _c("label", [_vm._v("Vitóla: ")]),
                     _vm._v(" " + _vm._s(cigar.cigar_size.name) + " "),
                     _c("br"),
                     _vm._v(" "),
-                    _c("label", [_vm._v("Peso Neto: ")]),
+                    _c("label", [_vm._v("Peso neto: ")]),
                     _vm._v(" " + _vm._s(cigar.netWeight) + " "),
                     _c("br"),
                     _vm._v(" "),
-                    _c("label", [_vm._v("Presentacion: ")]),
+                    _c("label", [_vm._v("Presentación: ")]),
                     _vm._v(" " + _vm._s(cigar.unitsInPresentation) + " "),
                     _c("br"),
                     _vm._v(" "),
@@ -59389,7 +59447,7 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("Eliminar")]
+                      [_vm._v("Deshabilitar")]
                     )
                   ])
                 ])
@@ -59422,7 +59480,7 @@ var render = function() {
                         },
                         [
                           _c("span", { attrs: { "aria-hidden": "true" } }, [
-                            _vm._v("« Atras")
+                            _vm._v("« Atrás")
                           ])
                         ]
                       )
@@ -59548,7 +59606,8 @@ var render = function() {
                                   staticClass: "form-control",
                                   attrs: {
                                     id: "brand_groups_id",
-                                    name: "brand_groups_id"
+                                    name: "brand_groups_id",
+                                    required: ""
                                   },
                                   on: {
                                     change: function($event) {
@@ -59616,7 +59675,8 @@ var render = function() {
                                   staticClass: "form-control",
                                   attrs: {
                                     id: "unit_of_measurements_id",
-                                    name: "unit_of_measurements_id"
+                                    name: "unit_of_measurements_id",
+                                    required: ""
                                   },
                                   on: {
                                     change: function($event) {
@@ -59669,7 +59729,7 @@ var render = function() {
                               _c(
                                 "label",
                                 { attrs: { for: "cigar_sizes_id" } },
-                                [_vm._v("Vitola")]
+                                [_vm._v("Vitóla")]
                               ),
                               _vm._v(" "),
                               _c(
@@ -59686,7 +59746,8 @@ var render = function() {
                                   staticClass: "form-control",
                                   attrs: {
                                     id: "cigar_sizes_id",
-                                    name: "cigar_sizes_id"
+                                    name: "cigar_sizes_id",
+                                    required: ""
                                   },
                                   on: {
                                     change: function($event) {
@@ -59712,7 +59773,7 @@ var render = function() {
                                   _c(
                                     "option",
                                     { attrs: { disabled: "", value: "" } },
-                                    [_vm._v("Seleccione una vitola")]
+                                    [_vm._v("Seleccione una vitóla")]
                                   ),
                                   _vm._v(" "),
                                   _vm._l(_vm.cigarSizes, function(size) {
@@ -59737,7 +59798,7 @@ var render = function() {
                               _c(
                                 "label",
                                 { attrs: { for: "category_products_id" } },
-                                [_vm._v("Categoria")]
+                                [_vm._v("Categoría")]
                               ),
                               _vm._v(" "),
                               _c(
@@ -59754,7 +59815,8 @@ var render = function() {
                                   staticClass: "form-control",
                                   attrs: {
                                     id: "category_products_id",
-                                    name: "category_products_id"
+                                    name: "category_products_id",
+                                    required: ""
                                   },
                                   on: {
                                     change: function($event) {
@@ -59780,7 +59842,7 @@ var render = function() {
                                   _c(
                                     "option",
                                     { attrs: { disabled: "", value: "" } },
-                                    [_vm._v("Seleccione una categoria")]
+                                    [_vm._v("Seleccione una categoría")]
                                   ),
                                   _vm._v(" "),
                                   _vm._l(_vm.categoryProducts, function(
@@ -59805,7 +59867,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("div", { staticClass: "form-group" }, [
                               _c("label", { attrs: { for: "barcode" } }, [
-                                _vm._v("Codigo de barras")
+                                _vm._v("Código de barras")
                               ]),
                               _vm._v(" "),
                               _c("input", {
@@ -59818,7 +59880,11 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                attrs: { type: "", name: "barcode" },
+                                attrs: {
+                                  type: "",
+                                  name: "barcode",
+                                  required: ""
+                                },
                                 domProps: { value: _vm.barcode },
                                 on: {
                                   keyup: function($event) {
@@ -59850,7 +59916,7 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                attrs: { type: "", name: "name" },
+                                attrs: { type: "", name: "name", required: "" },
                                 domProps: { value: _vm.name },
                                 on: {
                                   input: function($event) {
@@ -59878,7 +59944,12 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                attrs: { type: "number", name: "netWeight" },
+                                attrs: {
+                                  type: "number",
+                                  name: "netWeight",
+                                  step: "0.01",
+                                  required: ""
+                                },
                                 domProps: { value: _vm.netWeight },
                                 on: {
                                   input: function($event) {
@@ -59973,24 +60044,7 @@ var render = function() {
                           2
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "modal-footer" }, [
-                          _c("input", {
-                            staticClass: "btn btn-primary",
-                            attrs: { type: "submit", value: "Guardar" }
-                          }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-sm-6" }, [
-                            _c("h1", [_vm._v("JSON")]),
-                            _vm._v(" "),
-                            _c("pre", [
-                              _vm._v(
-                                "                                            \n                                            " +
-                                  _vm._s(_vm.$data) +
-                                  "\n                                        "
-                              )
-                            ])
-                          ])
-                        ])
+                        _vm._m(2)
                       ])
                     ])
                   ]
@@ -60199,7 +60253,7 @@ var render = function() {
                               _c(
                                 "label",
                                 { attrs: { for: "cigar_sizes_id" } },
-                                [_vm._v("Vitola")]
+                                [_vm._v("Vitóla")]
                               ),
                               _vm._v(" "),
                               _c(
@@ -60245,7 +60299,7 @@ var render = function() {
                                   _c(
                                     "option",
                                     { attrs: { disabled: "", value: "" } },
-                                    [_vm._v("Seleccione una vitola")]
+                                    [_vm._v("Seleccione una vitóla")]
                                   ),
                                   _vm._v(" "),
                                   _vm._l(_vm.cigarSizes, function(size) {
@@ -60270,7 +60324,7 @@ var render = function() {
                               _c(
                                 "label",
                                 { attrs: { for: "category_products_id" } },
-                                [_vm._v("Categoria")]
+                                [_vm._v("Categoría")]
                               ),
                               _vm._v(" "),
                               _c(
@@ -60318,7 +60372,7 @@ var render = function() {
                                   _c(
                                     "option",
                                     { attrs: { disabled: "", value: "" } },
-                                    [_vm._v("Seleccione una categoria")]
+                                    [_vm._v("Seleccione una categoría")]
                                   ),
                                   _vm._v(" "),
                                   _vm._l(_vm.categoryProducts, function(
@@ -60343,7 +60397,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("div", { staticClass: "form-group" }, [
                               _c("label", { attrs: { for: "barcode" } }, [
-                                _vm._v("Codigo de barras")
+                                _vm._v("Código de barras")
                               ]),
                               _vm._v(" "),
                               _c("input", {
@@ -60424,7 +60478,11 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                attrs: { type: "number", name: "netWeight" },
+                                attrs: {
+                                  type: "number",
+                                  step: "0.01",
+                                  name: "netWeight"
+                                },
                                 domProps: { value: _vm.updatedCigar.netWeight },
                                 on: {
                                   input: function($event) {
@@ -60497,7 +60555,7 @@ var render = function() {
                           2
                         ),
                         _vm._v(" "),
-                        _vm._m(2)
+                        _vm._m(3)
                       ])
                     ])
                   ]
@@ -60505,20 +60563,6 @@ var render = function() {
               : _vm._e()
           ]
         )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-sm-7" }, [
-        _c("h1", [_vm._v("JSON")]),
-        _vm._v(" "),
-        _c("pre", [
-          _vm._v(
-            "                    \n                    " +
-              _vm._s(_vm.$data) +
-              "\n                "
-          )
-        ])
       ])
     ])
   ])
@@ -60542,7 +60586,18 @@ var staticRenderFns = [
         staticClass: "fa fa-pencil-square-o",
         attrs: { "aria-hidden": "true" }
       }),
-      _vm._v("Change image")
+      _vm._v("Cambiar imagen")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c("input", {
+        staticClass: "btn btn-primary",
+        attrs: { type: "submit", value: "Guardar" }
+      })
     ])
   },
   function() {
@@ -60571,7 +60626,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(8)
+var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(240)
 /* template */
@@ -60619,6 +60674,10 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+var _props$props$data$mou;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -60642,60 +60701,82 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 // import Chart from 'chart.js';
 
-/* harmony default export */ __webpack_exports__["default"] = ({
-	data: function data() {
+/* harmony default export */ __webpack_exports__["default"] = (_props$props$data$mou = {
 
-		return {
+	props: ['type', 'labels', 'values', 'values2', 'color', 'label1', 'label2']
 
-			show: false
-		};
+}, _defineProperty(_props$props$data$mou, 'props', {
+
+	type: {},
+	labels: {},
+	values: {},
+	values2: {},
+	color: {
+
+		default: 'rgba(220, 220, 220, 0.2)'
 	},
 
+	label1: {},
+	label2: {}
 
-	methods: {
-		showGraph: function showGraph() {
+}), _defineProperty(_props$props$data$mou, 'data', function data() {
 
-			this.show = true;
+	return {
 
-			// var canvas = document.getElementById('graph').getContext('2d');
+		show: false
+	};
+}), _defineProperty(_props$props$data$mou, 'mounted', function mounted() {
+
+	this.showGraph();
+}), _defineProperty(_props$props$data$mou, 'methods', {
+	showGraph: function showGraph() {
+
+		this.show = true;
+
+		// var canvas = document.getElementById('graph').getContext('2d');
 
 
-			var canvas = this.$refs.canvas.getContext('2d');
+		var canvas = this.$refs.canvas.getContext('2d');
 
-			new Chart(canvas, {
-				type: 'line',
-				data: {
+		new Chart(canvas, {
+			type: this.type,
+			data: {
 
-					labels: ['January', 'February', 'March'],
+				// labels: ['January', 'February', 'March'],
 
-					datasets: [{
-						label: 'Sales 2017',
-						backgroundColor: "rgba(220, 220, 220, 0.2)",
-						strokeColor: "rgba(220, 220,220,1)",
-						pointColor: "rgba(220, 220,220,1)",
-						pointStrokeColor: "#fff",
-						pointHighlightFill: "#fff",
-						pointHighlightStroke: "rgba(220, 220, 220, 1)",
+				labels: this.labels,
 
-						data: [30, 122, 80]
-					}, {
-						label: 'Sales 2018',
-						backgroundColor: "rgba(50, 220, 220, 10)",
-						strokeColor: "rgba(220, 220,220,1)",
-						pointColor: "rgba(220, 220,220,1)",
-						pointStrokeColor: "#fff",
-						pointHighlightFill: "#fff",
-						pointHighlightStroke: "rgba(220, 220, 220, 1)",
+				datasets: [{
+					label: 'Ventas 2017',
+					// backgroundColor:"rgba(220, 220, 220, 0.2)",
 
-						data: [10, 52, 5]
-					}]
-				}
+					backgroundColor: "#F5D0A9",
+					strokeColor: "rgba(220, 220,220,1)",
+					pointColor: "rgba(220, 220,220,1)",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(220, 220, 220, 1)",
 
-			});
-		}
+					// data: [ 30, 122, 80]
+					data: this.values
+				}, {
+					label: 'Ventas 2016',
+					backgroundColor: "rgba(50, 220, 220, 10)",
+					strokeColor: "rgba(220, 220,220,1)",
+					pointColor: "rgba(220, 220,220,1)",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(220, 220, 220, 1)",
+
+					// data: [ 10, 52, 5]
+
+					data: this.values2
+				}]
+			}
+
+		});
 	}
-
-});
+}), _props$props$data$mou);
 
 /***/ }),
 /* 241 */
@@ -60708,14 +60789,6 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "content" }, [
       _c("canvas", { ref: "canvas", attrs: { width: "800", height: "600" } })
-    ]),
-    _vm._v(" "),
-    _c("div", [
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", on: { click: _vm.showGraph } },
-        [_vm._v("Mostrar")]
-      )
     ])
   ])
 }
@@ -60731,6 +60804,2819 @@ if (false) {
 
 /***/ }),
 /* 242 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(243)
+/* template */
+var __vue_template__ = __webpack_require__(244)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\PieGraph.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-12b606ce", Component.options)
+  } else {
+    hotAPI.reload("data-v-12b606ce", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 243 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+var _props$props$data$mou;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+// import Chart from 'chart.js';
+
+/* harmony default export */ __webpack_exports__["default"] = (_props$props$data$mou = {
+
+	props: ['type', 'labels', 'values', 'values2', 'color', 'label1', 'label2', 'text']
+
+}, _defineProperty(_props$props$data$mou, 'props', {
+
+	type: {},
+	labels: {},
+	values: {},
+	values2: {},
+	color: {
+
+		default: 'rgba(220, 220, 220, 0.2)'
+	},
+
+	label1: {},
+	label2: {},
+	text: {}
+
+}), _defineProperty(_props$props$data$mou, 'data', function data() {
+
+	return {
+
+		show: false,
+
+		backgroundColors: []
+	};
+}), _defineProperty(_props$props$data$mou, 'mounted', function mounted() {
+
+	this.createColors();
+
+	this.showGraph();
+}), _defineProperty(_props$props$data$mou, 'methods', {
+	showGraph: function showGraph() {
+
+		this.show = true;
+
+		// var canvas = document.getElementById('graph').getContext('2d');
+
+		var canvas = this.$refs.canvas.getContext('2d');
+
+		new Chart(canvas, {
+			type: this.type,
+			data: {
+
+				// labels: ['January', 'February', 'March'],
+
+				labels: this.labels,
+
+				datasets: [{
+					label: 'Ventas 2017',
+					// backgroundColor:"rgba(220, 220, 220, 0.2)",
+
+					// backgroundColor:["#F5D0A9", "#0074D9", "#FF4136", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA"],
+
+					backgroundColor: this.backgroundColors,
+					strokeColor: "rgba(220, 220,220,1)",
+					pointColor: "rgba(220, 220,220,1)",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(220, 220, 220, 1)",
+
+					// data: [ 30, 122, 80]
+					data: this.values
+				}, {
+					label: 'Ventas 2016',
+					backgroundColor: "rgba(50, 220, 220, 10)",
+					strokeColor: "rgba(220, 220,220,1)",
+					pointColor: "rgba(220, 220,220,1)",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(220, 220, 220, 1)",
+
+					// data: [ 10, 52, 5]
+
+					data: this.values2
+				}]
+			},
+
+			options: {
+				responsive: true,
+				legend: {
+					position: 'bottom'
+				},
+				title: {
+					display: false,
+					text: this.text
+				},
+				animation: {
+					animateScale: true,
+					animateRotate: true
+				},
+				tooltips: {
+					callbacks: {
+						label: function label(tooltipItem, data) {
+
+							var dataset = data.datasets[tooltipItem.datasetIndex];
+							console.log(dataset);
+
+							var labels = data.labels;
+							console.log(labels);
+							console.log(labels[tooltipItem.index]);
+							var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+								return previousValue + currentValue;
+							});
+
+							var currentLabel = labels[tooltipItem.index];
+							var currentValue = dataset.data[tooltipItem.index];
+							var precentage = Math.floor(currentValue / total * 100 + 0.5);
+							return currentLabel + ": " + "$ " + currentValue + " Percentage:" + precentage + "%";
+						}
+					}
+				}
+			}
+
+		});
+	},
+	createColors: function createColors() {
+
+		var arrayOfColors = [];
+
+		this.values.forEach(function (item) {
+
+			var r = Math.floor(Math.random() * 250);
+			var g = Math.floor(Math.random() * 250);
+			var b = Math.floor(Math.random() * 250);
+			var color = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+
+			// console.log('test');
+
+
+			arrayOfColors.push(color);
+		});
+
+		return this.backgroundColors = arrayOfColors;
+	}
+}), _props$props$data$mou);
+
+/***/ }),
+/* 244 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "content" }, [
+      _c("canvas", { ref: "canvas", attrs: { width: "800", height: "600" } })
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-12b606ce", module.exports)
+  }
+}
+
+/***/ }),
+/* 245 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(246)
+/* template */
+var __vue_template__ = __webpack_require__(247)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\LineGraph.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1379715a", Component.options)
+  } else {
+    hotAPI.reload("data-v-1379715a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 246 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+var _props$props$data$mou;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+// import Chart from 'chart.js';
+
+/* harmony default export */ __webpack_exports__["default"] = (_props$props$data$mou = {
+
+	props: ['type', 'labels', 'values', 'values2', 'color', 'label1', 'label2']
+
+}, _defineProperty(_props$props$data$mou, 'props', {
+
+	type: {},
+	labels: {},
+	values: {},
+	values2: {},
+	color: {
+
+		default: 'rgba(220, 220, 220, 0.2)'
+	},
+
+	label1: {},
+	label2: {}
+
+}), _defineProperty(_props$props$data$mou, 'data', function data() {
+
+	return {
+
+		show: false
+	};
+}), _defineProperty(_props$props$data$mou, 'mounted', function mounted() {
+
+	this.showGraph();
+}), _defineProperty(_props$props$data$mou, 'methods', {
+	showGraph: function showGraph() {
+
+		this.show = true;
+
+		// var canvas = document.getElementById('graph').getContext('2d');
+
+
+		var canvas = this.$refs.canvas.getContext('2d');
+
+		new Chart(canvas, {
+			type: this.type,
+			data: {
+
+				// labels: ['January', 'February', 'March'],
+
+				labels: this.labels,
+
+				datasets: [{
+					label: 'Ventas 2017',
+					backgroundColor: "rgba(220, 220, 220, 0.2)",
+
+					// backgroundColor:"#F5D0A9",
+					strokeColor: "rgba(220, 220,220,1)",
+					pointColor: "rgba(220, 220,220,1)",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(220, 220, 220, 1)",
+
+					// data: [ 30, 122, 80]
+					data: this.values
+				}, {
+					label: 'Ventas 2016',
+					backgroundColor: "rgba(50, 220, 220, 10)",
+					strokeColor: "rgba(220, 220,220,1)",
+					pointColor: "rgba(220, 220,220,1)",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(220, 220, 220, 1)",
+
+					// data: [ 10, 52, 5]
+
+					data: this.values2
+				}]
+			}
+
+		});
+	}
+}), _props$props$data$mou);
+
+/***/ }),
+/* 247 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "content" }, [
+      _c("canvas", { ref: "canvas", attrs: { width: "800", height: "600" } })
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1379715a", module.exports)
+  }
+}
+
+/***/ }),
+/* 248 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(249)
+/* template */
+var __vue_template__ = null
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Order.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-510b1367", Component.options)
+  } else {
+    hotAPI.reload("data-v-510b1367", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 249 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+	props: {
+
+		companies: {},
+
+		cigars: {},
+
+		prices: []
+	},
+
+	data: function data() {
+
+		return {
+
+			company_id: '',
+
+			cigar_id: '',
+
+			cigar_barcode: [],
+
+			brand_name: '',
+
+			quantity: 0,
+
+			total_net_weight: 0,
+
+			total_boxes: 0,
+
+			total_packs: 0,
+
+			total_cigars: 0,
+
+			shipping_quote: 0,
+
+			final_freight_cost: 0,
+
+			amount_order_total: 0.00,
+
+			grand_total: 0.00,
+
+			amount_due: 0,
+
+			cliente: this.companies,
+
+			productos: this.cigars,
+
+			precios: this.prices,
+
+			selectedCliente: {},
+
+			selectedProducto: {},
+
+			price: {},
+
+			seletedAgent: {},
+
+			companyPrice: {},
+
+			detail: [],
+
+			detailExist: false,
+
+			noValue: '-'
+
+		};
+	},
+
+
+	methods: {
+
+		agregrarProd: function agregrarProd() {
+
+			this.validateProduct();
+
+			var cigar_barcode = this.getCigarBarcode();
+			var brand_name = this.getBrandName();
+			var cigar_name = this.getCigarName();
+			var cigar_size_name = this.getCigarSizeName();
+			var cigar_netWeight = this.getCigarNetWeight();
+			var cigar_unitOfMeasurement_name = this.getUnitOfMeasurement();
+			var cigar_unitsInPresentation = this.getUnitsInPresentation();
+
+			//alert(brand_name);
+
+			// var DistTypeName = this.getDistType();
+
+			// console.log(ProdName); console.log(DistTypeName); console.log(this.Products);  console.log(this.DistribTypes);
+
+			if (this.cigar_id == '' || cigar_barcode[0] == '' || brand_name[0] == '' || cigar_name == '' || this.price == '') {
+
+				toastr.warning('Favor llenar los campos requeridos!');
+			} else {
+
+				if (!this.detailExist) {
+
+					this.detail.push([this.cigar_id, cigar_barcode[0], brand_name[0], cigar_name[0], cigar_size_name[0], cigar_netWeight[0], this.price[0].price, this.quantity, cigar_unitOfMeasurement_name[0], cigar_unitsInPresentation[0], this.quantity * cigar_unitsInPresentation, this.quantity * this.price[0].price]);
+
+					var suma = 0;
+
+					var boxes = 0;
+
+					var packs = 0;
+
+					var totalCigars = 0;
+
+					var amount_order_total = 0;
+
+					var grand_total = 0;
+
+					var selectedTerm = this.selectedCliente.map(function (item) {
+
+						return item.payment_term.id;
+					});
+
+					//alert(selectedTerm);
+
+					for (var i = 0; i < this.detail.length; i++) {
+
+						suma = Math.round(suma + this.detail[i][5] * this.detail[i][10] * 100) / 100;
+
+						if (this.detail[i][8] == 'box/caja') {
+
+							boxes = boxes + parseInt(this.detail[i][7]);
+						}
+
+						if (this.detail[i][8] == 'mazo/bundle') {
+
+							packs = packs + parseInt(this.detail[i][7]);
+						}
+
+						totalCigars = totalCigars + this.detail[i][10];
+
+						amount_order_total = amount_order_total + this.detail[i][11];
+
+						if (selectedTerm == 1) {
+
+							grand_total = amount_order_total + parseInt(this.shipping_quote);
+						} else {
+
+							grand_total = amount_order_total + parseInt(this.final_freight_cost);
+						}
+					}
+
+					this.total_net_weight = suma;
+
+					this.total_boxes = boxes;
+
+					this.total_packs = packs;
+
+					this.total_cigars = totalCigars;
+
+					this.amount_order_total = amount_order_total;
+
+					this.grand_total = grand_total;
+
+					this.amount_due = grand_total;
+
+					this.selectedProducto = {};
+
+					// this.cigar_id='';
+
+					// this.cigar_barcode= '';
+
+					this.quantity = '';
+
+					this.price = '';
+				} else {
+
+					toastr.error('Este producto ya fue agregado!');
+				}
+			}
+		},
+
+		validateProduct: function validateProduct() {
+
+			var arregloInterno = [this.cigar_id];
+
+			var match = [];
+
+			this.detail.forEach(function (detail) {
+
+				if (detail[0] == arregloInterno[0]) {
+
+					match.push(arregloInterno);
+				}
+			});
+
+			if (match.length > 0) {
+
+				return this.detailExist = true;
+			} else {
+
+				return this.detailExist = false;
+			}
+
+			arregloInterno = [];
+		},
+
+		getCigarBarcode: function getCigarBarcode() {
+
+			return this.selectedProducto.map(function (producto) {
+
+				return producto.barcode;
+			});
+
+			//  var barcode = this.selectedProducto.map(function(producto){
+
+			// 	return producto.cigar_barcode;
+			// });
+
+
+			//  return barcode;
+
+
+			//return this.cigar_barcode = barcode;
+
+			// this.cigar_barcode = this.selectedProducto.map(function(producto){
+
+			// 	return producto.cigar_barcode;
+			// });
+		},
+
+		getBrandName: function getBrandName() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.brand_group.name;
+			});
+
+			// this.brand_name = this.selectedProducto.map(function(item){
+
+			// 	return item.brand_group.name;
+
+
+			// });
+		},
+
+		getCigarName: function getCigarName() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.name;
+			});
+		},
+
+		getCigarSizeName: function getCigarSizeName() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.cigar_size.name;
+			});
+		},
+
+		getCigarNetWeight: function getCigarNetWeight() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.netWeight;
+			});
+		},
+
+		getUnitOfMeasurement: function getUnitOfMeasurement() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.unit_of_measurement.name;
+			});
+		},
+
+		getUnitsInPresentation: function getUnitsInPresentation() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.unitsInPresentation;
+			});
+		},
+
+		buscarCompany: function buscarCompany() {
+			var _this = this;
+
+			this.selectedCliente = {};
+
+			this.detail = [];
+
+			this.total_net_weight = 0;
+
+			this.total_boxes = 0;
+
+			this.total_packs = 0;
+
+			this.total_cigars = 0;
+
+			this.amount_order_total = 0;
+
+			this.grand_total = 0;
+
+			this.amount_due = 0;
+
+			this.selectedCliente = this.cliente.filter(function (item) {
+				return item.id == _this.company_id;
+			});
+
+			var id = this.selectedCliente.map(function (cliente) {
+
+				return cliente.customer_type_id;
+			});
+
+			// this.buscarPrice();
+
+			this.companyPrice = this.precios.filter(function (item) {
+				return item.customer_type_id == id;
+			});
+		},
+
+		buscarPrecio: function buscarPrecio() {
+			var _this2 = this;
+
+			// this.price = this.companyPrice.filter(function(object){
+
+			// 	 return object.filter((item)=> item.cigar_id = this.cigar_id);
+			// });
+
+			this.price = this.companyPrice.filter(function (item) {
+				return item.cigar_id == _this2.cigar_id;
+			});
+
+			this.selectedProducto = {}, this.selectedProducto = this.productos.filter(function (item) {
+				return item.id == _this2.cigar_id;
+			});
+
+			// this.getCigarBarcode();
+
+			// this.getBrandName();
+
+		},
+
+		removeRow: function removeRow(item) {
+
+			console.log(item);
+
+			var index = this.detail.indexOf(item);
+
+			console.log(index);
+			if (index > -1) {
+				this.detail.splice(index, 1);
+			}
+		}
+
+		// buscarProducto:function(){
+
+		// 	this.selectedProducto = {},
+
+		// 	this.selectedProducto = this.productos.filter((item) => item.id == this.cigar_id);
+
+		// }
+
+
+	},
+
+	computed: {
+
+		searchCompany: function searchCompany() {
+			var _this3 = this;
+
+			this.selectedCliente = {}, this.selectedCliente = this.cliente.filter(function (item) {
+				return item.id == _this3.company_id;
+			});
+
+			// this.companyPrice = this.prices.filter((item) => item.customer_type_id == this.selectedCliente.customer_type_id);
+
+			return this.selectedCliente;
+		}
+
+		// searchAgent:function(){
+
+		// 	alert(clienteId);
+
+
+		// 	this.seletedAgent = this.cliente.filter((item) =>item.id == this.);
+
+		// 	alert(this.seletedAgent);
+
+		// 	return this.seletedAgent;
+		// }
+
+	}
+
+});
+
+/***/ }),
+/* 250 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(251)
+/* template */
+var __vue_template__ = null
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\OrderPanel.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7907030d", Component.options)
+  } else {
+    hotAPI.reload("data-v-7907030d", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 251 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+
+		return {
+
+			compressed: true
+
+		};
+	}
+});
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(253)
+/* template */
+var __vue_template__ = null
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\AddPrice.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6dbbd79f", Component.options)
+  } else {
+    hotAPI.reload("data-v-6dbbd79f", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 253 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+	props: {
+
+		prices: {}
+
+	},
+
+	data: function data() {
+
+		return {
+
+			price_registration_id: '',
+
+			cigar_id: '',
+
+			customer_type_id: '',
+
+			price: '',
+
+			precios: this.prices,
+
+			priceExist: false
+
+		};
+	},
+
+
+	methods: {
+
+		createPrice: function createPrice() {
+
+			this.validateProduct();
+
+			if (this.priceExist) {
+
+				toastr.warning('El precio para este producto y distribuidor ya existe!');
+			}
+		},
+
+		validateProduct: function validateProduct() {
+
+			var arregloInterno = [this.customer_type_id, this.cigar_id];
+
+			var match = [];
+
+			this.precios.forEach(function (precio) {
+
+				if (precio.customer_type_id == arregloInterno[0] && precio.cigar_id == arregloInterno[1]) {
+
+					match.push(arregloInterno);
+				}
+			});
+
+			if (match.length > 0) {
+
+				return this.priceExist = true;
+			} else {
+
+				return this.priceExist = false;
+			}
+
+			arregloInterno = [];
+		}
+
+	}
+});
+
+/***/ }),
+/* 254 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(255)
+/* template */
+var __vue_template__ = null
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\EditOrder.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3eac7006", Component.options)
+  } else {
+    hotAPI.reload("data-v-3eac7006", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 255 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+	props: {
+
+		cigars: {},
+
+		details: {},
+
+		prices: [],
+
+		order: []
+
+	},
+
+	created: function created() {
+
+		this.loadDetails();
+
+		this.getAmounts();
+	},
+
+	data: function data() {
+
+		return {
+
+			detailProducts: [],
+
+			detalle: this.details,
+
+			cigar_id: '',
+
+			companyPrice: {},
+
+			precios: this.prices,
+
+			orden: this.order,
+
+			price: [],
+
+			productos: this.cigars,
+
+			selectedProducto: {},
+
+			quantity: 0,
+
+			detailExist: false,
+
+			total_net_weight: 0,
+
+			payment_term: this.order.payment_term_name,
+
+			total_boxes: 0,
+
+			total_packs: 0,
+
+			total_cigars: 0,
+
+			shipping_quote: 0,
+
+			final_freight_cost: 0,
+
+			amount_order_total: 0.00,
+
+			grand_total: 0.00,
+
+			amount_due: 0
+
+		};
+	},
+
+
+	methods: {
+
+		agregrarProd: function agregrarProd() {
+
+			this.validateProduct();
+
+			var brand_name = this.getBrandName2();
+			var cigar_name = this.getCigarName2();
+			var cigar_size_name = this.getCigarSizeName2();
+			var cigar_barcode = this.getCigarBarcode2();
+			var cigar_unitOfMeasurement_name = this.getUnitOfMeasurement2();
+			var cigar_unitsInPresentation = this.getUnitsInPresentation2();
+			var cigar_netWeight = this.getCigarNetWeight2();
+
+			if (this.cigar_id == '' || cigar_barcode[0] == '' || brand_name[0] == '' || cigar_name == '' || cigar_name == '' || cigar_size_name == '' || cigar_unitOfMeasurement_name == '' || this.price == '') {
+
+				toastr.warning('Favor llenar los campos requeridos!');
+			} else {
+
+				if (!this.detailExist) {
+
+					this.detailProducts.push([this.cigar_id, cigar_barcode[0], brand_name[0], cigar_name[0], cigar_size_name[0], cigar_netWeight[0], this.quantity, cigar_unitOfMeasurement_name[0], cigar_unitsInPresentation[0], this.quantity * cigar_unitsInPresentation, this.price[0].price, this.quantity * this.price[0].price]);
+
+					this.getAmounts();
+
+					this.selectedProducto = {};
+
+					this.quantity = '';
+
+					this.price = '';
+				} else {
+
+					toastr.error('Este producto ya fue agregado!');
+				}
+			}
+		},
+
+		validateProduct: function validateProduct() {
+
+			var arregloInterno = [this.cigar_id];
+
+			var match = [];
+
+			this.detailProducts.forEach(function (detail) {
+
+				if (detail[0] == arregloInterno[0]) {
+
+					match.push(arregloInterno);
+				}
+			});
+
+			if (match.length > 0) {
+
+				return this.detailExist = true;
+			} else {
+
+				return this.detailExist = false;
+			}
+
+			arregloInterno = [];
+		},
+
+		getAmounts: function getAmounts() {
+
+			var suma = 0;
+
+			var boxes = 0;
+
+			var packs = 0;
+
+			var totalCigars = 0;
+
+			var amount_order_total = 0;
+
+			var grand_total = 0;
+
+			for (var i = 0; i < this.detailProducts.length; i++) {
+
+				suma = suma + this.detailProducts[i][5] * this.detailProducts[i][9];
+
+				if (this.detailProducts[i][7] == 'box/caja') {
+
+					boxes = boxes + parseInt(this.detailProducts[i][6]);
+				}
+
+				if (this.detailProducts[i][7] == 'mazo/bundle') {
+
+					packs = packs + parseInt(this.detailProducts[i][6]);
+				}
+
+				totalCigars = totalCigars + this.detailProducts[i][9];
+
+				amount_order_total = amount_order_total + this.detailProducts[i][11];
+
+				if (this.payment_term == 'Antes de envio') {
+
+					grand_total = amount_order_total + parseInt(this.shipping_quote);
+				} else {
+
+					grand_total = amount_order_total + parseInt(this.final_freight_cost);
+				}
+			}
+
+			this.total_net_weight = suma;
+
+			this.total_boxes = boxes;
+
+			this.total_packs = packs;
+
+			this.total_cigars = totalCigars;
+
+			this.amount_order_total = amount_order_total;
+
+			this.grand_total = grand_total;
+
+			this.amount_due = grand_total;
+		},
+
+		getBrandName2: function getBrandName2() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.brand_group.name;
+			});
+		},
+
+		getCigarName2: function getCigarName2() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.name;
+			});
+		},
+
+		getCigarSizeName2: function getCigarSizeName2() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.cigar_size.name;
+			});
+		},
+
+		getCigarBarcode2: function getCigarBarcode2() {
+
+			return this.selectedProducto.map(function (producto) {
+
+				return producto.barcode;
+			});
+		},
+
+		getUnitOfMeasurement2: function getUnitOfMeasurement2() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.unit_of_measurement.name;
+			});
+		},
+
+		getUnitsInPresentation2: function getUnitsInPresentation2() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.unitsInPresentation;
+			});
+		},
+
+		getCigarNetWeight2: function getCigarNetWeight2() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.netWeight;
+			});
+		},
+
+		loadDetails: function loadDetails() {
+
+			var cigar_id = this.getCigarId();
+
+			var cigar_barcode = this.getCigarBarcode();
+
+			var brand_name = this.getBrandName();
+
+			var cigar_name = this.getCigarName();
+
+			var cigar_size_name = this.getCigarSizeName();
+
+			var cigar_netWeight = this.getCigarNetWeight();
+
+			var quantity = this.getQuantity();
+
+			var cigar_unitOfMeasurement_name = this.getCigarUnitOfMeasurement();
+
+			var cigar_unitsInPresentation = this.getCigarUnitsInPresentation();
+
+			var cigar_price = this.getCigarPrice();
+
+			console.log(cigar_id);
+
+			for (var i = 0; i < cigar_id.length; i++) {
+
+				// console.log(cigar_id[i]);
+
+				this.detailProducts.push([cigar_id[i], cigar_barcode[i], brand_name[i], cigar_name[i], cigar_size_name[i], cigar_netWeight[i], quantity[i], cigar_unitOfMeasurement_name[i], cigar_unitsInPresentation[i], quantity[i] * cigar_unitsInPresentation[i], cigar_price[i], quantity[i] * cigar_price[i]]);
+			}
+		},
+
+		getCigarId: function getCigarId() {
+
+			return this.detalle.map(function (detail) {
+
+				return detail.cigar_id;
+			});
+		},
+
+		getCigarBarcode: function getCigarBarcode() {
+
+			return this.detalle.map(function (detail) {
+
+				return detail.cigar_barcode;
+			});
+		},
+
+		getBrandName: function getBrandName() {
+
+			return this.detalle.map(function (detail) {
+
+				return detail.brand_name;
+			});
+		},
+
+		getCigarName: function getCigarName() {
+
+			return this.detalle.map(function (detail) {
+
+				return detail.cigar_name;
+			});
+		},
+
+		getCigarSizeName: function getCigarSizeName() {
+
+			return this.detalle.map(function (detail) {
+
+				return detail.cigar_size_name;
+			});
+		},
+
+		getCigarNetWeight: function getCigarNetWeight() {
+
+			return this.detalle.map(function (detail) {
+
+				return detail.cigar_netWeight;
+			});
+		},
+
+		getQuantity: function getQuantity() {
+
+			return this.detalle.map(function (detail) {
+
+				return detail.quantity;
+			});
+		},
+
+		getCigarUnitOfMeasurement: function getCigarUnitOfMeasurement() {
+
+			return this.detalle.map(function (detail) {
+
+				return detail.cigar_unitOfMeasurement_name;
+			});
+		},
+
+		getCigarUnitsInPresentation: function getCigarUnitsInPresentation() {
+
+			return this.detalle.map(function (detail) {
+
+				return detail.cigar_unitsInPresentation;
+			});
+		},
+
+		getCigarPrice: function getCigarPrice() {
+
+			return this.detalle.map(function (detail) {
+
+				return detail.cigar_price;
+			});
+		},
+
+		removeRow2: function removeRow2(elemento) {
+
+			console.log(elemento);
+
+			// this.detailProducts.splice(elemento, 1);
+
+			//  		console.log(index);
+			if (elemento > -1) {
+				this.detailProducts.splice(elemento, 1);
+			}
+
+			this.getAmounts();
+		},
+
+		buscarCompany: function buscarCompany() {
+			var _this = this;
+
+			this.selectedCliente = {};
+
+			this.detail = [];
+
+			this.total_net_weight = 0;
+
+			this.total_boxes = 0;
+
+			this.total_packs = 0;
+
+			this.total_cigars = 0;
+
+			this.amount_order_total = 0;
+
+			this.grand_total = 0;
+
+			this.amount_due = 0;
+
+			this.selectedCliente = this.cliente.filter(function (item) {
+				return item.id == _this.company_id;
+			});
+
+			var id = this.selectedCliente.map(function (cliente) {
+
+				return cliente.customer_type_id;
+			});
+
+			// this.buscarPrice();
+
+			this.companyPrice = this.precios.filter(function (item) {
+				return item.customer_type_id == id;
+			});
+		},
+
+		searchPrice: function searchPrice() {
+			var _this2 = this;
+
+			this.price = this.precios.filter(function (item) {
+				return item.cigar_id == _this2.cigar_id;
+			});
+
+			this.selectedProducto = {}, this.selectedProducto = this.productos.filter(function (item) {
+				return item.id == _this2.cigar_id;
+			});
+		}
+
+	}
+
+});
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(257)
+/* template */
+var __vue_template__ = null
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\PriceRegistration.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-784d5d8a", Component.options)
+  } else {
+    hotAPI.reload("data-v-784d5d8a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 257 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        var _ref;
+
+        return _ref = {
+
+            DistribTypes: [],
+
+            Products: [],
+
+            customer_type_id: '',
+
+            cigar_id: '',
+
+            ProdDist: [],
+
+            priceExist: false,
+
+            cont: 0,
+
+            price: '',
+
+            name: '',
+
+            validPeriod: ''
+
+        }, _defineProperty(_ref, 'cigar_id', ''), _defineProperty(_ref, 'customer_type_id', ''), _defineProperty(_ref, 'errors', []), _ref;
+    },
+
+
+    created: function created() {
+        this.getDistribType();
+
+        this.getProduct();
+    },
+
+    methods: {
+
+        agregrarProd: function agregrarProd() {
+
+            // this.ProdDist.push([this.DistribTypeId, this.ProdId]); alert(validateProduct());
+
+            this.validateProduct();
+
+            var ProdName = this.getProdName();
+
+            var DistTypeName = this.getDistType();
+
+            // console.log(ProdName); console.log(DistTypeName); console.log(this.Products);  console.log(this.DistribTypes);
+
+            if (this.validPeriod == '' || this.cigar_id == '' || this.customer_type_id == '' || this.price == '') {
+
+                toastr.warning('Favor llenar los campos requeridos!');
+            } else {
+
+                if (!this.priceExist) {
+
+                    this.ProdDist.push([this.customer_type_id, DistTypeName, this.cigar_id, ProdName, this.price]);
+
+                    this.customer_type_id = '', this.cigar_id = '', this.price = '';
+                } else {
+
+                    toastr.error('El precio de producto ya fue agregado!');
+                }
+            }
+        },
+
+        getDistribType: function getDistribType() {
+            var _this = this;
+
+            axios.get('/axiosdistribType').then(function (response) {
+
+                _this.DistribTypes = response.data;
+            });
+        },
+
+        getProduct: function getProduct() {
+            var _this2 = this;
+
+            axios.get('/axiosproduct').then(function (response) {
+
+                _this2.Products = response.data;
+            });
+        },
+
+        validateProduct: function validateProduct() {
+
+            var arregloInterno = [this.customer_type_id, this.cigar_id];
+
+            var match = [];
+
+            this.ProdDist.forEach(function (precio) {
+
+                if (precio[0] == arregloInterno[0] && precio[2] == arregloInterno[1]) {
+
+                    match.push(arregloInterno);
+                }
+            });
+
+            if (match.length > 0) {
+
+                return this.priceExist = true;
+            } else {
+
+                return this.priceExist = false;
+            }
+
+            arregloInterno = [];
+        },
+
+        getProdName: function getProdName() {
+            var _this3 = this;
+
+            return this.Products.filter(function (item) {
+                return item.id == _this3.cigar_id;
+            }).map(function (item) {
+                return item.name;
+            });
+        },
+
+        getDistType: function getDistType() {
+            var _this4 = this;
+
+            return this.DistribTypes.filter(function (item) {
+                return item.id == _this4.customer_type_id;
+            }).map(function (item) {
+                return item.clienteTipo;
+            });
+        },
+
+        removeRow: function removeRow(item) {
+
+            console.log(item);
+
+            var index = this.ProdDist.indexOf(item);
+            if (index > -1) {
+                this.ProdDist.splice(index, 1);
+            }
+        },
+
+        createPrice: function createPrice() {
+            var _this5 = this;
+
+            var url = 'price-registration';
+
+            axios.post(url, {
+
+                validPeriod: this.validPeriod,
+
+                cigar_id: this.cigar_id,
+
+                customer_type_id: this.customer_type_id,
+
+                price: this.price
+            }).then(function (response) {
+
+                _this5.validPeriod = '';
+                _this5.cigar_id = '';
+                _this5.customer_type_id = '';
+                _this5.price = '';
+
+                toastr.success('Registo de precios creado con exito!');
+            }).catch(function (error) {
+
+                _this5.errors = error.response.data;
+            });
+        }
+
+    },
+
+    computed: {
+        searchProduct: function searchProduct() {
+            var _this6 = this;
+
+            return this.Products.filter(function (item) {
+                return item.name.toLowerCase().includes(_this6.name);
+            });
+        }
+
+    }
+
+});
+
+/***/ }),
+/* 258 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(259)
+/* template */
+var __vue_template__ = null
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\CreatePayment.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-bc073afa", Component.options)
+  } else {
+    hotAPI.reload("data-v-bc073afa", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 259 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+	props: {
+
+		orders: {}
+	},
+
+	data: function data() {
+
+		return {
+
+			ordenes: this.orders,
+
+			order_id: '',
+
+			selectedOrder: {},
+
+			amount_due: 0,
+
+			net_amount_paid: 0,
+
+			external_bank_commission: 0,
+
+			internal_bank_commission: 0,
+
+			new_amount_due: 0,
+
+			payment_not_complete: false
+
+		};
+	},
+
+
+	methods: {
+
+		buscarAmountDue: function buscarAmountDue() {
+			var _this = this;
+
+			this.selectedOrder = this.ordenes.filter(function (item) {
+				return item.id == _this.order_id;
+			});
+
+			this.amount_due = this.selectedOrder.map(function (item) {
+
+				return item.amount_due;
+			});
+		},
+
+		calcularNuevoMontoAdeudado: function calcularNuevoMontoAdeudado() {
+
+			// var new_amount_due = this.calcular();
+
+			// this.new_amount_due = new_amount_due;
+
+			var net_amount_paid = parseFloat(this.net_amount_paid);
+
+			var external_bank_commission = parseFloat(this.external_bank_commission);
+
+			var internal_bank_commission = parseFloat(this.internal_bank_commission);
+
+			var amount_due = parseFloat(this.amount_due);
+
+			var new_amount_due = net_amount_paid + external_bank_commission + internal_bank_commission - amount_due;
+
+			if (new_amount_due < 0) {
+
+				toastr.warning('El pago no esta completo!');
+
+				this.payment_not_complete = true;
+			}
+
+			return this.new_amount_due = Math.round((net_amount_paid + external_bank_commission + internal_bank_commission - amount_due) * 100) / 100;
+
+			// suma = Math.round(suma + (this.detail[i][5] * this.detail[i][10]) * 100)/100;
+
+		},
+
+		calcular: function calcular() {
+
+			return this.new_amount_due = this.net_amount_paid + this.external_bank_commission + this.internal_bank_commission - this.amount_due;
+		}
+	},
+
+	computed: {}
+
+});
+
+/***/ }),
+/* 260 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(261)
+/* template */
+var __vue_template__ = null
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\EditPayment.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-41692616", Component.options)
+  } else {
+    hotAPI.reload("data-v-41692616", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 261 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+	props: {
+
+		payment: {}
+	},
+
+	data: function data() {
+
+		return {
+
+			// ordenes:this.orders,
+
+			order_id: this.payment.order_id,
+
+			// selectedOrder:{},
+
+			amount_due: this.payment.amount_due,
+
+			net_amount_paid: this.payment.net_amount_paid,
+
+			external_bank_commission: this.payment.external_bank_commission,
+
+			internal_bank_commission: this.payment.internal_bank_commission,
+
+			new_amount_due: 0,
+
+			payment_not_complete: false
+
+		};
+	},
+
+
+	methods: {
+
+		calcularNuevoMontoAdeudado: function calcularNuevoMontoAdeudado() {
+
+			// var new_amount_due = this.calcular();
+
+			// this.new_amount_due = new_amount_due;
+
+			var net_amount_paid = parseFloat(this.net_amount_paid);
+
+			var external_bank_commission = parseFloat(this.external_bank_commission);
+
+			var internal_bank_commission = parseFloat(this.internal_bank_commission);
+
+			var amount_due = parseFloat(this.amount_due);
+
+			var new_amount_due = net_amount_paid + external_bank_commission + internal_bank_commission - amount_due;
+
+			if (new_amount_due < 0) {
+
+				toastr.warning('El pago no esta completo!');
+
+				this.payment_not_complete = true;
+			}
+
+			return this.new_amount_due = net_amount_paid + external_bank_commission + internal_bank_commission - amount_due;
+		},
+
+		calcular: function calcular() {
+
+			return this.new_amount_due = this.net_amount_paid + this.external_bank_commission + this.internal_bank_commission - this.amount_due;
+		}
+	},
+
+	computed: {}
+
+});
+
+/***/ }),
+/* 262 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(263)
+/* template */
+var __vue_template__ = null
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\EditPriceList.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-477c2236", Component.options)
+  } else {
+    hotAPI.reload("data-v-477c2236", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 263 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+	props: {
+
+		details: {},
+
+		distributortype: {},
+
+		cigars: {}
+	},
+
+	created: function created() {
+
+		this.loadDetails();
+
+		// this.getAmounts();
+	},
+
+	data: function data() {
+
+		return {
+
+			detalle: this.details,
+
+			cigar_id: '',
+
+			customer_type_id: '',
+
+			price: '',
+
+			ProdDist2: [],
+
+			tipoDistribuidor: this.distributortype,
+
+			puros: this.cigars,
+
+			priceExist: false
+
+		};
+	},
+
+
+	methods: {
+
+		agregrarProd: function agregrarProd() {
+
+			this.validateProduct();
+
+			var ProdName = this.getProdName();
+
+			// console.log(ProdName);
+
+			var DistTypeName = this.getDistType();
+
+			// console.log(ProdName); console.log(DistTypeName); console.log(this.Products);  console.log(this.DistribTypes);
+
+			if (this.validPeriod == '' || this.cigar_id == '' || this.customer_type_id == '' || this.price == '') {
+
+				toastr.warning('Favor llenar los campos requeridos!');
+			} else {
+
+				if (!this.priceExist) {
+
+					this.ProdDist2.push([this.customer_type_id, DistTypeName, this.cigar_id, ProdName, this.price]);
+
+					this.customer_type_id = '', this.cigar_id = '', this.price = '';
+				} else {
+
+					toastr.error('El precio de producto ya fue agregado!');
+				}
+			}
+		},
+
+		validateProduct: function validateProduct() {
+
+			var arregloInterno = [this.customer_type_id, this.cigar_id];
+
+			var match = [];
+
+			this.ProdDist2.forEach(function (precio) {
+
+				if (precio[0] == arregloInterno[0] && precio[2] == arregloInterno[1]) {
+
+					match.push(arregloInterno);
+				}
+			});
+
+			if (match.length > 0) {
+
+				return this.priceExist = true;
+			} else {
+
+				return this.priceExist = false;
+			}
+
+			arregloInterno = [];
+		},
+
+		getProdName: function getProdName() {
+			var _this = this;
+
+			return this.puros.filter(function (item) {
+				return item.id == _this.cigar_id;
+			}).map(function (item) {
+				return item.name;
+			});
+
+			// return this.puros.filter((item) => item.id == this.cigar_id);
+		},
+
+		getDistType: function getDistType() {
+			var _this2 = this;
+
+			return this.tipoDistribuidor.filter(function (item) {
+				return item.id == _this2.customer_type_id;
+			}).map(function (item) {
+				return item.clienteTipo;
+			});
+
+			// return this.tipoDistribuidor.filter((item) => item.id == this.customer_type_id);
+		},
+
+		loadDetails: function loadDetails() {
+
+			var cigar_id = this.getCigarId();
+
+			var cigarName = this.getCigarName();
+
+			var customer_type_id = this.getCustomerTypeId();
+
+			var DistTypeName = this.getDistTypeName();
+
+			console.log(DistTypeName);
+
+			var price = this.getPrice();
+
+			for (var i = 0; i < cigar_id.length; i++) {
+
+				this.ProdDist2.push([customer_type_id[i], DistTypeName[i], cigar_id[i], cigarName[i], price[i]]);
+			}
+
+			// var price = this.getPrice();
+
+			// for (var i = 0; i < cigar_id.length; i++) {
+
+
+			// 	this.ProdDist2.push([customer_type_id[i], DistTypeName[i][0].clienteTipo, cigar_id[i], cigarName[i][0].name, price[i]]);
+			// }
+		},
+
+		getCigarId: function getCigarId() {
+
+			return this.detalle.map(function (detail) {
+
+				return detail.cigar_id;
+			});
+		},
+
+		getCustomerTypeId: function getCustomerTypeId() {
+
+			return this.detalle.map(function (detail) {
+
+				return detail.customer_type_id;
+			});
+		},
+
+		getPrice: function getPrice() {
+
+			return this.detalle.map(function (detail) {
+
+				return detail.price;
+			});
+		},
+
+		getDistTypeName: function getDistTypeName() {
+
+			var distribuidor = this.tipoDistribuidor;
+
+			// return this.detalle.map(function(detalle){
+
+			// 	return distribuidor.filter(function(distribuidor, index){
+
+			// 		if(detalle.customer_type_id == distribuidor.id){
+
+			// 			// return distribuidor.clienteTipo;
+
+			// 			return distribuidor;
+
+
+			// 		}	
+
+			// 	});
+
+
+			// });
+
+			return this.detalle.map(function (detalle) {
+
+				return distribuidor.filter(function (distribuidor) {
+					return detalle.customer_type_id == distribuidor.id;
+				}).map(function (item) {
+					return item.clienteTipo;
+				});
+			});
+		},
+
+		getCigarName: function getCigarName() {
+
+			var cigars = this.puros;
+
+			// return this.detalle.map(function(detalle){
+
+			// 	return cigars.filter(function(cigar, index){
+
+			// 		if(detalle.cigar_id == cigar.id){
+
+			// 			return cigar.name;
+
+
+			// 		}	
+
+			// 	});
+
+
+			// });
+
+
+			return this.detalle.map(function (detalle) {
+
+				return cigars.filter(function (cigar) {
+					return detalle.cigar_id == cigar.id;
+				}).map(function (item) {
+					return item.name;
+				});
+			});
+		},
+
+		removeRow3: function removeRow3(elemento) {
+
+			console.log(elemento);
+
+			var index = this.ProdDist2.indexOf(elemento);
+
+			console.log(index);
+
+			if (index > -1) {
+
+				this.ProdDist2.splice(index, 1);
+			}
+		}
+
+	}
+});
+
+/***/ }),
+/* 264 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(265)
+/* template */
+var __vue_template__ = null
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\CustomerOrderCreate.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-17f20a85", Component.options)
+  } else {
+    hotAPI.reload("data-v-17f20a85", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 265 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+	props: {
+
+		companies: {},
+
+		cigars: {},
+
+		prices: []
+	},
+
+	data: function data() {
+
+		return {
+
+			company_id: '',
+
+			cigar_id: '',
+
+			cigar_barcode: [],
+
+			brand_name: '',
+
+			quantity: 0,
+
+			total_net_weight: 0,
+
+			total_boxes: 0,
+
+			total_packs: 0,
+
+			total_cigars: 0,
+
+			shipping_quote: 0,
+
+			final_freight_cost: 0,
+
+			amount_order_total: 0.00,
+
+			grand_total: 0.00,
+
+			amount_due: 0,
+
+			cliente: this.companies,
+
+			productos: this.cigars,
+
+			precios: this.prices,
+
+			selectedCliente: {},
+
+			selectedProducto: {},
+
+			price: {},
+
+			seletedAgent: {},
+
+			companyPrice: {},
+
+			detail: [],
+
+			detailExist: false,
+
+			noValue: '-'
+
+		};
+	},
+
+
+	methods: {
+
+		agregrarProd: function agregrarProd() {
+
+			this.validateProduct();
+
+			var cigar_barcode = this.getCigarBarcode();
+			var brand_name = this.getBrandName();
+			var cigar_name = this.getCigarName();
+			var cigar_size_name = this.getCigarSizeName();
+			var cigar_netWeight = this.getCigarNetWeight();
+			var cigar_unitOfMeasurement_name = this.getUnitOfMeasurement();
+			var cigar_unitsInPresentation = this.getUnitsInPresentation();
+
+			//alert(brand_name);
+
+			// var DistTypeName = this.getDistType();
+
+			// console.log(ProdName); console.log(DistTypeName); console.log(this.Products);  console.log(this.DistribTypes);
+
+			if (this.cigar_id == '' || cigar_barcode[0] == '' || brand_name[0] == '' || cigar_name == '' || this.price == '') {
+
+				toastr.warning('Favor llenar los campos requeridos!');
+			} else {
+
+				if (!this.detailExist) {
+
+					this.detail.push([this.cigar_id, cigar_barcode[0], brand_name[0], cigar_name[0], cigar_size_name[0], cigar_netWeight[0], this.price[0].price, this.quantity, cigar_unitOfMeasurement_name[0], cigar_unitsInPresentation[0], this.quantity * cigar_unitsInPresentation, this.quantity * this.price[0].price]);
+
+					var suma = 0;
+
+					var boxes = 0;
+
+					var packs = 0;
+
+					var totalCigars = 0;
+
+					var amount_order_total = 0;
+
+					var grand_total = 0;
+
+					var selectedTerm = this.selectedCliente.map(function (item) {
+
+						return item.payment_term.id;
+					});
+
+					//alert(selectedTerm);
+
+					for (var i = 0; i < this.detail.length; i++) {
+
+						suma = Math.round(suma + this.detail[i][5] * this.detail[i][10] * 100) / 100;
+
+						if (this.detail[i][8] == 'box/caja') {
+
+							boxes = boxes + parseInt(this.detail[i][7]);
+						}
+
+						if (this.detail[i][8] == 'mazo/bundle') {
+
+							packs = packs + parseInt(this.detail[i][7]);
+						}
+
+						totalCigars = totalCigars + this.detail[i][10];
+
+						amount_order_total = amount_order_total + this.detail[i][11];
+
+						if (selectedTerm == 1) {
+
+							grand_total = amount_order_total + parseInt(this.shipping_quote);
+						} else {
+
+							grand_total = amount_order_total + parseInt(this.final_freight_cost);
+						}
+					}
+
+					this.total_net_weight = suma;
+
+					this.total_boxes = boxes;
+
+					this.total_packs = packs;
+
+					this.total_cigars = totalCigars;
+
+					this.amount_order_total = amount_order_total;
+
+					this.grand_total = grand_total;
+
+					this.amount_due = grand_total;
+
+					this.selectedProducto = {};
+
+					// this.cigar_id='';
+
+					// this.cigar_barcode= '';
+
+					this.quantity = '';
+
+					this.price = '';
+				} else {
+
+					toastr.error('Este producto ya fue agregado!');
+				}
+			}
+		},
+
+		validateProduct: function validateProduct() {
+
+			var arregloInterno = [this.cigar_id];
+
+			var match = [];
+
+			this.detail.forEach(function (detail) {
+
+				if (detail[0] == arregloInterno[0]) {
+
+					match.push(arregloInterno);
+				}
+			});
+
+			if (match.length > 0) {
+
+				return this.detailExist = true;
+			} else {
+
+				return this.detailExist = false;
+			}
+
+			arregloInterno = [];
+		},
+
+		getCigarBarcode: function getCigarBarcode() {
+
+			return this.selectedProducto.map(function (producto) {
+
+				return producto.barcode;
+			});
+
+			//  var barcode = this.selectedProducto.map(function(producto){
+
+			// 	return producto.cigar_barcode;
+			// });
+
+
+			//  return barcode;
+
+
+			//return this.cigar_barcode = barcode;
+
+			// this.cigar_barcode = this.selectedProducto.map(function(producto){
+
+			// 	return producto.cigar_barcode;
+			// });
+		},
+
+		getBrandName: function getBrandName() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.brand_group.name;
+			});
+
+			// this.brand_name = this.selectedProducto.map(function(item){
+
+			// 	return item.brand_group.name;
+
+
+			// });
+		},
+
+		getCigarName: function getCigarName() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.name;
+			});
+		},
+
+		getCigarSizeName: function getCigarSizeName() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.cigar_size.name;
+			});
+		},
+
+		getCigarNetWeight: function getCigarNetWeight() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.netWeight;
+			});
+		},
+
+		getUnitOfMeasurement: function getUnitOfMeasurement() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.unit_of_measurement.name;
+			});
+		},
+
+		getUnitsInPresentation: function getUnitsInPresentation() {
+
+			return this.selectedProducto.map(function (item) {
+
+				return item.unitsInPresentation;
+			});
+		},
+
+		buscarCompany: function buscarCompany() {
+			var _this = this;
+
+			this.selectedCliente = {};
+
+			this.detail = [];
+
+			this.total_net_weight = 0;
+
+			this.total_boxes = 0;
+
+			this.total_packs = 0;
+
+			this.total_cigars = 0;
+
+			this.amount_order_total = 0;
+
+			this.grand_total = 0;
+
+			this.amount_due = 0;
+
+			this.selectedCliente = this.cliente.filter(function (item) {
+				return item.id == _this.company_id;
+			});
+
+			var id = this.selectedCliente.map(function (cliente) {
+
+				return cliente.customer_type_id;
+			});
+
+			// this.buscarPrice();
+
+			this.companyPrice = this.precios.filter(function (item) {
+				return item.customer_type_id == id;
+			});
+		},
+
+		buscarPrecio: function buscarPrecio() {
+			var _this2 = this;
+
+			// this.price = this.companyPrice.filter(function(object){
+
+			// 	 return object.filter((item)=> item.cigar_id = this.cigar_id);
+			// });
+
+			this.price = this.companyPrice.filter(function (item) {
+				return item.cigar_id == _this2.cigar_id;
+			});
+
+			this.selectedProducto = {}, this.selectedProducto = this.productos.filter(function (item) {
+				return item.id == _this2.cigar_id;
+			});
+
+			// this.getCigarBarcode();
+
+			// this.getBrandName();
+
+		},
+
+		removeRow: function removeRow(item) {
+
+			console.log(item);
+
+			var index = this.detail.indexOf(item);
+
+			console.log(index);
+			if (index > -1) {
+				this.detail.splice(index, 1);
+			}
+		}
+
+		// buscarProducto:function(){
+
+		// 	this.selectedProducto = {},
+
+		// 	this.selectedProducto = this.productos.filter((item) => item.id == this.cigar_id);
+
+		// }
+
+
+	},
+
+	computed: {
+
+		searchCompany: function searchCompany() {
+			var _this3 = this;
+
+			this.selectedCliente = {}, this.selectedCliente = this.cliente.filter(function (item) {
+				return item.id == _this3.company_id;
+			});
+
+			// this.companyPrice = this.prices.filter((item) => item.customer_type_id == this.selectedCliente.customer_type_id);
+
+			return this.selectedCliente;
+		}
+
+		// searchAgent:function(){
+
+		// 	alert(clienteId);
+
+
+		// 	this.seletedAgent = this.cliente.filter((item) =>item.id == this.);
+
+		// 	alert(this.seletedAgent);
+
+		// 	return this.seletedAgent;
+		// }
+
+	}
+
+});
+
+/***/ }),
+/* 266 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

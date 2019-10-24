@@ -11,9 +11,9 @@
 
                 <div class="col-sm-8">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Crear nuevo role</div>
+                        <div class="panel-heading">Crear nuevo rol</div>
                         <div class="panel-body">
-                            <a href="{{ url('/roles') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Atras</button></a>
+                            <a href="{{ url('/roles') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Atrás</button></a>
                             <br />
                             <br />
 

@@ -32,14 +32,14 @@
 
                             
 
-                            <li><a href="price-registration"><i class="fa fa-circle-o"></i> Registro de precios</a></li>
-                            <li><a href="category-product"><i class="fa fa-circle-o"></i>Categoria Productos</a></li>
-                            <li><a href="cigar_size"><i class="fa fa-circle-o"></i>Vitolas</a></li>
-                            <li><a href="unit-of-measurement"><i class="fa fa-circle-o"></i>Presentacion</a></li>
+                            <li><a href="{{ route('price_registration.index') }}"><i class="fa fa-circle-o"></i> Registro de precios</a></li>
+                            <li><a href="category-product"><i class="fa fa-circle-o"></i>Categoría productos</a></li>
+                            <li><a href="cigar_size"><i class="fa fa-circle-o"></i>Vitólas</a></li>
+                            <li><a href="unit-of-measurement"><i class="fa fa-circle-o"></i>Presentación</a></li>
                             <li><a href="brand-group"><i class="fa fa-circle-o"></i>Linea de puros</a></li>
-                            <li><a href="articles"><i class="fa fa-circle-o"></i>Articulos/Articles</a></li>
+                            <!-- <li><a href="articles"><i class="fa fa-circle-o"></i>Articulos/Articles</a></li>
 
-                             <li><a href="vuetask"><i class="fa fa-circle-o"></i>Tasks</a></li>
+                            <li><a href="vuetask"><i class="fa fa-circle-o"></i>Tasks</a></li> -->
 
                             
                         </ul>
@@ -71,19 +71,19 @@
 
 
                             <li>
-                                <a href="customer-type"><i class="fa fa-circle-o"></i>Categoria de Distribuidores</a>
+                                <a href="customer-type"><i class="fa fa-circle-o"></i>Categoría de distribuidores</a>
                             </li>
 
                             <li>
-                                <a href="company-type"><i class="fa fa-circle-o"></i>Tipos de companias</a>
+                                <a href="company-type"><i class="fa fa-circle-o"></i>Tipos de compañías</a>
                             </li>
 
                             <li>
-                                <a href="payment-term"><i class="fa fa-circle-o"></i>Terminos de pago</a>
+                                <a href="payment-term"><i class="fa fa-circle-o"></i>Términos de pago</a>
                             </li>
 
                             <li>
-                                <a href="incoterm"><i class="fa fa-circle-o"></i>Acuerdos Comerciales</a>
+                                <a href="incoterm"><i class="fa fa-circle-o"></i>Acuerdos comerciales</a>
                             </li>
                             <!-- <li><a href="country"><i class="fa fa-circle-o"></i>Paises</a></li> -->
                             <!-- <li><a href="title"><i class="fa fa-circle-o"></i>Titulos de Personas</a></li> -->
@@ -118,40 +118,68 @@
 
                 <li class="treeview">
 
-                    <a href="#">
-                        <!-- <i class="fa fa-th"></i> -->
-                        <i class="fa fa-shopping-cart"></i>
-                        <span>Ordenes</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="compras/ingreso"><i class="fa fa-circle-o"></i>Ordenes</a></li>
-                        <li><a href="compras/proveedor"><i class="fa fa-circle-o"></i>Envios</a></li>
-                    </ul>
+                    @can('order.index')
+
+                        <a href="#">
+                            <!-- <i class="fa fa-th"></i> -->
+                            <i class="fa fa-shopping-cart"></i>
+                            <span>Órdenes</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{ route('order.index') }}"><i class="fa fa-circle-o"></i>Órdenes</a></li>
+                        </ul>
+                    @endcan
                 </li>
+
                 <li class="treeview">
-                    <a href="#">
-                        
-                        <i class="fa fa-fw fa-credit-card"></i>
-                        <span>Pagos</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="ventas/venta"><i class="fa fa-circle-o"></i> Pagos</a></li>
-                        <li><a href="ventas/cliente"><i class="fa fa-circle-o"></i> Clientes</a></li>
-                    </ul>
+
+                    @can('shipping.index')
+
+                        <a href="#">
+                            <!-- <i class="fa fa-th"></i> -->
+                            <i class="fa fa-fw fa-plane"></i>
+                            <span>Envíos</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{ route('shipping.index') }}"><i class="fa fa-circle-o"></i>Envíos</a></li>
+                        </ul>
+                    @endcan
+                </li>
+                
+                <li class="treeview">
+
+                    @can('payment.index')
+                        <a href="#">
+                            
+                            <i class="fa fa-fw fa-credit-card"></i>
+                            <span>Pagos</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+
+                            <li><a href="{{ route('payment.index') }}"><i class="fa fa-circle-o"></i> Pagos</a></li>
+                           
+                        </ul>
+
+                    @endcan
                 </li>
 
                  <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-pie-chart"></i>
-                        <span>Reportes</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="ventas/venta"><i class="fa fa-circle-o"></i> Reportes de ventas</a></li>
-                        <li><a href="ventas/cliente"><i class="fa fa-circle-o"></i> Consultas</a></li>
-                    </ul>
+
+                    @can('reports.index')
+                        <a href="#">
+                            <i class="fa fa-pie-chart"></i>
+                            <span>Reportes</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{ route('reports.index') }}"><i class="fa fa-circle-o"></i> Reportes estadísticos</a></li>
+                            
+                        </ul>
+
+                    @endcan
                 </li>
 
 
@@ -178,6 +206,39 @@
                     @can('roles.index')
                         <ul class="treeview-menu">
                             <li><a href="{{ route('roles.index') }}"><i class="fa fa-circle-o"></i> Roles</a></li>
+
+                        </ul>
+                    @endcan
+
+
+
+
+
+                    @endcan
+                </li>
+
+
+                <li class="treeview">
+
+                    @can('customer_order.index')
+
+
+                    <a href="#">
+                        <!-- <i class="fa fa-folder"></i>  -->
+                        <i class="fa fa-laptop"></i>
+                        <span>Customer Options</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    @can('customer_order.create')
+                        <ul class="treeview-menu">
+                            <li><a href="{{ route('customer_order.create') }}"><i class="fa fa-circle-o"></i> Create order</a></li>
+
+                        </ul>
+                    @endcan
+
+                    @can('customer_order.index')
+                        <ul class="treeview-menu">
+                            <li><a href="{{ route('customer_order.index') }}"><i class="fa fa-circle-o"></i> My orders</a></li>
 
                         </ul>
                     @endcan

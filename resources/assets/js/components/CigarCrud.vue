@@ -10,7 +10,7 @@
 
                     </a>
                 <div class="panel panel-default">
-                    <div class="panel-heading">Lista de Puros</div>
+                    <div class="panel-heading">Lista de productos</div>
 
                        <!--  <div class="level"> -->
 
@@ -35,12 +35,12 @@
 
                                 <img :src="'/imagenes/cigars/' + cigar.image"  height="300px" width="300px" class="img-thumbnail"><br>
 
-                                <label>Codigo de barra: </label> {{ cigar.barcode }} <br>
+                                <label>Código de barra: </label> {{ cigar.barcode }} <br>
 
                                 <label>Nombre: </label> {{ cigar.name }} <br>
-                                <label>Vitola: </label> {{ cigar.cigar_size.name }} <br>
-                                <label>Peso Neto: </label> {{ cigar.netWeight }} <br>
-                                <label>Presentacion: </label> {{ cigar.unitsInPresentation }} <br>
+                                <label>Vitóla: </label> {{ cigar.cigar_size.name }} <br>
+                                <label>Peso neto: </label> {{ cigar.netWeight }} <br>
+                                <label>Presentación: </label> {{ cigar.unitsInPresentation }} <br>
                                 <label>Linea: </label> {{ cigar.brand_group.name }} <br>
                                 <label>Unidad: </label> {{ cigar.unit_of_measurement.name }} <br>
 
@@ -63,11 +63,11 @@
 
                                 <a v-bind:href="'/cigars/' + cigar.id + '/edit'" title="Edit customerType">
 
-                                    <button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Change image</button>
+                                    <button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Cambiar imagen</button>
 
                                 </a>
 
-                                <a href="#" class="btn btn-danger btn-xs" v-on:click.prevent="deleteCigar(cigar)">Eliminar</a>
+                                <a href="#" class="btn btn-danger btn-xs" v-on:click.prevent="deleteCigar(cigar)">Deshabilitar</a>
 
                                 <!-- <a href="#" title="Change the picture" class="btn btn-primary btn-xs" v-on:click.prevent="editPhoto(cigar)">
 
@@ -94,7 +94,7 @@
                   <ul class="pagination">
                     <li v-if="pagination.current_page >1">
                       <a href="#" aria-label="Previous" @click.prevent="changePage(pagination.current_page -1)">
-                        <span aria-hidden="true">&laquo; Atras</span>
+                        <span aria-hidden="true">&laquo; Atrás</span>
                       </a>
                     </li>
                     <li v-for="page in pagesNumber" v-bind:class="page == isActived ? 'active' : ''">
@@ -141,7 +141,7 @@
 
                                             <label for="brand_groups_id">Linea</label>
 
-                                            <select  v-model="brand_groups_id" id="brand_groups_id" name ='brand_groups_id' class ="form-control">
+                                            <select  v-model="brand_groups_id" id="brand_groups_id" name ='brand_groups_id' class ="form-control" required>
 
                                                     <option disabled value="">Seleccione un linea o marca</option>
                                                 
@@ -159,7 +159,7 @@
 
                                             <label for="unit_of_measurements_id">Unidad</label>
 
-                                             <select  v-model="unit_of_measurements_id" id="unit_of_measurements_id" name ='unit_of_measurements_id' class ="form-control">
+                                             <select  v-model="unit_of_measurements_id" id="unit_of_measurements_id" name ='unit_of_measurements_id' class ="form-control" required>
 
                                                     <option disabled value="">Seleccione una presentación</option>
                                                 
@@ -175,11 +175,11 @@
 
                                         <div class="form-group">
 
-                                            <label for="cigar_sizes_id">Vitola</label>
+                                            <label for="cigar_sizes_id">Vitóla</label>
 
-                                             <select  v-model="cigar_sizes_id" id="cigar_sizes_id" name ='cigar_sizes_id' class ="form-control">
+                                             <select  v-model="cigar_sizes_id" id="cigar_sizes_id" name ='cigar_sizes_id' class ="form-control" required>
 
-                                                    <option disabled value="">Seleccione una vitola</option>
+                                                    <option disabled value="">Seleccione una vitóla</option>
                                                 
                                                     <option v-for="size in cigarSizes" v-bind:value="size.id">
 
@@ -193,11 +193,11 @@
 
                                          <div class="form-group">
 
-                                            <label for="category_products_id">Categoria</label>
+                                            <label for="category_products_id">Categoría</label>
 
-                                             <select  v-model="category_products_id" id="category_products_id" name ='category_products_id' class ="form-control">
+                                             <select  v-model="category_products_id" id="category_products_id" name ='category_products_id' class ="form-control" required>
 
-                                                    <option disabled value="">Seleccione una categoria</option>
+                                                    <option disabled value="">Seleccione una categoría</option>
                                                 
                                                     <option v-for="category in categoryProducts" v-bind:value="category.id">
 
@@ -211,9 +211,9 @@
 
                                         <div class="form-group">
 
-                                            <label for="barcode">Codigo de barras</label>
+                                            <label for="barcode">Código de barras</label>
 
-                                            <input type="" v-on:keyup.prevent="validateProduct" name="barcode" class="form-control" v-model="barcode">
+                                            <input type="" v-on:keyup.prevent="validateProduct" name="barcode" class="form-control" v-model="barcode" required>
                                             
                                         </div>
 
@@ -221,7 +221,7 @@
 
                                             <label for="name">Nombre</label>
 
-                                            <input type="" name="name" class="form-control" v-model="name">
+                                            <input type="" name="name" class="form-control" v-model="name" required>
                                             
                                         </div>
 
@@ -230,7 +230,7 @@
 
                                             <label for="netWeight">Peso neto en gr</label>
 
-                                            <input type="number" name="netWeight" class="form-control" v-model="netWeight">
+                                            <input type="number" name="netWeight" class="form-control" step="0.01" v-model="netWeight" required>
                                             
                                         </div>
 
@@ -259,11 +259,13 @@
 
                                         <span v-for="error in errors" class="text-danger"> {{ error }}</span>
                                     </div>
+
+
                                     <div class="modal-footer">
                                         
                                         <input type="submit" class="btn btn-primary" value="Guardar" >
 
-                                        <div class="col-sm-6" >
+                                       <!--  <div class="col-sm-6" >
             
                                             <h1>JSON</h1>
 
@@ -271,7 +273,7 @@
                                                 
                                                 {{ $data }}
                                             </pre>
-                                        </div>
+                                        </div> -->
                                     </div>  
 
                                    
@@ -345,11 +347,11 @@
 
                                         <div class="form-group">
 
-                                            <label for="cigar_sizes_id">Vitola</label>
+                                            <label for="cigar_sizes_id">Vitóla</label>
 
                                              <select  v-model="updatedCigar.cigar_sizes_id" id="cigar_sizes_id" name ='cigar_sizes_id' class ="form-control">
 
-                                                    <option disabled value="">Seleccione una vitola</option>
+                                                    <option disabled value="">Seleccione una vitóla</option>
                                                 
                                                     <option v-for="size in cigarSizes" v-bind:value="size.id">
 
@@ -363,11 +365,11 @@
 
                                          <div class="form-group">
 
-                                            <label for="category_products_id">Categoria</label>
+                                            <label for="category_products_id">Categoría</label>
 
                                              <select  v-model="updatedCigar.category_products_id" id="category_products_id" name ='category_products_id' class ="form-control">
 
-                                                    <option disabled value="">Seleccione una categoria</option>
+                                                    <option disabled value="">Seleccione una categoría</option>
                                                 
                                                     <option v-for="category in categoryProducts" v-bind:value="category.id">
 
@@ -381,7 +383,7 @@
 
                                         <div class="form-group">
 
-                                            <label for="barcode">Codigo de barras</label>
+                                            <label for="barcode">Código de barras</label>
 
                                             <input type="" v-on:keyup.prevent="validateProduct" name="barcode" class="form-control" v-model="updatedCigar.barcode">
                                             
@@ -400,7 +402,7 @@
 
                                             <label for="netWeight">Peso neto en gr</label>
 
-                                            <input type="number" name="netWeight" class="form-control" v-model="updatedCigar.netWeight">
+                                            <input type="number" step="0.01" name="netWeight" class="form-control" v-model="updatedCigar.netWeight">
                                             
                                         </div>
 
@@ -498,7 +500,7 @@
         </div>
 
 
-        <div class="row">
+        <!-- <div class="row">
             
             <div class="col-sm-7" >
                     
@@ -509,7 +511,7 @@
                         {{ $data }}
                     </pre>
             </div>
-        </div>
+        </div> -->
 
            
           
@@ -724,7 +726,9 @@
 
                         // if(!this.productExist){
 
-                            var url = 'cigars/';
+                            var url ='cigars'
+
+                            // var url = 'cigars/';
                             axios.post(url, {
 
                                 brand_groups_id: this.brand_groups_id,

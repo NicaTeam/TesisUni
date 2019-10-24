@@ -21,13 +21,13 @@
                             </ul>
                         @endif
 
-                        <form method="POST" action="{{ url('/price-registration/' . $priceregistration->id) }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
-                            {{ method_field('PATCH') }}
-                            {{ csrf_field() }}
+                       
 
-                            @include ('price-registration.editForm', ['submitButtonText' => 'Update'])
+                         {!! Form::model($priceregistration, ['route' =>['price_registration.update', $priceregistration->id], 'method' => 'PATCH'], [['class' => 'form-horizontal'], ['accept-charset'=>'UTF-8'], ['enctype'=>'multipart/form-data']] ) !!}
 
-                        </form>
+                            @include('price-registration.editForm', ['submitButtonText' =>'Actualizar'])
+
+                        {!! Form::close() !!}  
 
                     </div>
                 </div>

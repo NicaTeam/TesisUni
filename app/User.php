@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->hasMany('SalesProgram\Article');
     }
 
+    public function orders(){
+
+        return $this->hasMany(Order::class);
+    }
+
     public function registration(){
 
 

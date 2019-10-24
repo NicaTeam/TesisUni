@@ -28,7 +28,9 @@ class Company extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'countries_id', 'company_types_id', 'shippingAddress', 'telephone', 'payment_term_id', 'incoterm_id'];
+    protected $fillable = ['name', 'countries_id', 'company_types_id', 'shippingAddress', 'telephone', 'payment_term_id', 'incoterm_id', 'customer_type_id'];
+
+    protected $with = ['country', 'persons', 'paymentTerm', 'incoterm', 'agent', 'customertype'];
 
 
     public function country(){
@@ -48,11 +50,18 @@ class Company extends Model
 
     }
 
-    public function customerTypes()
-    {
-        return $this->belongsToMany(CustomerType::class)->withTimestamps();//'company_customer_type', 'company_id','customer_type_id')->withPivot('active')
+    // public function customerTypes()
+    // {
+    //     return $this->belongsToMany(CustomerType::class)->withTimestamps();//'company_customer_type', 'company_id','customer_type_id')->withPivot('active')
 
+    // }
+
+    public function customertype()
+    {
+
+        return $this->belongsTo(CustomerType::class, 'customer_type_id');
     }
+
 
     public function customers(){
 
@@ -68,6 +77,12 @@ class Company extends Model
     public function customsAgent()
     {
         return $this->hasManyThrough(CustomsAgency::class, Customer::class, 'companies_id', 'customer_id', 'id', 'id');
+    }
+
+    public function agent()
+    {
+
+        return $this->hasMany(Agent::class);
     }
 
 
@@ -93,6 +108,11 @@ class Company extends Model
     public function incoterm(){
 
         return $this->belongsTo(Incoterm::class);
+    }
+
+    public function orders(){
+
+        return $this->hasMany(Order::class);
     }
 
 

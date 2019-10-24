@@ -54,14 +54,30 @@ class PriceRegistrationDatailController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $requestData = $request->all();
-        
-        PriceRegistrationDetail::create($requestData);
 
-        Session::flash('flash_message', 'PriceRegistrationDetail added!');
+        // dd($request);
 
-        return redirect('price-registration-datail');
+        $registerId = $request->get('price_registration_id');
+        
+        
+        
+        PriceRegistrationDetail::create([
+
+            'price_registration_id' => $request->get('price_registration_id'),
+            'cigar_id' => $request->get('cigar_id'),
+            'customer_type_id' => $request->get('customer_type_id'),
+            'price' => $request->get('price'),
+            'active' => 1,
+
+
+
+        ]);
+
+        // Session::flash('flash_message', 'PriceRegistrationDetail added!');
+
+        return back()->with('flash', 'Precio agregado exitosamente!');
+
+        // return redirect('price-registration/'.$registerId)->with('flash', 'Precio agregado exitosamente!');
     }
 
     /**

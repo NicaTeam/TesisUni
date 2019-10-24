@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
         // $this->call(CustomerTypeTableSeeder::class);
         // $this->call(TitleTableSeeder::class);
         //$this->call(IncotermTableSeeder::class);
+        //$this->call(FreightTypeTableSeeder::class);
+        // $this->call(StatusTableSeeder::class);
+        // $this->call(FreightProviderSeederTable::class);
 
        
     }

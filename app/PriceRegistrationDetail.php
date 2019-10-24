@@ -27,6 +27,8 @@ class PriceRegistrationDetail extends Model
      */
     protected $fillable = ['price_registration_id', 'cigar_id', 'customer_type_id', 'price', 'active'];
 
+    // protected $with= ['customerType'];
+
     public function priceRegistration(){
 
         return $this->belongsTo(PriceRegistration::class);

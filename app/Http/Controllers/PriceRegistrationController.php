@@ -162,13 +162,21 @@ class PriceRegistrationController extends Controller
     {
         $priceregistration = PriceRegistration::findOrFail($id);
 
+        // $price_registration = PriceRegistration::where('id', '=', $id)->pluck('validPeriod', 'id');
+
+        $price_registration = PriceRegistration::where('id', '=', $id)->get();
+
+        $cigars = Cigar::where('active', '=', 1)->get();
+
+        $customerTypes = CustomerType::all();
+
 //        $PriceRegistrationDetail = PriceRegistrationDetail::where('price_registration_id', '=', $id)->get();
 
 //        $PriceRegistrationDetail = PriceRegistrationDetail::findOrFail(::where('price_registration_id', '=', $id));
 //
 //       dd($PriceRegistrationDetail);
 
-        return view('price-registration.show', compact('priceregistration','$PriceRegistrationDetail'));
+        return view('price-registration.show', compact('priceregistration','price_registration', 'cigars', 'customerTypes'));
     }
 
     /**
@@ -180,9 +188,22 @@ class PriceRegistrationController extends Controller
      */
     public function edit($id)
     {
+
         $priceregistration = PriceRegistration::findOrFail($id);
 
-        return view('price-registration.edit', compact('priceregistration'));
+        // dd($priceregistration);
+
+        $cigars = Cigar::where('active', '=', 1)->get();
+
+        $customerTypes = CustomerType::all();
+
+        $distributortype = CustomerType::where('id', '>', 0)->get();
+
+        // dd($cigars);
+
+        // dd($priceregistration->priceRegistrationDetails);
+
+        return view('price-registration.edit', compact('priceregistration', 'cigars', 'customerTypes', 'distributortype'));
     }
 
     /**
@@ -195,15 +216,65 @@ class PriceRegistrationController extends Controller
      */
     public function update($id, Request $request)
     {
-        
-        $requestData = $request->all();
-        
-        $priceregistration = PriceRegistration::findOrFail($id);
-        $priceregistration->update($requestData);
 
-        Session::flash('flash_message', 'PriceRegistration updated!');
+        try{
 
-        return redirect('price-registration');
+            DB::beginTransaction();
+
+
+            $priceregistration = PriceRegistration::findOrFail($id);
+
+            $priceregistration->update([
+
+                'validPeriod' => $request->get('validPeriod'),
+
+            ]);
+
+            $cigar_id = $request->get('cigar_id');
+            $customer_type_id = $request->get('customer_type_id');
+            $price = $request->get('price');
+            $active = 1;
+
+
+            $priceregistration->priceRegistrationDetails()->delete();
+
+
+            $cont = 0;
+
+            while ($cont < count($cigar_id)){
+
+                $priceregistration->priceRegistrationDetails()->create([
+
+                    'cigar_id' => $cigar_id[$cont],
+                    'customer_type_id' => $customer_type_id[$cont],
+                    'price' => $price[$cont],
+                    'active' => $active,
+
+                ]);
+                
+                $cont = $cont + 1;
+            }
+
+            DB::commit();
+
+
+        }catch(\Exception $e)
+        {
+
+
+            DB::rollback();
+
+        }
+
+
+        // $requestData = $request->all();
+        
+        // $priceregistration = PriceRegistration::findOrFail($id);
+        // $priceregistration->update($requestData);
+
+        // Session::flash('flash_message', 'PriceRegistration updated!');
+
+        return redirect('price-registration')->with('flash', 'Lista de precios actualizada exitosamente!');
     }
 
     /**

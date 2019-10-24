@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'run-migrations' => true,
+    'run-migrations' => false,
 ];

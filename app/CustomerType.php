@@ -25,21 +25,40 @@ class customerType extends Model
      *
      * @var array
      */
+
+
+    protected $guarded = [];
+    
     protected $fillable = ['clienteTipo', 'descripcion'];
 
+    protected $with = ['priceRegistrationDetail'];
 
-    public function companies(){
+
+    // public function companies(){
 
 
-        return $this->belongsToMany(Company::class);//, 'company_customer_type', 'company_id','customer_type_id'
+    //     return $this->belongsToMany(Company::class);//, 'company_customer_type', 'company_id','customer_type_id'
 
+
+    // }
+
+    public function companies()
+    {
+
+        return $this->hasMany(Company::class);
 
     }
 
-    public function priceRegistrationDetail(){
+    // public function priceRegistrationDetail(){
 
-        return $this->belongsToMany(PriceRegistrationDetail::class);
+    //     return $this->belongsToMany(PriceRegistrationDetail::class);
 
+    // }
+
+    public function priceRegistrationDetail()
+    {
+
+        return $this->hasMany(PriceRegistrationDetail::class);
     }
 
     

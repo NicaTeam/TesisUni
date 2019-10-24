@@ -28,8 +28,10 @@
 
 
 
-                            <form  v-on:submit="createProduct" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('cigars.create')}}"   accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
                                 {{ csrf_field() }}
+
+                                <!-- v-on:submit="createProduct" -->
 
                                 <!-- action="{{ url('/price-registration') }}" -->
 

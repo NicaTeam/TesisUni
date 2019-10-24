@@ -43,7 +43,7 @@
                                                         <th>#</th>
                                                         <th>Nombre</th>
                                                         <th>Correo</th>
-                                                        <th>Compañia</th>
+                                                        <th>Compañía</th>
                                                         <th>Estado</th>
                                                         <th>Rol</th>
                                                         <!-- <th>Actions</th> -->

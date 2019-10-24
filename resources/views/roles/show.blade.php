@@ -26,7 +26,7 @@
                         </tr>
 
                         <tr>
-                            <th>Slug</th><td>{{ $role->slug }}</td>
+                            <th>Alias</th><td>{{ $role->slug }}</td>
                         </tr>
 
                         <tr>
@@ -52,9 +52,9 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Slug</th>
-                                <th>Decripcion</th>
+                                <th>Nombre</th>
+                                <th>Alias</th>
+                                <th>Decripción</th>
 
                                 
                                 <!-- <th>Actions</th> -->
@@ -87,7 +87,7 @@
 
                             @else
 
-                                <tr>Este role no tiene permisos todavia!</tr>
+                                <tr>Este role no tiene permisos todavía!</tr>
 
 
                             @endif

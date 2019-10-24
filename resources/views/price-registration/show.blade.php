@@ -11,13 +11,13 @@
                     <div class="panel-body">
 
                         <a href="{{ url('/price-registration') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Atras</button></a>
-                        <a href="{{ url('/price-registration/' . $priceregistration->id . '/edit') }}" title="Edit PriceRegistration"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button></a>
-
+                        <!-- <a href="{{ url('/price-registration/' . $priceregistration->id . '/edit') }}" title="Edit PriceRegistration"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button></a> -->
+<!-- 
                         <form method="POST"  action="{{ url('price-registration' . '/' . $priceregistration->id) }}" accept-charset="UTF-8" style="display:inline">
                             {{ method_field('DELETE') }}
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-danger btn-xs" title="Delete PriceRegistration" onclick="return confirm('Esta seguro de deshabilitar esta lista de precios?')"><i class="fa fa-trash-o" aria-hidden="true"></i> Deshabilitar</button>
-                        </form>
+                        </form> -->
                         <br/>
                         <br/>
 
@@ -114,7 +114,15 @@
                             <table class="table table-borderless">
                                 <thead>
                                 <tr>
-                                    <th>#</th><th>Tipo de distribuidor</th><th>Cigar Id</th><th>Nombre</th><th>Unidad</th><th>Presentacion</th><th>Price<th>Active</th><th>Opciones</th>
+                                    <th>#</th>
+                                    <th>Tipo de distribuidor</th>
+                                    <th>Cigar Id</th>
+                                    <th>Nombre</th>
+                                    <th>Unidad</th>
+                                    <th>Presentacion</th>
+                                    <th>Price</th>
+                                    <th>Active</th>
+                                    <!-- <th>Opciones</th> -->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -129,9 +137,21 @@
 
                                                 <tr>
                                                     <td>{{$loop->iteration or  $item->id }}</td>
-                                                    <td>{{ $ct->clienteTipo}}</td><td>{{ $item->cigar_id}}</td><td>{{ $cigar->name}}</td><td>{{ $cigar->unitOfMeasurement->name}}</td><td>{{ $cigar->unitsInPresentation}}</td><td>{{ $item->price}}</td>
+
+                                                    <td>{{ $ct->clienteTipo}}</td>
+
+                                                    <td>{{ $item->cigar_id}}</td>
+
+                                                    <td>{{ $cigar->name}}</td>
+
+                                                    <td>{{ $cigar->unitOfMeasurement->name}}</td>
+
+                                                    <td>{{ $cigar->unitsInPresentation}}</td>
+
+                                                    <td>{{ $item->price}}</td>
+
                                                     <td>{{ $item->active}}</td>
-                                                    <td>
+                                                   <!--  <td>
                                                         <a href="{{ url('/cigars/' . $cigar->id) }}" title="View Person"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> Ver</button></a>
                                                         <a href="{{ url('/person/' . $item->id . '/edit') }}" title="Edit Person"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button></a>
 
@@ -140,7 +160,7 @@
                                                             {{ csrf_field() }}
                                                             <button type="submit" class="btn btn-danger btn-xs" title="Delete Person" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
                                                         </form>
-                                                    </td>
+                                                    </td> -->
                                                 </tr>
 
                                                 {{----}}
@@ -154,6 +174,45 @@
                                 </tbody>
                             </table>
                             {{--<div class="pagination-wrapper"> {!! $person->appends(['search' => Request::get('search')])->render() !!} </div>--}}
+                        </div>
+
+                        <div class="comments">
+
+                            <div class="list-group">
+
+                                <strong>Agregar precio:</strong>
+                                
+
+                            </div>
+                            
+
+                        </div>
+
+                        <hr>
+
+                        <div class="card">
+
+                            <div class="card-block">
+
+                                <form method="POST" action="{{ route('price_registration2.create', $priceregistration->id )}}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+
+                                    {{ csrf_field() }}
+
+                                    {{--action="/price-registration/{{ $priceregistration->id }}/prices"--}}
+
+
+                                    @include('price-registration.addPriceForm')
+
+
+                                </form>
+
+
+                                @include('errors.list')
+                                
+
+                            </div>
+                            
+
                         </div>
 
                     </div>

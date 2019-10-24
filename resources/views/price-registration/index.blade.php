@@ -11,7 +11,7 @@
                     <div class="panel-body">
 
                         @can('price-registration.create')
-                        <a href="{{ url('/price-registration/create') }}" class="btn btn-success btn-sm" title="Add New PriceRegistration">
+                        <a href="{{ route('price_registration.create') }}" class="btn btn-success btn-sm" title="Add New PriceRegistration">
                             <i class="fa fa-plus" aria-hidden="true"></i> Agregar un nuevo registro
                         </a>
 
@@ -43,8 +43,22 @@
                                         <td>{{ $loop->iteration or $item->id }}</td>
                                         <td>{{ $item->user_id }}</td><td>{{ $item->user->name }}</td><td>{{ $item->validPeriod }}</td><td>{{ $item->active }}</td>
                                         <td>
-                                            <a href="{{ url('/price-registration/' . $item->id) }}" title="View PriceRegistration"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> Ver</button></a>
-                                            <a href="{{ url('/price-registration/' . $item->id . '/edit') }}" title="Edit PriceRegistration"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button></a>
+                                            <a href="{{ route('price_registration.show', $item->id) }}" title="View PriceRegistration">
+
+                                                <button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> Ver</button>
+
+                                            </a>
+
+                                            <!-- <a href="{{ url('/price-registration/' . $item->id . '/edit') }}" title="Edit PriceRegistration"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button></a>  -->
+                                            @can('price_registration.edit')
+
+                                                <a href="{{ route('price_registration.edit', $item->id) }}" title="Edit PriceRegistration">
+
+                                                    <button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button>
+
+                                                </a>
+
+                                            @endcan 
 
                                             <form method="POST" action="{{ url('/price-registration' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
                                                 {{ method_field('DELETE') }}

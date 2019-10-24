@@ -7,7 +7,6 @@ import './bootstrap';
 
 Vue.component('vue-laravel-crud', require('./views/CRUD.vue'));
 
-
 Vue.component('test-crud', require('./views/pricecrud.vue'));
 
 Vue.component('flash', require('./components/Flash.vue'));
@@ -17,6 +16,30 @@ Vue.component('cigar-crud', require('./components/CigarCrud.vue'));
 Vue.component('flash', require('./components/Flash.vue'));
 
 Vue.component('graph', require('./components/Graph.vue'));
+
+Vue.component('piegraph', require('./components/PieGraph.vue'));
+
+Vue.component('linegraph', require('./components/LineGraph.vue'));
+
+Vue.component('order', require('./components/Order.vue'));
+
+Vue.component('orderpanel', require('./components/OrderPanel.vue'));
+
+Vue.component('addprice', require('./components/AddPrice.vue'));
+
+Vue.component('editorder', require('./components/EditOrder.vue'));
+
+Vue.component('priceregistration', require('./components/PriceRegistration.vue'));
+
+Vue.component('createpayment', require('./components/CreatePayment.vue'));
+
+Vue.component('editpayment', require('./components/EditPayment.vue'));
+
+Vue.component('editpricelist', require('./components/EditPriceList.vue'));
+
+Vue.component('customerordercreate', require('./components/CustomerOrderCreate.vue'));
+
+
 
 new Vue({
 
@@ -152,233 +175,259 @@ new Vue({
 });
 
 
-new Vue({
-    el: '#priceRegistration',
+// new Vue({
+//     el: '#priceRegistration',
 
 
-    created:function () {
-    	this.getDistribType();
+//     created:function () {
+//     	this.getDistribType();
 
-    	this.getProduct();
+//     	this.getProduct();
 
-    },
+//     },
 
    
 
-    data:{
+//     data:{
 
-    	DistribTypes: [],
+//     	DistribTypes: [],
 
-    	Products:[],
+//     	Products:[],
 
-    	customer_type_id: '',
+//     	customer_type_id: '',
 
-    	cigar_id:'',
+//     	cigar_id:'',
 
-    	ProdDist: [],
+//     	ProdDist: [],
 
-    	priceExist: false,
+//     	priceExist: false,
 
-    	cont: 0,
+//     	cont: 0,
 
-    	price:'',
+//     	price:'',
 
-    	name:'',
+//     	name:'',
 
-    	validPeriod: '',
+//     	validPeriod: '',
 
-    	cigar_id: '',
+//     	cigar_id: '',
 
-    	customer_type_id: '',
+//     	customer_type_id: '',
 
-    	errors: []
+//     	errors: []
 
-    },
+//     },
 
-    methods:{
+//     methods:{
 
-    	agregrarProd: function(){
+//     	agregrarProd: function(){
 
-    		// this.ProdDist.push([this.DistribTypeId, this.ProdId]); alert(validateProduct());
+//     		// this.ProdDist.push([this.DistribTypeId, this.ProdId]); alert(validateProduct());
 
-    		this.validateProduct();
+//     		this.validateProduct();
 
-    		var ProdName = this.getProdName();
+//     		var ProdName = this.getProdName();
 
-    		var DistTypeName = this.getDistType();
+//     		var DistTypeName = this.getDistType();
 
-    		// console.log(ProdName); console.log(DistTypeName); console.log(this.Products);  console.log(this.DistribTypes);
+//     		// console.log(ProdName); console.log(DistTypeName); console.log(this.Products);  console.log(this.DistribTypes);
 
-            if(this.validPeriod=='' || this.cigar_id =='' || this.customer_type_id=='' || this.price ==''){
+//             if(this.validPeriod=='' || this.cigar_id =='' || this.customer_type_id=='' || this.price ==''){
 
-                toastr.warning('Favor llenar los campos requeridos!');
+//                 toastr.warning('Favor llenar los campos requeridos!');
 
-            }else{
+//             }else{
 
-                if(!this.priceExist){
+//                 if(!this.priceExist){
 
-                    this.ProdDist.push([this.customer_type_id, DistTypeName, this.cigar_id, ProdName, this.price]);
+//                     this.ProdDist.push([this.customer_type_id, DistTypeName, this.cigar_id, ProdName, this.price]);
 
-                    this.customer_type_id= '',
+//                     this.customer_type_id= '',
 
-                    this.cigar_id='',
+//                     this.cigar_id='',
 
-                    this.price =''
+//                     this.price =''
 
-                }else{
+//                 }else{
 
-                    toastr.error('El precio de producto ya fue agregado!');
-                }
-            }
+//                     toastr.error('El precio de producto ya fue agregado!');
+//                 }
+//             }
 
-    	},
-
-
-    	getDistribType: function(){
-
-    		axios.get('/axiosdistribType').then(response => {
-
-    			this.DistribTypes = response.data;
+//     	},
 
 
-    		});
-    	},
+//     	getDistribType: function(){
 
-    	getProduct: function(){
+//     		axios.get('/axiosdistribType').then(response => {
 
-    		axios.get('/axiosproduct').then(response => {
-
-    			this.Products = response.data;
-
-    		});
-
-    	},
-
-    	validateProduct: function() {
-
-    		var arregloInterno = [this.customer_type_id, this.cigar_id];
-
-    		var match = [];
-
-    		this.ProdDist.forEach(function(precio){
-
-    			if((precio[0] == arregloInterno[0]) && (precio[2] == arregloInterno[1])){
-
-    				match.push(arregloInterno);
-
-    			}
-    		});
-
-    		if(match.length > 0){
-
-    			return this.priceExist = true;
-    		}else{
-
-    			return this.priceExist = false;
-    		}
-
-    		arregloInterno = [];
-
-    	},
+//     			this.DistribTypes = response.data;
 
 
+//     		});
+//     	},
 
-    	getProdName:function() {
+//     	getProduct: function(){
+
+//     		axios.get('/axiosproduct').then(response => {
+
+//     			this.Products = response.data;
+
+//     		});
+
+//     	},
+
+//     	validateProduct: function() {
+
+//     		var arregloInterno = [this.customer_type_id, this.cigar_id];
+
+//     		var match = [];
+
+//     		this.ProdDist.forEach(function(precio){
+
+//     			if((precio[0] == arregloInterno[0]) && (precio[2] == arregloInterno[1])){
+
+//     				match.push(arregloInterno);
+
+//     			}
+//     		});
+
+//     		if(match.length > 0){
+
+//     			return this.priceExist = true;
+//     		}else{
+
+//     			return this.priceExist = false;
+//     		}
+
+//     		arregloInterno = [];
+
+//     	},
 
 
-    		return this.Products.filter((item) => item.id == this.cigar_id).map((item) => item.name);
+
+//     	getProdName:function() {
+
+
+//     		return this.Products.filter((item) => item.id == this.cigar_id).map((item) => item.name);
     		
-    	},
+//     	},
 
-    	getDistType:function() {
+//     	getDistType:function() {
 
 
-    		return this.DistribTypes.filter((item) => item.id == this.customer_type_id).map((item) => item.clienteTipo);
+//     		return this.DistribTypes.filter((item) => item.id == this.customer_type_id).map((item) => item.clienteTipo);
     		
-    	},
+//     	},
 
-    	removeRow: function(item){
+//     	removeRow: function(item){
 
-    		console.log(item);
+//     		console.log(item);
 
-    		var index = this.ProdDist.indexOf(item);
-			if (index > -1) {
-			  this.ProdDist.splice(index, 1);
-			}
-
-
-    	},
+//     		var index = this.ProdDist.indexOf(item);
+// 			if (index > -1) {
+// 			  this.ProdDist.splice(index, 1);
+// 			}
 
 
-    	createPrice: function(){
-
-    		var url = 'price-registration';
-
-    		axios.post(url, {
-
-    			validPeriod: this.validPeriod,
-
-    			cigar_id: this.cigar_id,
-
-    			customer_type_id: this.customer_type_id,
-
-    			price: this.price,
-    		}).then(response => {
-
-    			this.validPeriod = '';
-    			this.cigar_id = '';
-    			this.customer_type_id ='';
-    			this.price ='';
-
-    			toastr.success('Registo de precios creado con exito!');
-    		}).catch(error => {
-
-    			this.errors =error.response.data
-    		});
-    	}
+//     	},
 
 
-    },
+//     	createPrice: function(){
 
-    computed:{
-    	searchProduct: function(){
-    		return this.Products.filter((item) => item.name.toLowerCase().includes(this.name));
-    	}
+//     		var url = 'price-registration';
 
-    }
+//     		axios.post(url, {
+
+//     			validPeriod: this.validPeriod,
+
+//     			cigar_id: this.cigar_id,
+
+//     			customer_type_id: this.customer_type_id,
+
+//     			price: this.price,
+//     		}).then(response => {
+
+//     			this.validPeriod = '';
+//     			this.cigar_id = '';
+//     			this.customer_type_id ='';
+//     			this.price ='';
+
+//     			toastr.success('Registo de precios creado con exito!');
+//     		}).catch(error => {
+
+//     			this.errors =error.response.data
+//     		});
+//     	}
+
+
+//     },
+
+//     computed:{
+//     	searchProduct: function(){
+//     		return this.Products.filter((item) => item.name.toLowerCase().includes(this.name));
+//     	}
+
+//     }
  
-});
+// });
 
 
 new Vue({
 
 
     el:'#app2',
-});
 
-
-new Vue({
-
-
-    el:'#app3CigarCreated',
-});
-
-new Vue({
-
-    el:'#appcigar_crud',
-});
-
-new Vue({
-
- el:'#flashComponent',
 
 
 });
 
-new Vue({
 
-    el:'#graphComponent'
-});
+
+
+
+
+
+// new Vue({
+
+
+//     el:'#app3CigarCreated',
+// });
+
+// new Vue({
+
+//     el:'#appcigar_crud',
+// });
+
+// new Vue({
+
+//  el:'#flashComponent',
+
+
+// });
+
+// new Vue({
+
+//     el:'#graphComponent',
+// });
+
+// new Vue({
+
+//     el:'#orderComponent',
+// });
+
+// new Vue({
+
+//     el:'#orderPanel',
+
+//     data:{
+
+//         compressed:true,
+//     }
+// });
+
+
+
 
 
 

@@ -10,7 +10,7 @@
                     <div class="panel-body">
                         @can('roles.create')
                             <a href="{{ route('roles.create') }}" class="btn btn-success btn-sm" title="Agregar un nuevo usuario">
-                                <i class="fa fa-plus" aria-hidden="true"></i> Agregrar nuevo role
+                                <i class="fa fa-plus" aria-hidden="true"></i> Agregrar nuevo rol
                             </a>
 
                         @endcan
@@ -45,7 +45,7 @@
                                                     <tr>
                                                         <th>#</th>
                                                         <th>Nombre</th>
-                                                        <th>Slug</th>
+                                                        <th>Alias</th>
                                                         <th>Decripción</th>
                                                         <th>Permiso Especial</th>
                                                         

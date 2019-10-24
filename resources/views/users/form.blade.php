@@ -59,14 +59,14 @@
 
 <div class="form-group {{ $errors->has('company_id') ? 'has-error' : ''}}">
 
-    <label for="company_id" class="col-md-4 control-label">{{ 'Compañia' }}</label>
+    <label for="company_id" class="col-md-4 control-label">{{ 'Compañía' }}</label>
     <div class="col-sm-6">
 
         
 
         <select  id="company_id" name ='company_id' class ="form-control" required>
 
-            <option value=""> Selecciones una compañia</option>
+            <option value=""> Selecciones una compañía</option>
             @foreach($companies as $company)
 
 

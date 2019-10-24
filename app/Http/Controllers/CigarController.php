@@ -285,7 +285,7 @@ class CigarController extends Controller
     {
         // $cigar = Cigar::findOrFail($id);
 
-        $cigar-> active = '0';
+        $cigar->active = '0';
 
         $cigar->update();
 

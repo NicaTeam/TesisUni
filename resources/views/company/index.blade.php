@@ -5,14 +5,14 @@
         <div class="row">
             {{--@include('admin.sidebar')--}}
 
-            <div class="col-sm-8">
+            <div class="col-sm-9">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Compania</div>
+                    <div class="panel-heading">Clientes</div>
                     <div class="panel-body">
 
                         @can('company.create')
                             <a href="{{ url('/company/create') }}" class="btn btn-success btn-sm" title="Add New Company">
-                                <i class="fa fa-plus" aria-hidden="true"></i> Agregar una compania
+                                <i class="fa fa-plus" aria-hidden="true"></i> Agregar un cliente.
                             </a>
 
                         @endcan
@@ -23,7 +23,7 @@
 
                                 <select class="form-control" name="pais">
                                     
-                                    <option value="">Seleccion un pais.</option>
+                                    <option value="">Seleccion un país.</option>
                                     @foreach($countries as $country)
 
                                         <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -69,13 +69,13 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Nombre</th>
-                                                    <th>Pais</th>
-                                                    <th>Tipo Compania</th>
-                                                    <th>Telefono</th>
-                                                    <th>Direccion de Envio</th>
-                                                    <th>Tipo de Distribuidor</th>
-                                                    <th>Termino de Pago</th>
-                                                    <th>Acuerdo Comercial</th>
+                                                    <th>País</th>
+                                                    <th>Tipo companía</th>
+                                                    <th>Teléfono</th>
+                                                    <th>Dirección de envío</th>
+                                                    <th>Tipo de distribuidor</th>
+                                                    <th>Término de pago</th>
+                                                    <th>Acuerdo comercial</th>
                                                     <!-- <th>Opciones</th> -->
                                                 </tr>
                                             </thead>
@@ -89,20 +89,34 @@
                                                     <td>{{ $item->telephone }}</td>
                                                     <td>{{ $item->shippingAddress }}</td>
 
-                                                    @if ($item->customerTypes->count() > 0)
+                                                    {{--@if ($item->customerTypes->count() > 0)--}}
 
-                                                        @foreach ($item->customerTypes as $c)
+                                                        {{--@foreach ($item->customerTypes as $c)--}}
 
-                                                            <td>{{ $c->clienteTipo }}</td>
+                                                            {{--<td>{{ $c->clienteTipo }}</td>--}}
 
-                                                        @endforeach
+                                                        {{--@endforeach--}}
 
 
-                                                        @else
+                                                        {{--@else--}}
 
+                                                        {{--<td>{{ 'To be determined!' }}</td>--}}
+
+                                                    {{--@endif--}}
+
+                                                    @if($item->customertype)
+
+
+                                                        <td>
+                                                            <a href="/customer-type/{{ $item->customertype->id }}">{{ $item->customertype->clienteTipo }}</a>
+                                                        </td>
+
+
+                                                    @else
                                                         <td>{{ 'To be determined!' }}</td>
 
                                                     @endif
+
 
                                                     <td>{{ $item->paymentTerm['name'] }}</td>
 

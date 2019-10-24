@@ -35,5 +35,11 @@ class Country extends Model
         return $this->hasMany('SalesProgram\Company', 'countries_id');
     }
 
+    public function agent()
+    {
+
+        return $this->hasMany(Agent::class);
+    }
+
     
 }

@@ -30,6 +30,8 @@ class CompanyFormRequest extends FormRequest
 
             'company_types_id' => 'required|numeric',
 
+            'customer_type_id' => 'required|numeric',
+
             'payment_term_id' => 'required|numeric',
 
             'incoterm_id' => 'required|numeric',

@@ -88,8 +88,12 @@ class CompanyController extends Controller
      */
     public function store(CompanyFormRequest $request)
     {
+
+        //dd($request);
         
         $requestData = $request->all();
+
+        // dd($requestData);
         
         $company = Company::create($requestData);
 
@@ -98,7 +102,7 @@ class CompanyController extends Controller
         $customer->companies_id = $company->id;
         $customer->save();
 
-        $this->syncCustomerType($company, $request->input('customer_type_list'));
+        //$this->syncCustomerType($company, $request->input('customer_type_list'));
 
         // Session::flash('flash_message', 'Company added!');
 
@@ -125,9 +129,9 @@ class CompanyController extends Controller
         $title = Title::all();
         $company_person = Company::where('id', '=', $id)->pluck('name', 'id');
 
-        $customerType =$company->customerTypes->pluck('clienteTipo', 'id');
+        $customerType =$company->customertype->pluck('clienteTipo', 'id');
 
-
+        // dd($customerType);
 
 //        $country = $company->country()->name;
 
@@ -194,6 +198,8 @@ class CompanyController extends Controller
 
             'payment_term_id' => 'required|numeric',
 
+            'customer_type_id' => 'required|numeric',
+
             'incoterm_id' => 'required|numeric',
 
             'name' => 'required|max:255|unique:companies,name,'.$company->id,
@@ -210,7 +216,7 @@ class CompanyController extends Controller
 //        $company = Company::findOrFail($id);
         $company->update($requestData);
 
-        $this->syncCustomerType($company, $request->input('customer_types_list'));
+        //$this->syncCustomerType($company, $request->input('customer_types_list'));
 
         // Session::flash('flash_message', 'Company updated!');
 

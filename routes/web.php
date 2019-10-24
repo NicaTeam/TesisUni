@@ -159,7 +159,9 @@ Route::post('/customs-agency2/{customs_agency}/persons', 'PersonController@store
 //Route::get('person2/{person}', 'PersonController@edit2');
 //Route::post('person2/{person}', 'PersonController@update2');
 Route::resource('payment-term', 'PaymentTermController');
-Route::resource('price-registration', 'PriceRegistrationController');
+// Route::resource('price-registration', 'PriceRegistrationController');
+
+
 
 
 Route::resource('price-registration-datail', 'PriceRegistrationDatailController');
@@ -232,7 +234,7 @@ Route::middleware(['auth'])->group(function(){
 
 
 	// Cigars
-	Route::post('cigars/store', 'CigarController@store')->name('cigars.create')
+	Route::post('cigars', 'CigarController@store')->name('cigars.create')
 		->middleware('permission:cigars.create');
 
 	Route::get('cigars', 'CigarController@index')->name('cigars.index')
@@ -253,6 +255,36 @@ Route::middleware(['auth'])->group(function(){
 
 	Route::get('cigars/{cigar}/edit', 'CigarController@edit')->name('cigars.edit')
 		->middleware('permission:cigars.edit');
+
+
+
+	//price registrations
+
+	Route::post('price-registration', 'PriceRegistrationController@store')->name('price_registration.create')
+		->middleware('permission:price_registration.create');
+
+
+	Route::get('price-registration', 'PriceRegistrationController@index')->name('price_registration.index')
+		->middleware('permission:price_registration.index');
+
+	Route::get('price_registration/create', 'PriceRegistrationController@create')->name('price_registration.create')
+		->middleware('permission:price_registration.create');
+
+	Route::get('price_registration/{price}', 'PriceRegistrationController@show')->name('price_registration.show')
+		->middleware('permission:price_registration.show');
+
+	Route::get('price-registration/{price}/edit', 'PriceRegistrationController@edit')->name('price_registration.edit')
+		->middleware('permission:price_registration.edit');
+
+	Route::patch('price_registration/{price}', 'PriceRegistrationController@update')->name('price_registration.update')
+		->middleware('permission:price_registration.edit');
+
+	Route::post('price-registration/{price}/prices', 'PriceRegistrationDatailController@store')->name('price_registration2.create')
+		->middleware('permission:price_registration.create');
+ 
+
+
+
 
 	//Companies
 
@@ -281,22 +313,43 @@ Route::middleware(['auth'])->group(function(){
 
 	//Customs Agencies
 
-	Route::get('customs-agency', 'CustomsAgencyController@index')->name('customsAgency.index')
+	// Route::get('customs-agency', 'CustomsAgencyController@index')->name('customsAgency.index')
+	// 	->middleware('permission:customsAgency.index');
+
+	// Route::get('customs-agency/create', 'CustomsAgencyController@create')->name('customsAgency.create')->middleware('permission:customsAgency.create');
+
+	// Route::post('customs-agency', 'CustomsAgencyController@store')->name('customsAgency.create')
+	// 	->middleware('permission:customsAgency.create');
+
+	// Route::get('customs-agency/{customs}', 'CustomsAgencyController@show')->name('customsAgency.show')
+	// 	->middleware('permission:customsAgency.show');
+
+	// Route::get('customs-agency/{customs}/edit', 'CustomsAgencyController@edit')->name('customsAgency.edit')
+	// 	->middleware('permission:customsAgency.edit');
+
+	// Route::put('company-agency/{company}', 'CustomsAgencyController@update')->name('customsAgency.update')
+	// 	->middleware('permission:customsAgency.edit');
+
+	Route::get('agent', 'AgentController@index')->name('customsAgency.index')
 		->middleware('permission:customsAgency.index');
 
-	Route::get('customs-agency/create', 'CustomsAgencyController@create')->name('customsAgency.create')->middleware('permission:customsAgency.create');
+	Route::get('agent/create', 'AgentController@create')->name('customsAgency.create')->middleware('permission:customsAgency.create');
 
-	Route::post('customs-agency', 'CustomsAgencyController@store')->name('customsAgency.create')
+	Route::post('agent', 'AgentController@store')->name('customsAgency.create')
 		->middleware('permission:customsAgency.create');
 
-	Route::get('customs-agency/{customs}', 'CustomsAgencyController@show')->name('customsAgency.show')
+	Route::get('agent/{agent}', 'AgentController@show')->name('customsAgency.show')
 		->middleware('permission:customsAgency.show');
 
-	Route::get('customs-agency/{customs}/edit', 'CustomsAgencyController@edit')->name('customsAgency.edit')
+	Route::get('agent/{agent}/edit', 'AgentController@edit')->name('customsAgency.edit')
 		->middleware('permission:customsAgency.edit');
 
-	Route::put('company-agency/{company}', 'CustomsAgencyController@update')->name('customsAgency.update')
+	Route::put('agent/{agent}', 'AgentController@update')->name('customsAgency.update')
 		->middleware('permission:customsAgency.edit');
+
+
+
+
 
 
 
@@ -345,9 +398,152 @@ Route::middleware(['auth'])->group(function(){
 		->middleware('permission:incoterm.update');
 
 
+	//Orders
+	Route::get('order', 'OrderController@index')->name('order.index')
+		->middleware('permission:order.index');
+
+	Route::get('order/create', 'OrderController@create')->name('order.create')
+		->middleware('permission:order.create');
+
+	Route::get('order/{order}', 'OrderController@show')->name('order.show')
+		->middleware('permission:order.show');
+
+	Route::post('order', 'OrderController@store')->name('order.store')
+		->middleware('permission:order.store');
+
+	Route::get('orderdownload/{order}', 'OrderController@download')->name('orderdownload')
+		->middleware('permission:order.download');
+
+	Route::get('order/{order}/edit', 'OrderController@edit')->name('order.edit')
+		->middleware('permission:order.edit');
+
+	Route::patch('order/{order}', 'OrderController@update')->name('order.update')
+		->middleware('permission:order.update');
+
+	Route::delete('order/{order}', 'OrderController@destroy')->name('order.destroy')
+		->middleware('permission:order.destroy');
+
+	Route::get('order_revision/{order}/edit', 'OrderController@orderRevision')->name('order.revision')
+		->middleware('permission:order.revision');
+
+	Route::patch('order_revision/{order}', 'OrderController@orderUpdateRevision')->name('order.updateRevision')
+		->middleware('permission:order.updateRevision');
+
+	Route::patch('order_aprovada/{order}', 'OrderController@orderUpdateAprobada')->name('order.updateAprobada')
+		->middleware('permission:order.updateAprobada');
+
+	Route::patch('order_empacada/{order}', 'OrderController@orderUpdateEmpacada')->name('order.updateEmpacada')
+		->middleware('permission:order.updateEmpacada');
+
+	Route::get('order_shippingquote/{order}/edit', 'OrderController@orderShippingQuote')->name('order.shippingquote')
+		->middleware('permission:order.shippingquote');
+
+	Route::patch('order_shippingquote/{order}', 'OrderController@orderUpdateShippingQuote')->name('order.updateShippingQuote')
+		->middleware('permission:order.updateShippingQuote');
+
+	Route::get('customerorders', 'OrderController@customerindex')->name('customer_order.index')
+		->middleware('permission:customer_order.index');
+
+	Route::get('customerorders/create', 'OrderController@customercreate')->name('customer_order.create')
+		->middleware('permission:customer_order.create');
+
+	Route::post('customerorders', 'OrderController@customerstore')->name('customerorder.store')
+		->middleware('permission:customer_order.store');
+
+	Route::get('customerorder/{order}', 'OrderController@customershow')->name('customerorder.show')
+		->middleware('permission:customer_order.show');
+
+
+	
+
+
+
+	//Payments
+
+
+	Route::post('payment', 'PaymentController@store')->name('payment.store')
+		->middleware('permission:payment.store');
+
+	Route::get('payment', 'PaymentController@index')->name('payment.index')
+		->middleware('permission:payment.index');
+
+	Route::get('payment/create', 'PaymentController@create')->name('payment.create')
+		->middleware('permission:payment.create');
+
+	Route::get('payment/{payment}', 'PaymentController@show')->name('payment.show')
+		->middleware('permission:payment.show');
+
+	Route::get('payment/{payment}/edit', 'PaymentController@edit')->name('payment.edit')
+		->middleware('permission:payment.edit');
+
+	Route::patch('payment/{payment}', 'PaymentController@update')->name('payment.update')
+		->middleware('permission:payment.update');
+
+	Route::delete('payment/{payment}', 'PaymentController@destroy')->name('payment.delete')
+		->middleware('permission:payment.delete');
+
+
+
+
+	//Shippings
+	Route::post('shipping', 'ShippingController@store')->name('shipping.store')
+		->middleware('permission:shipping.store');
+	Route::get('shipping', 'ShippingController@index')->name('shipping.index')
+		->middleware('permission:shipping.index');
+
+	Route::get('shipping/create', 'ShippingController@create')->name('shipping.create')
+		->middleware('permission:shipping.create');
+
+	Route::get('shipping/{shipping}', 'ShippingController@show')->name('shipping.show')
+		->middleware('permission:shipping.show');
+
+	Route::get('shippinginvoicedownload/{shipping}', 'ShippingController@invoicedownload')->name('invoiceFileDownload')
+		->middleware('permission:shipping.invoicedownload');
+
+	Route::get('shippingpackinglistdownload/{shipping}', 'ShippingController@packinglistdownload')->name('packingListFileDownload')
+		->middleware('permission:shipping.packinglistdownload');
+
+	Route::get('shippingawbdownload/{shipping}', 'ShippingController@awbdownload')->name('awbFileDownload')
+		->middleware('permission:shipping.awbdownload');
+
+	Route::get('shippingcertificatedownload/{shipping}', 'ShippingController@certificatedownload')->name('certificateFileDownload')
+		->middleware('permission:shipping.certificatedownload');
+
+	Route::get('shipping/{shipping}/edit', 'ShippingController@edit')->name('shipping.edit')
+		->middleware('permission:shipping.edit');
+
+
+	Route::patch('shipping/{shipping}', 'ShippingController@update')->name('shipping.update')
+		->middleware('permission:shipping.update');
+
+	Route::delete('shipping/{shipping}', 'ShippingController@destroy')->name('shipping.delete')
+		->middleware('permission:shipping.delete');
+
+
+	//Reports
+
+	Route::get('reports', 'ReportsController@index')->name('reports.index')
+		->middleware('permission:reports.index');
+
+
+
+
+
 });
 
 // Route::patch('users/{user}', 'UserController@update');
 
 
 // Route::resource('incoterm', 'IncotermController');
+Route::resource('freight-type', 'FreightTypeController');
+Route::resource('freight-provider', 'FreightProviderController');
+//Route::resource('order', 'OrderController');
+Route::resource('detail-order', 'DetailOrderController');
+// Route::resource('shipping', 'ShippingController');
+// Route::resource('payment', 'PaymentController');
+Route::resource('status', 'StatusController');
+Route::resource('order-status', 'OrderStatusController');
+
+// Route::get('download/{order}', 'OrderController@download');
+Route::get('see/{order}', 'OrderController@see');
+// Route::resource('agent', 'AgentController');

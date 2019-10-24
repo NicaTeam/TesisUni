@@ -28,11 +28,11 @@
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Name</th>
+                                                        <th>Nombre</th>
                                                         <th>Email</th>
-                                                        <th>Company</th>
+                                                        <th>Compañía</th>
                                                         <th>Estado</th>
-                                                        <th>Actions</th>
+                                                        <th>Opciones</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

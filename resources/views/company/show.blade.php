@@ -47,20 +47,20 @@
 
                                     {{--@endforeach--}}
 
-                                    @unless ($company->customerTypes->isEmpty())
+                                    {{--@unless ($company->customertype->isEmpty())--}}
 
                                         {{--<ul>--}}
-                                        @foreach ($company->customerTypes as $c)
+                                        @foreach ($company->customertype as $c)
                                             {{--<li>--}}
                                             {{--{{ $c->clienteTipo }}--}}
                                             {{--</li>--}}
 
                                             <tr>
-                                                <th>Tipo de Distribuidor</th><td>{{ $c->clienteTipo }}</td>
+                                                <th>Tipo de Distribuidor</th><td>{{ $company->customertype->clienteTipo }}</td>
                                             </tr>
                                         @endforeach
                                         {{--</ul>--}}
-                                    @endunless
+                                    {{--@endunless--}}
 
                                     <tr><th> Termino de Pago </th><td> {{ $company->paymentTerm['name'] }} </td>
                                     </tr>
@@ -126,12 +126,6 @@
                         <hr>
                         <div class = "comments">
                             <div class = "list-group">
-                                {{--@foreach ($company->persons as $person)--}}
-                                {{--<div class = "list-group-item">--}}
-                                {{--<strong> {{ $person->name }}  {{$person->lastName}} | {{$person->email }} | {{ $person->telephone }} &nbsp; </strong>--}}
-                                {{--{{ $comment->body }} {{ $comment->created_at->diffForHumans() }}--}}
-                                {{--</div>--}}
-                                {{--@endforeach--}}
 
                                 <strong>Agente de aduanas:</strong>
                             </div>
@@ -142,24 +136,30 @@
                             <table class="table table-borderless">
                                 <thead>
                                 <tr>
-                                    <th>#</th><th>Nombre</th><th>Telefono</th><th>Direccion de Envios</th><th>Opciones</th>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Telefono</th>
+                                    <th>Direccion de Envios</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
 
-                                @unless ($company->customsAgent->isEmpty())
+                                
 
-                                        @foreach ($company->customsAgent as $item)
+                                @unless($company->agent->isEmpty())
+
+                                        @foreach($company->agent as $item)
 
                                             <tr>
-                                                <td>{{ $loop->iteration or $item->company->id }}</td>
-                                                <td>{{ $item->company->name }}</td><td>{{ $item->company->telephone }}</td><td>{{ $item->company->shippingAddress }}</td>
+                                                <td>{{ $loop->iteration or $item->id }}</td>
 
-                                                <td><a href="{{ url('/customs-agency2/' . $item->company_id) }}" title="View Person"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> Ver</button></a></td>
-                                            {{--<li>--}}
-                                                {{--{{ $c->company->name }}--}}
-                                            {{--</li>--}}
+                                                <td>{{ $item->name }}</td>
+                                                <td>{{ $item->telephone }}</td>
+                                                <td>{{ $item->shippingAddress }}</td>
 
+                                                <td><a href="{{ url('/agent/' . $item->id) }}" title="View Person"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> Ver</button></a></td>
+                                           
                                             </tr>
                                         @endforeach
                                 @endunless

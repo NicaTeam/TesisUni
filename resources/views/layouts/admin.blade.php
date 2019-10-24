@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Drew Estate International Customers</title>
+
+
+      <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -40,6 +44,34 @@
 
           }
 
+        .confondo {
+           background-color: #def;
+         }
+
+         .confondoAmarillo{
+
+            background-color: #ffffcc;
+         }
+
+         .redondeado {
+           border-radius: 15px;
+         }
+
+         .confondo-semirojo{
+
+            background-color:#F79F81;
+         }
+
+         .confondo-semianarajado{
+
+            background-color:#F5D0A9;
+         }
+
+         .confondo-semiverde{
+
+            background-color: #74DF00;
+         }
+
     </style>
 
    
@@ -66,7 +98,7 @@
                     <div class="col-md-12">
                         <div class="box">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Sistema de Ventas</h3>
+                                <h3 class="box-title">Sistema de ventas</h3>
                                 <div class="box-tools pull-right">
                                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 
@@ -80,14 +112,20 @@
                                         <!--Contenido-->
                                         {{--<h3>Contenido</h3>--}}
 
-                                        @yield('content')
-                                        <!--Fin Contenido-->
+                                        <div id="app2">
 
-                                        <div id="flashComponent">
+                                            @yield('content')
+                                            <!--Fin Contenido-->
 
                                             <flash message="{{session('flash')}}"></flash>
 
                                         </div>
+
+                                        <!-- <div id="flashComponent">
+
+                                            <flash message="{{session('flash')}}"></flash>
+
+                                        </div> -->
                                             
                                     </div>
                                 </div>
@@ -107,28 +145,29 @@
 
 
 
-<!-- jQuery 2.1.4 -->
+    <!-- jQuery 2.1.4 -->
+    <script src="{{ asset('js/jQuery-2.1.4.min.js')}}"></script>
 
+    @stack('scripts')
 
-<script src="{{ asset('js/jQuery-2.1.4.min.js')}}"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="{{ asset('js/bootstrap.min.js')}}"></script>
 
-@stack('scripts')
-<!-- Bootstrap 3.3.5 -->
-<script src="{{ asset('js/bootstrap.min.js')}}"></script>
-{{--Bootstrap select--}}
-<script src="{{ asset('js/bootstrap-select.min.js')}}"></script>
-<!-- AdminLTE App -->
-<script src="{{ asset('js/app.min.js')}}"></script>
+    <!--Bootstrap select-->
+    <script src="{{ asset('js/bootstrap-select.min.js')}}"></script>
 
-<script src="{{ asset('js/appVue.js') }}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ asset('js/app.min.js')}}"></script>
 
- <script>
+    <!-- <script src="{{ asset('js/appVue.js') }}"></script> -->
+
+    <script>
        window.Laravel = <?php echo json_encode([
            'csrfToken' => csrf_token(),
         ]); ?>
     </script>
 
-<script src=" {{ asset('js/app2.js') }}"></script>
+    <script src=" {{ asset('js/app2.js') }}"></script>
 
 
 

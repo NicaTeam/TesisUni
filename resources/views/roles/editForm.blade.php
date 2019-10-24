@@ -22,7 +22,7 @@
     <!-- <div class="col-md-8"> -->
         <!-- <input id="slug" type="text" class="form-control" name="slug" value="{{ $role->slug }}" required> -->
 
-        {!! Form::label('slug', 'Slug')!!}
+        {!! Form::label('slug', 'Alias')!!}
 
         {!! Form::text('slug',null, array('class' => 'form-control', 'required' =>'required'))!!}
 
@@ -42,7 +42,7 @@
 
         <!-- <textarea id="description" class="form-control" name="description" rows="4" required>{{ $role->description}}</textarea> -->
 
-        {!! Form::label('description', 'Descripcion')!!}
+        {!! Form::label('description', 'Descripción')!!}
 
         {!! Form::textarea('description',null, array('class' => 'form-control', 'rows' =>'4', 'required' =>'required'))!!}
 
@@ -110,6 +110,6 @@
 
 <div class="form-group">
     <div class="col-md-offset-4 col-md-4">
-        <input class="btn btn-primary" type="submit" value="{{ $submitButtonText or 'Guardar' }}">
+        <input class="btn btn-primary" type="submit" value="{{ $submitButtonText or 'Actualizar' }}">
     </div>
 </div>

@@ -203,80 +203,351 @@ class PermissionsTableSeeder extends Seeder
 
 
         //Customs Agencies
-        Permission::create([
+        // Permission::create([
 
-         'name' => 'Navegar agencia aduanera.',
-         'slug' =>'customsAgency.index',
+        //  'name' => 'Navegar agencia aduanera.',
+        //  'slug' =>'customsAgency.index',
 
-        ]);
+        // ]);
 
-        Permission::create([
+        // Permission::create([
 
-         'name' => 'Crear agencia aduanera.',
-         'slug' =>'customsAgency.create',
+        //  'name' => 'Crear agencia aduanera.',
+        //  'slug' =>'customsAgency.create',
 
-        ]);
+        // ]);
 
-        Permission::create([
+        // Permission::create([
 
-         'name' => 'Ver agencia aduanera.',
-         'slug' =>'customsAgency.show',
+        //  'name' => 'Ver agencia aduanera.',
+        //  'slug' =>'customsAgency.show',
 
-        ]);
+        // ]);
 
-        Permission::create([
+        // Permission::create([
 
-         'name' => 'Editar agencia aduanera.',
-         'slug' =>'customsAgency.edit',
+        //  'name' => 'Editar agencia aduanera.',
+        //  'slug' =>'customsAgency.edit',
 
-        ]);
+        // ]);
 
         
 
         
         //Incoterms
+        // Permission::create([
+
+        //  'name' => 'Navegar incoterm',
+        //  'slug' =>'incoterm.index',
+
+        // ]);
+
+        // Permission::create([
+
+        //  'name' => 'Ver incoterm',
+        //  'slug' =>'incoterm.show',
+
+        // ]);
+
+        // Permission::create([
+
+        //  'name' => 'Editar incoterm',
+        //  'slug' =>'incoterm.edit',
+
+        // ]);
+
+        // Permission::create([
+
+        //  'name' => 'Actualizar incoterm',
+        //  'slug' =>'incoterm.update',
+
+        // ]);
+
+        // Permission::create([
+
+        //  'name' => 'Crear incoterm',
+        //  'slug' =>'incoterm.create',
+
+        // ]);
+
+        // Permission::create([
+
+        //  'name' => 'Guardar incoterm',
+        //  'slug' =>'incoterm.store',
+
+        // ]);
+
+
+
+        // //Orders
+        // Permission::create([
+
+        //  'name' => 'Navegar ordenes',
+        //  'slug' =>'order.index',
+
+        // ]);
+
+        // Permission::create([
+
+        //  'name' => 'Crear ordenes',
+        //  'slug' =>'order.create',
+
+        // ]);
+
+
+        // Permission::create([
+
+        //  'name' => 'Store ordenes',
+        //  'slug' =>'order.store',
+
+        // ]);
+
+        // Permission::create([
+
+        //  'name' => 'Ver orden',
+        //  'slug' =>'order.show',
+
+        // ]);
+
+        // Permission::create([
+
+        //  'name' => 'Descargar orden',
+        //  'slug' => 'order.download',
+
+        // ]);
+
+        // Permission::create([
+
+        //  'name' => 'Mostrar el formulacion de edicion',
+        //  'slug' => 'order.edit',
+
+        // ]);
+
+        // Permission::create([
+
+        //  'name' => 'Actualizar orden',
+        //  'slug' => 'order.update',
+
+        // ]);
+
+        // Permission::create([
+
+        //  'name' => 'Eliminar orden',
+        //  'slug' => 'order.destroy',
+
+        // ]);
+
+        // Permission::create([
+
+        //  'name' => 'Navegar shippings',
+        //  'slug' => 'shipping.index',
+
+        // ]);
+
+
+        // Permission::create([
+
+        //  'name' => 'Crear shippings',
+        //  'slug' => 'shipping.create',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Revision de orden',
+        //     'slug' => 'order.revision',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Actualizar revision de orden',
+        //     'slug' => 'order.updateRevision',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Actualizar aprobado de orden',
+        //     'slug' => 'order.updateAprobada',
+
+        // ]);
+
+
+        // //Permissions for responsable de exportaciones.
+
+
+        // Permission::create([
+
+        //     'name' => 'Agregar cotizacion de flete',
+        //     'slug' => 'order.shippingquote',
+
+        // ]);
+
+
+        // Permission::create([
+
+        //     'name' => 'Actualizar cotizacion de flete',
+        //     'slug' => 'order.updateShippingQuote',
+
+        // ]);
+
+
+        // Permission::create([
+
+        //     'name' => 'Guardar pago de orden.',
+        //     'slug' => 'payment.store',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Navegar lista de pagos de orden.',
+        //     'slug' => 'payment.index',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Mostrar un pago',
+        //     'slug' => 'payment.show',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Editar un pago',
+        //     'slug' => 'payment.edit',
+
+        // ]);
+
+
+        // Permission::create([
+
+        //     'name' => 'Actualizar un pago',
+        //     'slug' => 'payment.update',
+
+        // ]);
+
+
+        // Permission::create([
+
+        //     'name' => 'Eliminar un pago',
+        //     'slug' => 'payment.delete',
+
+        // ]);
+
+
+        // Permission::create([
+
+        //  'name' => 'Store shippings',
+        //  'slug' => 'shipping.store',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Actualizar empaque de orden',
+        //     'slug' => 'order.updateEmpacada',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Show o mostrar un envio',
+        //     'slug' => 'shipping.show',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Descargar factura del envio',
+        //     'slug' => 'shipping.invoicedownload',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Descargar lista de embarque',
+        //     'slug' => 'shipping.packinglistdownload',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Descargar guia aerea.',
+        //     'slug' => 'shipping.awbdownload',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Descargar certificados',
+        //     'slug' => 'shipping.certificatedownload',
+
+        // ]);
+
+
+        // Permission::create([
+
+        //     'name' => 'Editar un envio',
+        //     'slug' => 'shipping.edit',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Actualizar  un envio',
+        //     'slug' => 'shipping.update',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Eliminar  un envio',
+        //     'slug' => 'shipping.delete',
+
+        // ]);
+
+
+        // Permission::create([
+
+        //     'name' => 'Indice de reportes',
+        //     'slug' => 'reports.index',
+
+        // ]);
+
+
+        // Permission::create([
+
+        //     'name' => 'Indice de ordenes para clientes',
+        //     'slug' => 'customer_order.index',
+
+        // ]);
+
+        // Permission::create([
+
+        //     'name' => 'Crear ordenes para clientes',
+        //     'slug' => 'customer_order.create',
+
+        // ]);
+
+
+        // Permission::create([
+
+        //     'name' => 'Almacenar ordenes para clientes',
+        //     'slug' => 'customer_order.store',
+
+        // ]);
+
+
         Permission::create([
 
-         'name' => 'Navegar incoterm',
-         'slug' =>'incoterm.index',
+            'name' => 'Mostrar o ver ordenes para clientes',
+            'slug' => 'customer_order.show',
 
-        ]);
+        ]);    
 
-        Permission::create([
-
-         'name' => 'Ver incoterm',
-         'slug' =>'incoterm.show',
-
-        ]);
-
-        Permission::create([
-
-         'name' => 'Editar incoterm',
-         'slug' =>'incoterm.edit',
-
-        ]);
-
-        Permission::create([
-
-         'name' => 'Actualizar incoterm',
-         'slug' =>'incoterm.update',
-
-        ]);
-
-        Permission::create([
-
-         'name' => 'Crear incoterm',
-         'slug' =>'incoterm.create',
-
-        ]);
-
-        Permission::create([
-
-         'name' => 'Guardar incoterm',
-         'slug' =>'incoterm.store',
-
-        ]);
-
-
+        
     }
 }

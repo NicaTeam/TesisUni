@@ -15,7 +15,7 @@
     </div>
 
     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-        <label for="slug" class="col-md-4 control-label">Slug</label>
+        <label for="slug" class="col-md-4 control-label">Alias</label>
 
         <div class="col-md-6">
             <input id="slug" type="text" class="form-control" name="slug" value="{{ old('slug') }}" required>
@@ -29,7 +29,7 @@
     </div>
 
     <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
-        <label for="description" class="col-md-4 control-label">Descripcion</label>
+        <label for="description" class="col-md-4 control-label">Descripción</label>
 
         <div class="col-md-6">
             <!-- <input id="description" type="text" class="form-control" name="description" required> -->
